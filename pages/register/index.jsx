@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Input from "../../components/UI/Input";
 import { gql, useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
-
-export default function Register() {
+import Router, { withRouter } from "next/router";
+const Register = () => {
   const [registerData, setregisterData] = useState({
     email: "",
     fullName: "",
     password: "",
   });
+  const [submitRegister, { data, loading, error }] = useMutation(REGISTER_USER);
+
+  useEffect(() => {
+    if (data?.register["success"]) {
+      Router.push("/login");
+    }
+  }, [data]);
 
   const handleRegister = (e) => {
     const val = e.target.value;
@@ -18,10 +25,6 @@ export default function Register() {
     console.log(registerData);
   };
 
-  const [submitRegister, { data, loading, error }] = useMutation(
-    REGISTER_USER,
-  );
-
   const onSubmit = (e) => {
     e.preventDefault();
     submitRegister({ variables: { user: registerData } });
@@ -29,8 +32,8 @@ export default function Register() {
 
   return (
     <div className="w-screen h-screen flex">
-    {console.log(registerData)}
-    {console.log(data)}
+      {console.log(registerData)}
+      {console.log(data)}
       <div className="left hidden md:block w-3/5 h-screen">
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
           RentingApp
@@ -97,4 +100,6 @@ export default function Register() {
       </div>
     </div>
   );
-}
+};
+
+export default withRouter(Register);

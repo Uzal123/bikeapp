@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import App from "../../components/Layout/App";
 import Setting from "../../assets/Profile/setting.svg";
 import Product from "../../components/Product/Product";
 import SampleProduct from "../../assets/fakeData/SampleProducts";
+import { useUserStore } from "../../store/auth";
+import Router, { withRouter, useRouter } from "next/router";
 
-const Profile = () => {
+const Profile = ({ ...props }) => {
+  const user = useUserStore((state) => state.user);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!user.email) {
+        router.push("/login", { pathname: "/profile" });
+      }
+    }
+  }, [user]);
+
   return (
     <App>
       <div className="w-full h-full flex gap-4">
@@ -31,7 +45,7 @@ const Profile = () => {
           </div>
           <div className="grid grid-cols-4 gap-6">
             {SampleProduct.map((d, i) => (
-              <Product title={d.title} price={d.price}/>
+              <Product key={d.id} title={d.title} price={d.price} />
             ))}
           </div>
         </div>
@@ -40,4 +54,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withRouter(Profile);

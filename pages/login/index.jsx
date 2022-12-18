@@ -1,29 +1,52 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Input from "../../components/UI/Input";
 import { useMutation, useQuery } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
+import { useUserStore } from "../../store/auth";
+import Router, { withRouter, useRouter } from "next/router";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ email: "", password: "" });
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
+  const [login, { loading, error, data }] = useMutation(LOGIN_USER);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (data?.login?.["success"]) {
+      const user = data.login["user"];
+      setUser(user.accessToken, user);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (user.email.length > 5) {
+      if (router.asPath !== "/register") {
+        router.push(router.asPath);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [user]);
+
   const handleLogin = (e) => {
     const val = e.target.value;
     const key = e.target.name;
     setloginData((prevs) => ({ ...prevs, [key]: val }));
-    console.log(loginData);
+    // console.log(loginData);
   };
-
-  const [login, { loading, error, data }] = useMutation(LOGIN_USER);
 
   const onSubmit = (e) => {
     e.preventDefault();
     login({
-      variables:  loginData ,
+      variables: loginData,
     });
   };
 
   return (
     <div className="w-screen h-screen flex">
-    {console.log(data)}
+      {console.log(data)}
       <div className="hidden md:block left w-3/5 h-screen">
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
           RentingApp
@@ -68,7 +91,7 @@ const Login = () => {
             Login with Google
           </button>
           <p className="text-center text-customGray-dark font-medium">
-            Already a <spam className="text-primary"> RentingApp </spam> User ?
+            Already a <span className="text-primary"> RentingApp </span> User ?
           </p>
           <p className="text-center text-customGray-dark font-medium">LOGIN</p>
         </div>
@@ -77,4 +100,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);
