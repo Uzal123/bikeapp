@@ -7,37 +7,13 @@ import {
   gql,
   createHttpLink,
 } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
 import ME from "../graphql/Query/Me";
 import { useUserStore } from "../store/auth";
+import { client } from "../graphql/client";
 
 function MyApp({ Component, pageProps }) {
-  const authLink = setContext((_, { headers }) => {
-    let token;
-    if (typeof window !== "undefined") {
-      token = localStorage.getItem("rent-app-token");
-    }
-    // return the headers to the context so httpLink can read them
-    return {
-      headers: {
-        ...headers,
-
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    };
-  });
-
-  const httpLink = createHttpLink({
-    uri: "http://localhost:5000/graphql",
-  });
-
   const setUser = useUserStore((state) => state.setUser);
   const removeUser = useUserStore((state) => state.removeUser);
-
-  const client = new ApolloClient({
-    link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
-  });
 
   const loadUser = async () => {
     try {

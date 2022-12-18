@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import GET_SELLING from "../graphql/Query/GetAllSellingProducts";
 
 export default function Main() {
+  
   const rentitems = () => {
     const { loading, error, data } = useQuery(GET_RENTED);
     if (loading) return null;
