@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import App from "../../components/Layout/App";
 import Setting from "../../assets/Profile/setting.svg";
-import Product from "../../components/Product/Product";
 import SampleProduct from "../../assets/fakeData/SampleProducts";
 import { useUserStore } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import ME from "../../graphql/Query/Me";
+import MY_PROFILE from "../../graphql/Query/MyProfile";
+import ProductItem from "../../components/Product/ProductItem";
 
 const Profile = ({ ...props }) => {
   const user = useUserStore((state) => state.user);
@@ -19,6 +22,10 @@ const Profile = ({ ...props }) => {
     }
   }, [user]);
 
+  const { loading, error, data } = useQuery(MY_PROFILE);
+  if (loading) return null;
+  if (error) return `Error! ${error}`;
+
   return (
     <App>
       <div className="w-full h-full flex gap-4">
@@ -26,7 +33,9 @@ const Profile = ({ ...props }) => {
           <Setting className="h-10 absolute right-2 top-2" />
           <div className="flex flex-col items-center">
             <div className="bg-gray-500 rounded-full w-48 h-48"></div>
-            <h1 className="text-center font-bold text-2xl"> User Name</h1>
+            <h1 className="text-center font-bold text-2xl">
+              {data.myProfile.profile.user.fullName}
+            </h1>
           </div>
           <div className="text-center">
             <p>This is my bio 8347853465 hello i am ths</p>
@@ -44,9 +53,9 @@ const Profile = ({ ...props }) => {
             <p>For Sell</p>
           </div>
           <div className="grid grid-cols-4 gap-6">
-            {SampleProduct.map((d, i) => (
-              <Product key={d.id} title={d.title} price={d.price} />
-            ))}
+            {/* {SampleProduct.map((d, i) => (
+              <ProductItem key={d.id} title={d.title} price={d.price} />
+            ))} */}
           </div>
         </div>
       </div>

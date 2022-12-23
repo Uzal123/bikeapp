@@ -1,6 +1,6 @@
 import React from "react";
 import App from "../../components/Layout/App";
-import Product from "../../components/Product/Product";
+import Product from "../../components/Product/ProductItem";
 
 const ProductInfo = () => {
   return (

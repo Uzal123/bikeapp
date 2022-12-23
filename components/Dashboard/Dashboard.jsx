@@ -1,12 +1,14 @@
 import { React, useState } from "react";
-import Product from "../Product/Product";
+import ProductItem from "../Product/ProductItem";
+import Product from "../Product/ProductItem";
+import Search from "../../assets/TopBar/search.svg";
 import Category from "./Category/Category";
 
 const Dashboard = ({ rent, sell, ...props }) => {
   const [homeItems, sethomeItems] = useState(0);
   return (
-    <div className="ml-24 mr-4 p-4 bg-customGray-light h-full rounded-lg">
-      <div className="flex gap-6 font-semibold text-lg">
+    <div className=" p-4 bg-customGray-light rounded-lg md:mx-4 lg:mx-6 overflow-scroll lg:container mobile">
+      <div className="flex gap-6 font-semibold text-lg w-full pb-6">
         <button
           className={
             !homeItems ? "text-primary underline" : "hover:text-primary"
@@ -24,22 +26,33 @@ const Dashboard = ({ rent, sell, ...props }) => {
           For Sell
         </button>
       </div>
+      <div className="flex border-2 rounded-lg  h-10 items-center p-2 w-full ">
+        <input
+          type="text"
+          className="w-full outline-none placeholder:text-customGray-dark font-semibold bg-customGray-light"
+          placeholder="Search for Cars,bikes,scooty"
+        />
+        <div className="flex items-center justify-center bg-primary rounded-full">
+          <div className="p-2">
+            <Search className="h-6" />
+          </div>
+        </div>
+      </div>
       <Category />
-
-      {console.log(rent)}
 
       <h2 className="font-bold text-xl">Discover</h2>
       {!homeItems ? (
-        <div className="grid grid-cols-5 gap-4">
-          {rent && rent.getAllRentedProducts.map((d, i) => (
-            <Product price={d.price} title={d.title} key={i} />
-          ))}
+        <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
+          {rent &&
+            rent.getAllRentedProducts.map((item, i) => (
+              <ProductItem key={item._id} data={item} />
+            ))}
         </div>
       ) : (
-        <div className="grid grid-cols-5 gap-4">
+        <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
           {sell &&
-            sell.getAllSellingProducts.map((s, i) => (
-              <Product price={s.price} title={s.title} key={i} />
+            sell.getAllSellingProducts.map((item, i) => (
+              <ProductItem data={item} key={item._id} />
             ))}
         </div>
       )}

@@ -4,9 +4,9 @@ import TopBar from "../components/Topbar/TopBar";
 import GET_RENTED from "../graphql/Query/GetAllRentedProducts";
 import { useQuery } from "@apollo/client";
 import GET_SELLING from "../graphql/Query/GetAllSellingProducts";
+import App from "../components/Layout/App";
 
 export default function Main() {
-  
   const rentitems = () => {
     const { loading, error, data } = useQuery(GET_RENTED);
     if (loading) return null;
@@ -24,10 +24,9 @@ export default function Main() {
   };
 
   return (
-    <div>
-      <Navbar />
-      <TopBar />
-      <Dashboard rent={rentitems()} sell={sellitems()} />
-    </div>
+    <App>
+      <TopBar className="topbar" />
+      <Dashboard rent={rentitems()} sell={sellitems()} className="container"/>
+    </App>
   );
 }

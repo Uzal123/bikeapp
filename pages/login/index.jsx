@@ -14,14 +14,16 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (data?.login?.["success"]) {
+    if (data?.login?.["success"] && !loading) {
       const user = data.login["user"];
       setUser(user.accessToken, user);
+      router.push("/");
     }
   }, [data]);
 
   useEffect(() => {
-    if (user.email.length > 5) {
+    console.log(router);
+    if (user.accessToken) {
       if (router.asPath !== "/register") {
         router.push(router.asPath);
       } else {
@@ -82,18 +84,24 @@ const Login = () => {
             >
               Password
             </Input>
+
+            {data?.login?.success == false && (
+              <p className="text-red-600 text-center">{data?.login.message}</p>
+            )}
             <button className="bg-primary text-white w-full p-2 rounded-full my-6">
               Login
             </button>
           </form>
 
-          <button className="bg-customGray-navbar w-full p-2 rounded-full mb-6">
+          {/* <button className="bg-customGray-navbar w-full p-2 rounded-full mb-6">
             Login with Google
-          </button>
+          </button> */}
           <p className="text-center text-customGray-dark font-medium">
-            Already a <span className="text-primary"> RentingApp </span> User ?
+            Not yet Registerd ?
           </p>
-          <p className="text-center text-customGray-dark font-medium">LOGIN</p>
+          <div className="text-center text-primary font-medium">
+            <a href="/register">REGISTER</a>
+          </div>
         </div>
       </div>
     </div>

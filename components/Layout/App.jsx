@@ -4,11 +4,12 @@ import TopBar from "../Topbar/TopBar";
 
 const App = ({ ...props }) => {
   return (
-    <div>
+    <section>
       <Navbar />
-      <TopBar />
-      <div className="ml-20">{props.children}</div>
-    </div>
+      <div className="main">
+        {props.children}
+      </div>
+    </section>
   );
 };
 

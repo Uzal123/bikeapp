@@ -7,29 +7,31 @@ import Chat from "../../assets/NavigationBar/chat.svg";
 import User from "../../assets/NavigationBar/user.svg";
 import Add from "../../assets/NavigationBar/add.svg";
 
-const Navbar = ({...props}) => {
+const Navbar = ({ ...props }) => {
   return (
-    <div className="flex flex-col items-center w-20 h-screen p-6 pt-20  bg-customGray-navbar fixed">
-      <ul className="flex flex-col w-full gap-6 items-center">
-        <NavLink exact href={"/"}>
-          <Home className="h-6 lg:h-8" />
+    <div className="navbar">
+      <ul className="flex w-full h-full justify-between items-center lg:flex-col lg:justify-start lg:my-12 lg:gap-4">
+        <NavLink exact href={"/"} className="order-1">
+          <Home className="h-6 lg:h-8 " />
         </NavLink>
-        <NavLink exact href={"/notification"}>
+        <NavLink exact href={"/notification"} className="order-2">
           <Bell className="h-6 lg:h-8 " />
         </NavLink>
-       <NavLink exact href={"/chat"}>
+        <NavLink exact href={"/chat"} className="order-3">
           <Chat className="h-6 lg:h-8" />
         </NavLink>
-        <NavLink exact href={"/profile"}>
+        <NavLink exact href="/profile" className="order-4">
           <User className="h-6 lg:h-8" />
         </NavLink>
+        <Link
+          href={"/createpost"}
+          className="flex items-center p-2 h-12 w-12 justify-center lg:mt-6 bg-primary rounded-full shadow-xl order-2 lg:order-5"
+        >
+          <Add className="h-5 w-5 lg:h-6" />
+        </Link>
       </ul>
-      <Link href={"/createpost"} className="flex items-center p-2 h-12 w-12 justify-center mt-6 bg-primary rounded-full shadow-xl">
-        <Add className="h-5 w-5 lg:h-6" />
-      </Link>
     </div>
   );
 };
-
 
 export default Navbar;

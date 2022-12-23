@@ -5,7 +5,13 @@ const GET_SELLING = gql`
     getAllSellingProducts {
       title
       price
-      description
+      _id
+      vehicleType
+      images {
+        key
+        url
+      }
+      createdAt
     }
   }
 `;

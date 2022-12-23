@@ -1,22 +1,39 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { useUserStore } from "../../store/auth";
 import Input from "../../components/UI/Input";
 import { gql, useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
-import Router, { withRouter } from "next/router";
+import Router, { withRouter, useRouter } from "next/router";
 const Register = () => {
   const [registerData, setregisterData] = useState({
     email: "",
     fullName: "",
     password: "",
   });
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
   const [submitRegister, { data, loading, error }] = useMutation(REGISTER_USER);
+  const router = useRouter();
 
   useEffect(() => {
     if (data?.register["success"]) {
-      Router.push("/login");
+      const user = data.register["user"];
+      setUser(user.accessToken, user);
+      router.push("/");
     }
   }, [data]);
+
+  useEffect(() => {
+    if (user.accessToken) {
+      if (router.asPath !== "/register") {
+        router.push(router.asPath);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [user]);
 
   const handleRegister = (e) => {
     const val = e.target.value;
@@ -80,6 +97,11 @@ const Register = () => {
             >
               Password
             </Input>
+            {data?.register?.success == false && (
+              <p className="text-red-600 text-center">
+                {data?.register.message}
+              </p>
+            )}
             <button
               type="submit"
               className="bg-primary text-white w-full p-2 rounded-full my-6"
@@ -88,14 +110,15 @@ const Register = () => {
             </button>
           </form>
 
-          <button className="bg-customGray-navbar  w-full p-2 rounded-full mb-6">
+          {/* <button className="bg-customGray-navbar  w-full p-2 rounded-full mb-6">
             Register with Google
-          </button>
+          </button> */}
 
           <p className="text-center text-customGray-normal font-medium">
             Already a <spam className="text-primary">RentingApp</spam> User ?
           </p>
-          <p className="text-center text-customGray-dark font-medium">LOGIN</p>
+          <div className="flex justify-center"><a className="text-center cursor-pointer font-medium" href="/login">LOGIN</a></div>
+          
         </div>
       </div>
     </div>
