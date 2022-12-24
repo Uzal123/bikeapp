@@ -7,7 +7,7 @@ import Category from "./Category/Category";
 const Dashboard = ({ rent, sell, ...props }) => {
   const [homeItems, sethomeItems] = useState(0);
   return (
-    <div className=" p-4 bg-customGray-light rounded-lg md:mx-4 lg:mx-6 overflow-scroll lg:container mobile">
+    <div className="container bg-customGray-light rounded-lg ">
       <div className="flex gap-6 font-semibold text-lg w-full pb-6">
         <button
           className={

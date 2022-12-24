@@ -25,8 +25,8 @@ export default function Main() {
 
   return (
     <App>
-      <TopBar className="topbar" />
-      <Dashboard rent={rentitems()} sell={sellitems()} className="container"/>
+      <TopBar/>
+      <Dashboard rent={rentitems()} sell={sellitems()} className=""/>
     </App>
   );
 }

@@ -26,8 +26,8 @@ const index = () => {
 
   return (
     <App>
-      <div className="ml-24 mt-24 h-screen w-screen">
-        <div className="flex justify-start px-10 items-center flex-col bg-customGray-navbar gap-6 p-6 grow overflow-scroll rounded-2xl ">
+      <div className="p-4 h-screen">
+        <div className="flex justify-start px-10 items-center flex-col bg-customGray-navbar gap-6 p-6 grow overflow-scroll rounded-2xl h-full">
           <div className="flex justify-between w-full">
             <h2 className="font-bold text-2xl">Post Ad</h2>
             <button>

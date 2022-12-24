@@ -6,17 +6,17 @@ $nav-thickness: 4rem;
   @apply w-screen fixed bottom-0 left-0 bg-white p-2;
 
   .active {
-    @apply  border-2 p-2 rounded-2xl shadow-xl border-primary scale-110 hover:scale-125 transition ease-in-out duration-150;
+    @apply border-2 p-2 rounded-2xl shadow-xl border-primary scale-110 hover:scale-125 transition ease-in-out duration-150;
   }
 
   .inactive {
-    @apply border-2 p-2 rounded-2xl shadow-xl border-transparent hover:scale-110 transition ease-in-out duration-150
+    @apply border-2 p-2 rounded-2xl shadow-xl border-transparent hover:scale-110 transition ease-in-out duration-150;
   }
 }
 
 .main {
-  //   height: calc(100vh - $nav-thickness);
-  padding-bottom: calc($nav-thickness + 2rem);
+  height: calc(100vh - 4rem);
+  margin-bottom: calc($nav-thickness);
   overflow-x: hidden;
   overflow-y: auto;
   @apply w-full;
@@ -32,7 +32,8 @@ $nav-thickness: 4rem;
   .main {
     margin-left: $nav-thickness;
     margin-bottom: 0;
+    padding-bottom: 0;
     width: calc(100vw - $nav-thickness);
-    @apply h-full mb-0;
+    @apply h-screen mb-0;
   }
 }

@@ -5,7 +5,7 @@ import TopBar from "../Topbar/TopBar";
 const App = ({ ...props }) => {
   return (
     <section>
-      <Navbar />
+      <Navbar />    
       <div className="main">
         {props.children}
       </div>
