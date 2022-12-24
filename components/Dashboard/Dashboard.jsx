@@ -45,14 +45,14 @@ const Dashboard = ({ rent, sell, ...props }) => {
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
           {rent &&
             rent.getAllRentedProducts.map((item, i) => (
-              <ProductItem key={item._id} data={item} />
+              <ProductItem key={item._id} data={item} offer="rent"/>
             ))}
         </div>
       ) : (
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
           {sell &&
             sell.getAllSellingProducts.map((item, i) => (
-              <ProductItem data={item} key={item._id} />
+              <ProductItem data={item} key={item._id} offer="sell"/>
             ))}
         </div>
       )}

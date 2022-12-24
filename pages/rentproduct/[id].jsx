@@ -2,17 +2,20 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import App from "../../components/Layout/App";
-import GET_SELLING from "../../graphql/Query/GetAllSellingProducts";
 import Product from "../../components/Product/ProductItem";
 import TopBar from "../../components/Topbar/TopBar";
 import ProductItem from "../../components/Product/ProductItem";
+import GET_RENTED from "../../graphql/Query/GetAllRentedProducts";
 
 const ProductInfo = () => {
   const router = useRouter();
   const { id } = router.query;
 
 
-  const { loading, error, data } = useQuery(GET_SELLING);
+//    const {loading,error,data} = useQuery()
+
+
+  const { loading, error, data } = useQuery(GET_RENTED);
   if (loading) return null;
   if (error) return `Error! ${error}`;
 
@@ -104,7 +107,7 @@ const ProductInfo = () => {
           <h2 className="text-lg font-semibold">Discover More Products</h2>
             <div className="grid lg:grid-cols-3 gap-4">
               {data &&
-                data.getAllSellingProducts.map((item, i) => (
+                data.getAllRentedProducts.map((item, i) => (
                   <ProductItem data={item} key={item._id} />
                 ))}
             </div>
