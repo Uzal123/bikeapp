@@ -100,7 +100,7 @@ const ProductInfo = () => {
               </div>
             </div>
           </div>
-          {/* <div className="col-span-3">
+          <div className="lg:col-span-3">
           <h2 className="text-lg font-semibold">Discover More Products</h2>
             <div className="grid lg:grid-cols-3 gap-4">
               {data &&
@@ -108,7 +108,7 @@ const ProductInfo = () => {
                   <ProductItem data={item} key={item._id} />
                 ))}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </App>
