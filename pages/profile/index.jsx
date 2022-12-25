@@ -28,11 +28,11 @@ const Profile = ({ ...props }) => {
 
   return (
     <App>
-      <div className="w-full h-full flex gap-4">
-        <div className="ml-6 h-full flex flex-col gap-4 w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
+      <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
+        <div className="h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
           <Setting className="h-10 absolute right-2 top-2" />
           <div className="flex flex-col items-center">
-            <div className="bg-gray-500 rounded-full w-48 h-48"></div>
+            <div className="bg-gray-500 rounded-full h-36 w-36"></div>
             <h1 className="text-center font-bold text-2xl">
               {data.myProfile.profile.user.fullName}
             </h1>
@@ -44,7 +44,7 @@ const Profile = ({ ...props }) => {
             <p className="font-semibold">Total Ads : 5</p>
           </div>
         </div>
-        <div className="w-4/5 bg-customGray-navbar rounded-xl p-6 ">
+        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl p-6 ">
           <div>
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>

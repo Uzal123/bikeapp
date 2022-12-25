@@ -13,17 +13,23 @@ const ProductInfo = () => {
 
   const [product, setProduct] = useState(null);
 
+  const [discoverDataItem, setDiscoverDataItem] = useState(null);
+
   const { loading, error, data } = useQuery(GET_SELL_DETAILS, {
     variables: { productId: id },
   });
 
-  const discoverData = useQuery(GET_SELLING);
+  const { discoverData } = useQuery(GET_SELLING);
 
   useEffect(() => {
     if (!loading && data?.getSellProductDetails.success) {
       setProduct(data.getSellProductDetails.sellProduct);
     }
-  }, [data]);
+
+    if (!loading && discoverData?.getAllSellingProducts) {
+      setDiscoverDataItem(discoverData);
+    }
+  }, [data, discoverData]);
 
   return (
     <App>
@@ -31,7 +37,6 @@ const ProductInfo = () => {
       <div className="container">
         {console.log({ id, error, data, product })}
         <div className="grid w-full lg:grid-cols-5 gap-4">
-          {loading && <p>spinner</p>}
           {!error && product ? (
             <Fragment>
               <div className="h-96 w-full bg-gray-300 rounded-lg lg:col-span-2 order-0"></div>
@@ -74,33 +79,37 @@ const ProductInfo = () => {
                       <p>{product.brand}</p>
                     </div>
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>{product.model}</p>
-                      <div className="flex">
-                        <p className="w-36">Fuel Type</p>
-                        <p>{product.fuletype}</p>
-                      </div>
+                      <p className="w-36">Made Year</p>
+                      <p>{product.madeYear}</p>
+                    </div>
+                    <div className="flex">
+                      <p className="w-36">Fuel Type</p>
+                      <p>{product.fuleType}</p>
                     </div>
 
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>2019</p>
+                      <p className="w-36">Milage</p>
+                      <p>{product.milege}</p>
                     </div>
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>2019</p>
+                      <p className="w-36">Engine(CC)</p>
+                      <p>{product.engine + " CC"}</p>
                     </div>
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>2019</p>
+                      <p className="w-36">Transmission</p>
+                      <p>{product.transmission}</p>
                     </div>
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>2019</p>
+                      <p className="w-36">KMs Run</p>
+                      <p>{product.kmRun}</p>
                     </div>
                     <div className="flex">
-                      <p className="w-36">Model</p>
-                      <p>2019</p>
+                      <p className="w-36">Used For</p>
+                      <p>{product.usedFor + " Months"}</p>
+                    </div>
+                    <div className="flex">
+                      <p className="w-36">Lot Number</p>
+                      <p>{product.lotNo}</p>
                     </div>
                     <div className="flex">
                       <p className="w-36">Color</p>
@@ -121,8 +130,8 @@ const ProductInfo = () => {
                   Discover More Products
                 </h2>
                 <div className="grid lg:grid-cols-3 gap-4">
-                  {discoverData.getAllSellingProducts
-                    ? discoverData.getAllSellingProducts.map((item, i) => (
+                  {discoverDataItem?.getAllSellingProducts
+                    ? discoverDataItem.getAllSellingProducts.map((item, i) => (
                         <ProductItem data={item} key={item._id} />
                       ))
                     : ""}
@@ -130,7 +139,7 @@ const ProductInfo = () => {
               </div>
             </Fragment>
           ) : (
-            <p>error</p>
+            <p>loading...</p>
           )}
         </div>
       </div>
