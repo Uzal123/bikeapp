@@ -40,7 +40,7 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
           onChange={(e) => onChange(e)}
         />
         <div
-          className="bg-gray-50 text-center flex flex-col justify-center aspect-square w-full h-full rounded-lg items-center"
+          className="bg-gray-50 text-center flex flex-col justify-center aspect-square h-36 w-36 rounded-lg items-center"
           onClick={(e) => inputref.click()}
         >
           <Upload />
@@ -48,7 +48,7 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
         </div>
       </div>
       {imageLinks?.map((d, i) => (
-        <div className="" key={i}>
+        <div className="h-36 w-36" key={i}>
           <img
             src={d.url}
             key={d.key}

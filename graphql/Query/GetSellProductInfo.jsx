@@ -35,6 +35,16 @@ const GET_SELL_DETAILS = gql`
         priceType
       }
     }
+    getAllSellingProducts {
+      _id
+      price
+      title
+      createdAt
+      images {
+        key
+        url
+      }
+    }
   }
 `;
 

@@ -13,23 +13,35 @@ const ProductInfo = () => {
 
   const [product, setProduct] = useState(null);
 
-  const [discoverDataItem, setDiscoverDataItem] = useState(null);
+  const [images, setImages] = useState(null);
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const { loading, error, data } = useQuery(GET_SELL_DETAILS, {
     variables: { productId: id },
   });
 
-  const { discoverData } = useQuery(GET_SELLING);
+  const nextImage = (e) => {
+    setCurrentImageIndex(
+      currentImageIndex <
+        data.getSellProductDetails.sellProduct.images.length - 1
+        ? currentImageIndex + 1
+        : currentImageIndex
+    );
+  };
+
+  const previousImage = (e) => {
+    setCurrentImageIndex(
+      currentImageIndex > 0 ? currentImageIndex - 1 : currentImageIndex
+    );
+  };
 
   useEffect(() => {
     if (!loading && data?.getSellProductDetails.success) {
       setProduct(data.getSellProductDetails.sellProduct);
+      setImages(data.getSellProductDetails.sellProduct.images);
     }
-
-    if (!loading && discoverData?.getAllSellingProducts) {
-      setDiscoverDataItem(discoverData);
-    }
-  }, [data, discoverData]);
+  }, [data]);
 
   return (
     <App>
@@ -39,7 +51,41 @@ const ProductInfo = () => {
         <div className="grid w-full lg:grid-cols-5 gap-4">
           {!error && product ? (
             <Fragment>
-              <div className="h-96 w-full bg-gray-300 rounded-lg lg:col-span-2 order-0"></div>
+              <div className="h-96 w-full lg:col-span-2 order-0 relative">
+                {images ? (
+                  <img
+                    src={product.images[currentImageIndex].url}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                ) : (
+                  "no image"
+                )}
+
+                <div className="absolute left-0 top-0 h-full flex items-center">
+                  <p
+                    className={
+                      currentImageIndex === 0
+                        ? "text-2xl  cursor-pointer bg-gray-500 hidden"
+                        : "text-2xl bg-white cursor-pointer "
+                    }
+                    onClick={(e) => previousImage(e)}
+                  >
+                    {"<"}
+                  </p>
+                </div>
+                <div className="absolute right-0 top-0 h-full flex items-center">
+                  <p
+                    className={
+                      currentImageIndex === product.images.length - 1
+                        ? "text-2xl  cursor-pointer bg-gray-500 hidden"
+                        : "text-2xl bg-white cursor-pointer "
+                    }
+                    onClick={(e) => nextImage(e)}
+                  >
+                    {">"}
+                  </p>
+                </div>
+              </div>
 
               <div className="lg:col-span-3 ">
                 <div className="py-2">
@@ -60,7 +106,7 @@ const ProductInfo = () => {
                       <p>5 Ads</p>
                     </div>
                   </div>
-                  <div className="flex w-full gap-6">
+                  <div className="flex w-full md:w-3/5 gap-6">
                     <button className="bg-primary text-white px-8 p-2 rounded-lg w-full">
                       Bid Price
                     </button>
@@ -127,14 +173,12 @@ const ProductInfo = () => {
               </div>
               <div className="lg:col-span-3">
                 <h2 className="text-lg font-semibold">
-                  Discover More Products
+                  Discover More Products for Sell
                 </h2>
-                <div className="grid lg:grid-cols-3 gap-4">
-                  {discoverDataItem?.getAllSellingProducts
-                    ? discoverDataItem.getAllSellingProducts.map((item, i) => (
-                        <ProductItem data={item} key={item._id} />
-                      ))
-                    : ""}
+                <div className="grid md:grid-cols-3 gap-4">
+                  {data.getAllSellingProducts.map((item, i) => (
+                    <ProductItem data={item} key={item._id} />
+                  ))}
                 </div>
               </div>
             </Fragment>

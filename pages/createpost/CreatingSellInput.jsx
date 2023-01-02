@@ -8,6 +8,7 @@ import BikeBrand from "../../assets/fakeData/BikeBrand";
 import Back from "../../assets/createpost/back.svg";
 import { useMutation } from "@apollo/client";
 import CREATING_SELL from "../../graphql/Mutation/CreatingSell";
+import { Router } from "next/router";
 
 const CreatingSellInput = ({
   formStage,
@@ -37,7 +38,7 @@ const CreatingSellInput = ({
 
   const onNext = (e) => {
     e.preventDefault();
-    setformStage(formStage < 4 ? formStage + 1 : formStage);
+    setformStage(formStage < 5 ? formStage + 1 : formStage);
   };
 
   const onBack = (e) => {
@@ -66,6 +67,7 @@ const CreatingSellInput = ({
       vehicleType: vehicleType,
     };
     submitSellProduct({ variables: { sellProductInput: data } });
+    onNext(e);
   };
 
   const [submitSellProduct, { data, loading, error }] =
@@ -78,7 +80,7 @@ const CreatingSellInput = ({
     <div>
       {formStage === 2 && (
         <form onSubmit={(e) => onNext(e)}>
-          <p>Upload the images of the Vehicle</p>
+          <p className="p-2">Upload the images of the Vehicle</p>
           <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
           <div className="flex gap-2 justify-between my-2">
             <button
@@ -323,6 +325,22 @@ const CreatingSellInput = ({
             </button>
           </div>
         </form>
+      )}
+      {formStage === 5 && (
+        <div>
+          <p>
+            You Ad is submitted and is currently in review.We will notify you
+            when the ad in live.
+          </p>
+          <div className="flex justify-center p-2">
+            <a
+              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent text-center"
+              href="/"
+            >
+              Ok
+            </a>
+          </div>
+        </div>
       )}
     </div>
   );

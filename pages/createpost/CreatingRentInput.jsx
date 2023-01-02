@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Router from "next/router";
 import ImageUpload from "./ImageUpload";
 import CarBrand from "../../assets/fakeData/CarBrand";
 import BikeBrand from "../../assets/fakeData/BikeBrand";
@@ -59,7 +60,7 @@ const CreatingRentInput = ({
     };
     console.log(data);
     submitRentProduct({ variables: { rentProductInput: data } });
-    onNext();
+    onNext(e);
   };
 
   const [submitRentProduct, { data, loading, error }] =
@@ -72,7 +73,7 @@ const CreatingRentInput = ({
     <>
       {formStage === 2 && (
         <form onSubmit={(e) => onNext(e)}>
-          <p>Upload the images of the Vehicle</p>
+          <p className="p-2">Upload the images of the Vehicle</p>
           <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
           <div className="flex gap-2 justify-between my-2">
             <button
@@ -230,6 +231,14 @@ const CreatingRentInput = ({
             You Ad is submitted and is currently in review.We will notify you
             when the ad in live.
           </p>
+          <div className="flex justify-center p-2">
+            <button
+              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent text-center"
+              href="/"
+            >
+              Ok
+            </button>
+          </div>
         </div>
       )}
       {/* // ) && data?.rentProduct?.success */}
