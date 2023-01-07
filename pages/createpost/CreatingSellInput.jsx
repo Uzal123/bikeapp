@@ -6,13 +6,16 @@ import Transmission from "../../assets/fakeData/Transmission";
 import FuelType from "../../assets/fakeData/FuelType";
 import BikeBrand from "../../assets/fakeData/BikeBrand";
 import Back from "../../assets/createpost/back.svg";
+import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
 import CREATING_SELL from "../../graphql/Mutation/CreatingSell";
+import MapContainer from "./Map";
+import { useJsApiLoader } from "@react-google-maps/api";
 import { Router } from "next/router";
 
 const CreatingSellInput = ({
   formStage,
-  offer,
+  offerType,
   vehicleType,
   setformStage,
   title,
@@ -20,6 +23,7 @@ const CreatingSellInput = ({
   setImageLinks,
 }) => {
   const [sellInput, setSellInput] = useState({
+    offerType: "se",
     brand: "ba",
     vehicleCondition: "ln",
     fuleType: "di",
@@ -34,6 +38,9 @@ const CreatingSellInput = ({
     color: "",
     price: "",
     priceType: "fi",
+    location: {
+      coordinates: [],
+    },
   });
 
   const onNext = (e) => {
@@ -58,6 +65,11 @@ const CreatingSellInput = ({
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
   };
 
+    const { isLoaded } = useJsApiLoader({
+      id: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+      googleMapsApiKey: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+    });
+
   const onSubmit = (e) => {
     e?.preventDefault();
     const data = {
@@ -75,6 +87,22 @@ const CreatingSellInput = ({
   if (data) {
     console.log(data);
   }
+
+
+ const [lat, setLat] = useState(-3.745);
+ const [lng, setLng] = useState(-38.523);
+
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setSellInput((prevs) => ({
+        ...prevs,
+        location: {
+          coordinates: [position.coords.latitude, position.coords.longitude],
+        },
+      }));
+      setLng(position.coords.longitude);
+    });
+  };
 
   return (
     <div>
@@ -99,7 +127,7 @@ const CreatingSellInput = ({
         </form>
       )}
 
-      {formStage === 3 && offer && (
+      {formStage === 3 && offerType === "se" && (
         <form className="grid grid-cols-2" onSubmit={(e) => onNext(e)}>
           <div className="flex flex-col p-2">
             <label className="p-2">Brand</label>
@@ -308,7 +336,23 @@ const CreatingSellInput = ({
           </div>
           <div className="p-2 col-span-2 flex flex-col">
             <label className="p-2">Location</label>
-            <input type="text" className="p-2 rounded-lg" />
+            <div className="flex w-full justify-between gap-2">
+              <input type="text" className="p-2 rounded-lg w-full" />
+              <Gps
+                className="h-8 "
+                fill="#1FC39E"
+                onClick={() => getLocation()}
+              />
+            </div>
+          </div>
+          <div className="p-2 col-span-2 flex flex-col">
+            <MapContainer
+              isLoaded={isLoaded}
+              lat={lat}
+              lng={lng}
+              setLat={setLat}
+              setLng={setLng}
+            />
           </div>
           <div className="flex gap-2 justify-between my-2 col-span-2">
             <button
@@ -328,7 +372,7 @@ const CreatingSellInput = ({
       )}
       {formStage === 5 && (
         <div>
-          <p>
+          <p className="text-center">
             You Ad is submitted and is currently in review.We will notify you
             when the ad in live.
           </p>

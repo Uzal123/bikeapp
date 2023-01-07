@@ -1,32 +1,28 @@
 import Dashboard from "../components/Dashboard/Dashboard";
 import Navbar from "../components/Navigation/Navbar";
 import TopBar from "../components/Topbar/TopBar";
-import GET_RENTED from "../graphql/Query/GetAllRentedProducts";
 import { useQuery } from "@apollo/client";
-import GET_SELLING from "../graphql/Query/GetAllSellingProducts";
 import App from "../components/Layout/App";
+import FETCHPRODUCTS from "../graphql/Query/Getallproducts";
 
 export default function Main() {
-  const rentitems = () => {
-    const { loading, error, data } = useQuery(GET_RENTED);
-    if (loading) return null;
-    if (error) return `Error! ${error}`;
+    
+  const { loading, error, data } = useQuery(FETCHPRODUCTS, {
+    variables: {
+      fetchInput: {
+        offerType: ["re", "se"],
+        pageNo: 1,
+        count: 10,
+      },
+    },
+  });
 
-    return data;
-  };
-
-  const sellitems = () => {
-    const { loading, error, data } = useQuery(GET_SELLING);
-    if (loading) return null;
-    if (error) return `Error! ${error}`;
-
-    return data;
-  };
+  console.log(data);
 
   return (
     <App>
-      <TopBar/>
-      <Dashboard rent={rentitems()} sell={sellitems()} className=""/>
+      <TopBar />
+      <Dashboard data={data} />
     </App>
   );
 }

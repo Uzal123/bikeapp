@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";
+import Check from "../../assets/createpost/check.svg"
 import App from "../../components/Layout/App";
 import Car from "../../assets/Category/car.svg";
 import Bike from "../../assets/Category/bike.svg";
@@ -9,11 +10,11 @@ import CreatingRentInput from "./CreatingRentInput";
 import CreatingSellInput from "./CreatingSellInput";
 
 const index = () => {
-  const [formStage, setformStage] = useState(3);
+  const [formStage, setformStage] = useState(4);
 
   const [title, setTitle] = useState("");
 
-  const [offer, setOffer] = useState(0);
+  const [offerType, setOfferType] = useState("re");
 
   const [vehicleType, setVehicleTye] = useState("bi");
 
@@ -101,7 +102,7 @@ const index = () => {
           {formStage === 4 && (
             <div className="flex items-center">
               <div className="h-24 w-24 rounded-full border-4 flex justify-center items-center relative">
-                <h2>3 of 4</h2>
+                <h2>4 of 4</h2>
                 <Circle className="absolute h-24" />
               </div>
 
@@ -120,7 +121,7 @@ const index = () => {
           {formStage === 5 && (
             <div className="flex items-center">
               <div className="h-24 w-24 rounded-full border-4 flex justify-center items-center relative">
-                <h2>3 of 4</h2>
+                <Check className="h-10" />
                 <Circle className="absolute h-24" />
               </div>
 
@@ -136,9 +137,9 @@ const index = () => {
                 <label>I want to</label>
                 <div className="flex gap-2 justify-center w-full">
                   <div
-                    onClick={(e) => setOffer(0)}
+                    onClick={(e) => setOfferType("re")}
                     className={
-                      offer === 0
+                      offerType === "re"
                         ? " border-primary text-primary bg-white rounded-lg  border-2 hover:border-primary hover:text-primary w-full  py-4 text-center cursor-pointer"
                         : "bg-white w-full  py-4 rounded-lg border-transparent border-2 hover:border-primary hover:text-primary text-center cursor-pointer"
                     }
@@ -146,9 +147,9 @@ const index = () => {
                     Rent my Vehicle
                   </div>
                   <div
-                    onClick={(e) => setOffer(1)}
+                    onClick={(e) => setOfferType("se")}
                     className={
-                      offer === 1
+                      offerType === "se"
                         ? " border-primary text-primary bg-white rounded-lg  border-2 hover:border-primary hover:text-primary w-full  py-4 text-center cursor-pointer"
                         : "bg-white w-full py-4 rounded-lg border-transparent border-2 hover:border-primary hover:text-primary text-center cursor-pointer"
                     }
@@ -204,13 +205,13 @@ const index = () => {
               </form>
             )}
 
-            {!offer ? (
+            {offerType === "re" ? (
               <CreatingRentInput
                 formStage={formStage}
                 setformStage={setformStage}
-                offer={offer}
                 vehicleType={vehicleType}
                 title={title}
+                offerType="re"
                 imageLinks={imageLinks}
                 setImageLinks={setImageLinks}
               />
@@ -218,9 +219,9 @@ const index = () => {
               <CreatingSellInput
                 formStage={formStage}
                 setformStage={setformStage}
-                offer={offer}
                 vehicleType={vehicleType}
                 title={title}
+                offerType="se"
                 imageLinks={imageLinks}
                 setImageLinks={setImageLinks}
               />

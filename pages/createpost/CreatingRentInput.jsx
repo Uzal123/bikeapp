@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Router from "next/router";
 import ImageUpload from "./ImageUpload";
 import CarBrand from "../../assets/fakeData/CarBrand";
 import BikeBrand from "../../assets/fakeData/BikeBrand";
 import FuelType from "../../assets/fakeData/FuelType";
 import Back from "../../assets/createpost/back.svg";
+import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
+import MapContainer from "./Map";
+import { useJsApiLoader } from "@react-google-maps/api";
 import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+  PlacesAutocomplete,
+} from "react-places-autocomplete";
 
 const CreatingRentInput = ({
   formStage,
-  offer,
+  offerType,
   vehicleType,
   setformStage,
   title,
@@ -18,12 +27,16 @@ const CreatingRentInput = ({
   setImageLinks,
 }) => {
   const [rentInput, setRentInput] = useState({
+    offerType: "re",
     brand: "ho",
     fuleType: "pe",
     color: "",
     description: "",
     price: 0,
     priceType: "fi",
+    location: {
+      coordinates: [],
+    },
   });
 
   const onNext = (e) => {
@@ -64,13 +77,33 @@ const CreatingRentInput = ({
   };
 
   const [submitRentProduct, { data, loading, error }] =
+
     useMutation(CREATING_RENT);
   if (data) {
     console.log(data);
   }
+  const [lat, setLat] = useState(-3.745);
+  const [lng, setLng] = useState(-38.523);
+
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setRentInput((prevs) => ({
+        ...prevs,
+        location: {
+          coordinates: [position.coords.latitude, position.coords.longitude],
+        },
+      }));
+      setLng(position.coords.longitude);
+    });
+  };
+
+  const { isLoaded } = useJsApiLoader({
+    id: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+    googleMapsApiKey: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+  });
 
   return (
-    <>
+    <div>
       {formStage === 2 && (
         <form onSubmit={(e) => onNext(e)}>
           <p className="p-2">Upload the images of the Vehicle</p>
@@ -91,7 +124,7 @@ const CreatingRentInput = ({
           </div>
         </form>
       )}
-      {formStage === 3 && !offer && (
+      {formStage === 3 && offerType === "re" && (
         <form className="grid grid-cols-2" onSubmit={(e) => onNext(e)}>
           <div className="flex flex-col p-2">
             <label className="p-2">Brand</label>
@@ -182,7 +215,7 @@ const CreatingRentInput = ({
       {formStage === 4 && (
         <form className="grid grid-cols-2" onSubmit={(e) => onSubmit(e)}>
           <div className="p-2 flex flex-col">
-            <label className="p-2">Price</label>
+            <label className="p-2">Price per day</label>
             <input
               type="number"
               className="p-2 rounded-lg"
@@ -207,8 +240,25 @@ const CreatingRentInput = ({
           </div>
           <div className="p-2 col-span-2 flex flex-col">
             <label className="p-2">Location</label>
-            <input type="text" className="p-2 rounded-lg" />
+            <div className="flex w-full justify-between gap-2">
+              <input type="text" className="p-2 rounded-lg w-full" />
+              <Gps
+                className="h-8 "
+                fill="#1FC39E"
+                onClick={() => getLocation()}
+              />
+            </div>
           </div>
+          <div className="p-2 col-span-2 flex flex-col">
+            <MapContainer
+              isLoaded={isLoaded}
+              lat={lat}
+              lng={lng}
+              setLat={setLat}
+              setLng={setLng}
+            />
+          </div>
+
           <div className="flex gap-2 justify-between my-2 col-span-2">
             <button
               className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
@@ -227,22 +277,22 @@ const CreatingRentInput = ({
       )}
       {formStage === 5 && (
         <div>
-          <p>
+          <p className="text-center">
             You Ad is submitted and is currently in review.We will notify you
             when the ad in live.
           </p>
           <div className="flex justify-center p-2">
-            <button
+            <a
               className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent text-center"
               href="/"
             >
               Ok
-            </button>
+            </a>
           </div>
         </div>
       )}
       {/* // ) && data?.rentProduct?.success */}
-    </>
+    </div>
   );
 };
 

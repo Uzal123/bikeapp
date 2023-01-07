@@ -117,7 +117,7 @@ const Register = () => {
           <p className="text-center text-customGray-normal font-medium">
             Already a <spam className="text-primary">RentingApp</spam> User ?
           </p>
-          <div className="flex justify-center"><a className="text-center cursor-pointer font-medium" href="/login">LOGIN</a></div>
+          <div className="flex justify-center"><a className="text-center cursor-pointer font-medium text-primary" href="/login">LOGIN</a></div>
           
         </div>
       </div>

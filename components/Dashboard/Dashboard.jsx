@@ -1,30 +1,55 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import { useQuery } from "@apollo/client";
 import ProductItem from "../Product/ProductItem";
-import Product from "../Product/ProductItem";
 import Search from "../../assets/TopBar/search.svg";
 import Category from "./Category/Category";
+import ButtonTab from "../UI/Tab";
+import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
 
-const Dashboard = ({ rent, sell, ...props }) => {
-  const [homeItems, sethomeItems] = useState(0);
+const Dashboard = () => {
+  const [tab, setTab] = useState("re");
+
+  const [inputVariables, setInputVariables] = useState({
+    fetchInput: {
+      offerType: ["re"],
+      pageNo: 1,
+      count: 10,
+    },
+  });
+
+  useEffect(() => {
+    setInputVariables((prev) => {
+      return {
+        fetchInput: {
+          ...prev.fetchInput,
+          offerType: [tab],
+        },
+      };
+    });
+  }, [tab]);
+
+  const { loading, error, data } = useQuery(FETCHPRODUCTS, {
+    variables: {
+      fetchInput : inputVariables.fetchInput,
+    },
+  });
+
   return (
     <div className="container bg-customGray-light rounded-lg ">
       <div className="flex gap-6 font-semibold text-lg w-full pb-6">
-        <button
-          className={
-            !homeItems ? "text-primary underline" : "hover:text-primary"
-          }
-          onClick={(e) => sethomeItems(0)}
-        >
-          For Rent
-        </button>
-        <button
-          className={
-            homeItems ? "text-primary underline" : "hover:text-primary"
-          }
-          onClick={(e) => sethomeItems(1)}
-        >
-          For Sell
-        </button>
+        <ButtonTab
+          val="re"
+          onClick={() => setTab("re")}
+          label="For Rent"
+          tab={tab}
+        />
+
+        <ButtonTab
+          val="se"
+          onClick={() => setTab("se")}
+          label="For Sell"
+          tab={tab}
+        />
       </div>
       <div className="flex border-2 rounded-lg  h-10 items-center p-2 w-full ">
         <input
@@ -41,18 +66,18 @@ const Dashboard = ({ rent, sell, ...props }) => {
       <Category />
 
       <h2 className="font-bold text-xl">Discover</h2>
-      {!homeItems ? (
+      {inputVariables.fetchInput.offerType === "re" ? (
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {rent &&
-            rent.getAllRentedProducts.map((item, i) => (
-              <ProductItem key={item._id} data={item} offer="rent"/>
+          {data &&
+            data.fetchProducts.products.map((item, i) => (
+              <ProductItem key={item._id} data={item} offer="rent" />
             ))}
         </div>
       ) : (
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {sell &&
-            sell.getAllSellingProducts.map((item, i) => (
-              <ProductItem data={item} key={item._id} offer="sell"/>
+          {data &&
+            data.fetchProducts.products.map((item, i) => (
+              <ProductItem data={item} key={item._id} offer="sell" />
             ))}
         </div>
       )}
@@ -61,3 +86,5 @@ const Dashboard = ({ rent, sell, ...props }) => {
 };
 
 export default Dashboard;
+
+

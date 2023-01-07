@@ -5,15 +5,30 @@ const CREATING_RENT = gql`
     rentProduct(rentProductInput: $rentProductInput) {
       success
       message
-      rentProduct {
+      product {
+        _id
+        createdBy {
+          _id
+          fullName
+        }
+        offerType
+        vehicleType
         brand
         images {
           url
           key
         }
         title
+        fuleType
+        color
         description
         price
+        priceType
+        location {
+          coordinates
+        }
+        createdAt
+        updatedAt
       }
     }
   }

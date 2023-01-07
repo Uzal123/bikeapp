@@ -3,12 +3,14 @@ import App from "../../components/Layout/App";
 import Setting from "../../assets/Profile/setting.svg";
 import Cross from "../../assets/createpost/cross.svg";
 import Edit from "../../assets/Profile/edit.svg";
+import ButtonTab from "../../components/UI/Tab";
+import ProductItem from "../../components/Product/ProductItem";
 import { useUserStore } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import UPLOAD_PROFILE_PIC from "../../graphql/Mutation/UploadProfilePic";
 
-import MY_PROFILE from "../../graphql/Query/MyProfile";
+import MY_PROFILE_AND_PRODUCT from "../../graphql/Query/MyProfileAndProduct";
 import { client } from "../../graphql/client";
 
 const Profile = ({ ...props }) => {
@@ -27,7 +29,28 @@ const Profile = ({ ...props }) => {
 
   const [settingTab, setSettingTab] = useState(null);
 
-  const { loading, error, data } = useQuery(MY_PROFILE);
+  const [tab, setTab] = useState("re");
+
+  const [fetchInput, setFetchInput] = useState({
+    offerType: ["re"],
+    pageNo: 1,
+    count: 10,
+  });
+
+  useEffect(() => {
+    setFetchInput((prev) => {
+      return {
+        ...prev,
+        offerType: [tab],
+      };
+    });
+  }, [tab]);
+
+  const { loading, error, data } = useQuery(MY_PROFILE_AND_PRODUCT, {
+    variables: {
+      fetchInput,
+    },
+  });
 
   const [profileData, setProfileData] = useState(null);
   useEffect(() => {
@@ -48,7 +71,7 @@ const Profile = ({ ...props }) => {
         variables: { image: image },
       });
 
-      setProfileData(response.data.uploadProfilePic);
+      setProfileData(response.data.uploadProfilePic.profile);
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +87,7 @@ const Profile = ({ ...props }) => {
               onClick={(e) => editProfile(e)}
             />
             {settingTab && (
-              <div className="absolute right-2 top-2 p-2 flex flex-col gap-2 bg-white rounded-lg">
+              <div className="absolute right-2 top-2 p-2 flex flex-col gap-2 bg-white rounded-lg z-20">
                 <div className="flex justify-end cursor-pointer">
                   <Cross className="h-6" onClick={(e) => editProfile(e)} />
                 </div>
@@ -96,7 +119,7 @@ const Profile = ({ ...props }) => {
             <div className="flex flex-col items-center">
               <div className=" rounded-full h-36 w-36 object-cover">
                 <div className="w-full h-full bg-primary rounded-full text-center flex items-center justify-center text-white text-4xl font-semibold relative overflow-hidden">
-                  {profileData.profilePic[0] === null ? (
+                  {profileData.profilePic.length === 0 ? (
                     <p>{profileData.user.fullName[0]}</p>
                   ) : (
                     <img
@@ -142,13 +165,25 @@ const Profile = ({ ...props }) => {
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>
           <div className="flex gap-10 text-xl py-2">
-            <p className="text-primary underline font-bold">For Rent</p>
-            <p>For Sell</p>
+            <ButtonTab
+              val="re"
+              onClick={() => setTab("re")}
+              label="For Rent"
+              tab={tab}
+            />
+
+            <ButtonTab
+              val="se"
+              onClick={() => setTab("se")}
+              label="For Sell"
+              tab={tab}
+            />
           </div>
           <div className="grid grid-cols-4 gap-6">
-            {/* {SampleProduct.map((d, i) => (
-              <ProductItem key={d.id} title={d.title} price={d.price} />
-            ))} */}
+            {data &&
+              data.myProducts.products.map((item, i) => (
+                <ProductItem key={data._id} data={item} />
+              ))}
           </div>
         </div>
       </div>

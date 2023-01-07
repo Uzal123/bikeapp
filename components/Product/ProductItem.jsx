@@ -2,12 +2,10 @@ import React from "react";
 import Bookmark from "../../assets/Product/bookmark.svg";
 import Heart from "../../assets/Product/heart.svg";
 
-const ProductItem = ({ data: { price, title, images, _id },offer, ...props }) => {
-
-
+const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
   return (
     <div>
-      <a className=" bg-white rounded-xl relative" href={offer=== "rent" ? `/rentproduct/${_id}` : `/sellproduct/${_id}`}>
+      <a className=" bg-white rounded-xl relative" href={`/product/${_id}`}>
         <div className="aspect-square  ">
           <img
             src={images[0].url}
