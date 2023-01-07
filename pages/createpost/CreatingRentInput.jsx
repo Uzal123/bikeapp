@@ -98,8 +98,8 @@ const CreatingRentInput = ({
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
-    googleMapsApiKey: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+    id: process.env.GOOGLEMAPAPIKEY,
+    googleMapsApiKey: process.env.GOOGLEMAPAPIKEY,
   });
 
   return (
