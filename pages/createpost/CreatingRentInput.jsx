@@ -16,6 +16,7 @@ import {
   getLatLng,
   PlacesAutocomplete,
 } from "react-places-autocomplete";
+import Link from "next/link";
 
 const CreatingRentInput = ({
   formStage,
@@ -98,8 +99,8 @@ const CreatingRentInput = ({
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: process.env.GOOGLEMAPAPIKEY,
-    googleMapsApiKey: process.env.GOOGLEMAPAPIKEY,
+    id: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+    googleMapsApiKey: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
   });
 
   return (
@@ -282,12 +283,12 @@ const CreatingRentInput = ({
             when the ad in live.
           </p>
           <div className="flex justify-center p-2">
-            <a
+            <Link
               className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent text-center"
               href="/"
             >
               Ok
-            </a>
+            </Link>
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import Bookmark from "../../assets/Product/bookmark.svg";
 import Heart from "../../assets/Product/heart.svg";
@@ -5,7 +6,7 @@ import Heart from "../../assets/Product/heart.svg";
 const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
   return (
     <div>
-      <a className=" bg-white rounded-xl relative" href={`/product/${_id}`}>
+      <Link className=" bg-white rounded-xl relative" href={`/product/${_id}`}>
         <div className="aspect-square  ">
           <img
             src={images[0].url}
@@ -22,7 +23,7 @@ const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
           <h2>{title}</h2>
           <p className="text-xs">14th jan</p>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };

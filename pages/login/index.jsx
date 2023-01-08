@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
 import { useUserStore } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
+import Link from "next/link";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ email: "", password: "" });
@@ -100,7 +101,7 @@ const Login = () => {
             Not yet Registerd ?
           </p>
           <div className="text-center text-primary font-medium">
-            <a href="/register">REGISTER</a>
+            <Link href="/register">REGISTER</Link>
           </div>
         </div>
       </div>

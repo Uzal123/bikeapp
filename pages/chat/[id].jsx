@@ -6,12 +6,10 @@ import TopBar from "../../components/Topbar/TopBar";
 import { useQuery } from "@apollo/client";
 import FETCH_CHAT from "../../graphql/Query/FetchChat";
 import SEND_MESSAGE from "../../graphql/Mutation/SendMessage";
-import ME from "../../graphql/Query/Me";
 import { client } from "../../graphql/client";
 import FETCH_MESSAGE from "../../graphql/Query/FetchMessage";
-import GET_PRODUCT_DETAILS from "../../graphql/Query/GetProductDetails";
 
-const index = () => {
+const ChatWithID = () => {
   const [message, setMessage] = useState("");
   const [peerId, setPeerId] = useState(null);
   const [productId, setProductId] = useState(null);
@@ -19,19 +17,6 @@ const index = () => {
   const { query } = useRouter();
 
   const { loading, error, data } = useQuery(FETCH_CHAT);
-
-  const getUserDetails = async () => {
-    try {
-      const userDetails = await client.query({
-        query: GET_PRODUCT_DETAILS,
-        variables: {
-          productId: data.fetchChat[index].productId,
-        },
-      });
-      console.log(userDetails);
-    } catch (error) {}
-  };
-
   console.log(data);
 
   const fetchMesasges = async (productId, peerId) => {
@@ -87,13 +72,14 @@ const index = () => {
         <div className="w-full p-4 flex gap-4">
           <div className="w-full md:w-2/5 lg:w-1/3 bg-customGray-light message-list flex flex-col">
             {data &&
-              data.fetchChat.map((item) => (
+              data.fetchChat.map((item,i) => (
                 <div
                   className={
                     item.product._id === query.pid
                       ? "w-full flex p-2 active-message"
                       : "w-full flex p-2"
                   }
+                  key={i}
                 >
                   <img
                     src={[item.product.images[0].url]}
@@ -172,4 +158,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default ChatWithID;

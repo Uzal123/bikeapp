@@ -12,6 +12,7 @@ import CREATING_SELL from "../../graphql/Mutation/CreatingSell";
 import MapContainer from "./Map";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { Router } from "next/router";
+import Link from "next/link";
 
 const CreatingSellInput = ({
   formStage,
@@ -377,12 +378,12 @@ const CreatingSellInput = ({
             when the ad in live.
           </p>
           <div className="flex justify-center p-2">
-            <a
+            <Link
               className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent text-center"
               href="/"
             >
               Ok
-            </a>
+            </Link>
           </div>
         </div>
       )}

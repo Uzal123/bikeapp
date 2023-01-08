@@ -15,6 +15,7 @@ const FETCHPRODUCTS = gql`
         }
         title
         fuleType
+        price
       }
     }
   }

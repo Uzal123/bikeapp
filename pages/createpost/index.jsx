@@ -8,8 +8,9 @@ import Car from "../../assets/Category/car.svg";
 import Bike from "../../assets/Category/bike.svg";
 import CreatingRentInput from "./CreatingRentInput";
 import CreatingSellInput from "./CreatingSellInput";
+import Link from "next/link";
 
-const index = () => {
+const CreatePost = () => {
   const [formStage, setformStage] = useState(4);
 
   const [title, setTitle] = useState("");
@@ -31,9 +32,9 @@ const index = () => {
         <div className="flex justify-start px-10 items-center flex-col bg-customGray-navbar gap-6 p-6 md:w-3/5 overflow-scroll rounded-2xl h-full">
           <div className="flex justify-between w-full">
             <h2 className="font-bold text-2xl">Post Ad</h2>
-            <a className="cursor-pointer" href="/">
+            <Link className="cursor-pointer" href="/">
               <Cross className="h-6" />
-            </a>
+            </Link>
           </div>
 
           {formStage === 1 && (
@@ -233,4 +234,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default CreatePost;

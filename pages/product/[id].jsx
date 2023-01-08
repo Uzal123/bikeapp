@@ -91,6 +91,7 @@ const ProductInfo = () => {
                           ? " rounded-full h-3 w-3 cursor-pointer bg-gray-200"
                           : "bg-black rounded-full h-3 w-3 cursor-pointer hover:bg-gray-200"
                       }
+                      key={index}
                       onClick={() => setCurrentImageIndex(index)}
                     ></div>
                   ))}
@@ -162,10 +163,7 @@ const ProductInfo = () => {
                   <p className="text-lg font-semibold">Location</p>
                   <div className="flex flex-col gap-1">
                     <div className="h-48 w-full rounded-xl">
-                      <script
-                        type="text/javascript"
-                        src="https://maps.googleapis.com/maps/api/js?key=[YOUR_API_KEY]&libraries=places"
-                      ></script>
+                      
                     </div>
                     <p>Koteswor-5,Ktm</p>
                   </div>
@@ -218,6 +216,7 @@ const ProductInfo = () => {
                           ? " rounded-full h-3 w-3 cursor-pointer bg-gray-200"
                           : "bg-black rounded-full h-3 w-3 cursor-pointer hover:bg-gray-200"
                       }
+                      key={index}
                       onClick={() => setCurrentImageIndex(index)}
                     ></div>
                   ))}

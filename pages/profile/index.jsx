@@ -135,6 +135,7 @@ const Profile = ({ ...props }) => {
                   <input
                     type="file"
                     hidden={true}
+                    accept="image/png, image/jpg, image/jpeg"
                     ref={(refParam) => (inputref = refParam)}
                     onChange={(e) => onChange(e)}
                   />
@@ -179,7 +180,7 @@ const Profile = ({ ...props }) => {
               tab={tab}
             />
           </div>
-          <div className="grid grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             {data &&
               data.myProducts.products.map((item, i) => (
                 <ProductItem key={data._id} data={item} />

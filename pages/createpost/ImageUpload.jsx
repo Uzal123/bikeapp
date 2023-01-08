@@ -36,6 +36,7 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
         <input
           type="file"
           hidden={true}
+          accept="image/png, image/jpeg, image/jpg"
           ref={(refParam) => (inputref = refParam)}
           onChange={(e) => onChange(e)}
         />
