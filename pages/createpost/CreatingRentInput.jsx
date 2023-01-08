@@ -95,6 +95,7 @@ const CreatingRentInput = ({
         },
       }));
       setLng(position.coords.longitude);
+      setLat(position.coords.latitude);
     });
   };
 
@@ -292,7 +293,6 @@ const CreatingRentInput = ({
           </div>
         </div>
       )}
-      {/* // ) && data?.rentProduct?.success */}
     </div>
   );
 };

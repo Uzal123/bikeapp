@@ -162,9 +162,7 @@ const ProductInfo = () => {
                 <div className="flex flex-col gap-2 py-2">
                   <p className="text-lg font-semibold">Location</p>
                   <div className="flex flex-col gap-1">
-                    <div className="h-48 w-full rounded-xl">
-                      
-                    </div>
+                    <div className="h-48 w-full rounded-xl"></div>
                     <p>Koteswor-5,Ktm</p>
                   </div>
                 </div>
@@ -174,9 +172,10 @@ const ProductInfo = () => {
                   Discover More Products For Rent
                 </h2>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {data.fetchProducts.products.map((item, i) => (
-                    <ProductItem data={item} offer="rent" key={item._id} />
-                  ))}
+                  {data &&
+                    data.fetchProducts.products.map((item, i) => (
+                      <ProductItem data={item} offer="rent" key={item._id} />
+                    ))}
                 </div>
               </div>
             </Fragment>
@@ -328,9 +327,10 @@ const ProductInfo = () => {
                   Discover More Products for Sell
                 </h2>
                 <div className="grid md:grid-cols-3 gap-4">
-                  {data.fetchProducts.products.map((item, i) => (
-                    <ProductItem data={item} offer="sell" key={item._id} />
-                  ))}
+                  {data &&
+                    data.fetchProducts.products.map((item, i) => (
+                      <ProductItem data={item} offer="sell" key={item._id} />
+                    ))}
                 </div>
               </div>
             </Fragment>
