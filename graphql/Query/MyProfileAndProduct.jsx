@@ -27,6 +27,7 @@ const MY_PROFILE_AND_PRODUCT = gql`
         user {
           fullName
           _id
+          accessToken
         }
       }
     }

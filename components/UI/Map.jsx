@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 
-const MapContainer = ({ isLoaded, lat, lng, setLng, setLat }) => {
+const MapContainer = ({ isLoaded, lat, lng, setLng, setLat ,drag}) => {
   const containerStyle = {
     width: "100%",
     height: "200px",
@@ -26,7 +26,7 @@ const MapContainer = ({ isLoaded, lat, lng, setLng, setLat }) => {
         }}
       >
         <Marker
-          draggable={true}
+          draggable={drag}
           onDragEnd={(e) => getCurrentCoords(e)}
           position={{ lat: lat, lng: lng }}
         />

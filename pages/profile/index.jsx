@@ -35,14 +35,6 @@ const Profile = ({ ...props }) => {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!localStorage.getItem("rent-app-token") | error) {
-        router.push("/login", { pathname: "/profile" });
-      }
-    }
-  }, [user, error]);
-
-  useEffect(() => {
     setFetchInput((prev) => {
       return {
         ...prev,
@@ -57,6 +49,14 @@ const Profile = ({ ...props }) => {
       setProfileData(data.myProfile.profile);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("rent-app-token") | error) {
+        router.push("/login", { pathname: "/profile" });
+      }
+    }
+  }, [user, error]);
 
   const editProfile = () => {
     setSettingTab(!settingTab);
@@ -79,6 +79,7 @@ const Profile = ({ ...props }) => {
   return (
     <App>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
+        {console.log(profileData)}
         {!loading && profileData ? (
           <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
             <Setting
@@ -147,7 +148,7 @@ const Profile = ({ ...props }) => {
                 </div>
               </div>
               <h1 className="text-center font-semibold text-2xl">
-                {data.myProfile.profile.user.fullName}
+                {profileData.user.fullName}
               </h1>
             </div>
             <div className="text-center">

@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
+import { useUserStore } from "../../store/auth";
+
 import App from "../../components/Layout/App";
 import { useRouter } from "next/router";
 import TopBar from "../../components/Topbar/TopBar";
@@ -15,6 +17,10 @@ const ChatWithID = () => {
   const [productId, setProductId] = useState(null);
   const [messages, setMessages] = useState([]);
   const { query } = useRouter();
+
+  const user = useUserStore((state) => state.user);
+
+  const router = useRouter();
 
   const { loading, error, data } = useQuery(FETCH_CHAT);
   console.log(data);
@@ -65,6 +71,14 @@ const ChatWithID = () => {
     }
   }, [query]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("rent-app-token")) {
+        router.push("/login", { pathname: "/chat" });
+      }
+    }
+  }, [user]);
+
   return (
     <App>
       <TopBar />
@@ -72,7 +86,7 @@ const ChatWithID = () => {
         <div className="w-full p-4 flex gap-4">
           <div className="w-full md:w-2/5 lg:w-1/3 bg-customGray-light message-list flex flex-col">
             {data &&
-              data.fetchChat.map((item,i) => (
+              data.fetchChat.map((item, i) => (
                 <div
                   className={
                     item.product._id === query.pid

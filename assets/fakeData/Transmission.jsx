@@ -1,6 +1,6 @@
-const Transmission = [
-  { brand: "Manual", value: "ma" },
-  { brand: "Automatic", value: "au" },
-];
+const Transmission = {
+  ma: "Manual",
+  au: "Automatic",
+};
 
-export default Transmission
+export default Transmission;

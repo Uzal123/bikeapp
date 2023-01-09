@@ -1,8 +1,8 @@
-const Condition = [
-  { brand: "Like New", value: "ln" },
-  { brand: "Brand New", value: "bn" },
-  { brand: "Used", value: "us" },
-  { brand: "Not Working", value: "no" },
-];
+const Condition = {
+ ln : "Like New", 
+ bn : "Brand New",
+ us : "Used",
+ no : "Not Working",
+};
 
 export default Condition;

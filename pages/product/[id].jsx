@@ -6,6 +6,13 @@ import App from "../../components/Layout/App";
 import TopBar from "../../components/Topbar/TopBar";
 import ProductItem from "../../components/Product/ProductItem";
 import GET_PRODUCT_DETAILS from "../../graphql/Query/GetProductDetails";
+import BikeBrand from "../../assets/fakeData/BikeBrand";
+import CarBrand from "../../assets/fakeData/CarBrand";
+import FuelType from "../../assets/fakeData/FuelType";
+import Transmission from "../../assets/fakeData/Transmission";
+import MapContainer from "../../components/UI/Map";
+import { useJsApiLoader } from "@react-google-maps/api";
+
 
 const ProductInfo = () => {
   const router = useRouter();
@@ -54,6 +61,11 @@ const ProductInfo = () => {
       query: { uid: product.createdBy._id, pid: product._id },
     });
   };
+
+  const { isLoaded } = useJsApiLoader({
+    id: process.env.GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
+  });
   return (
     <App>
       <TopBar />
@@ -147,7 +159,9 @@ const ProductInfo = () => {
                   <div className="flex flex-col gap-1">
                     <div className="flex">
                       <p className="w-36">Brand</p>
-                      <p>{product.brand}</p>
+                      <p>
+                        {BikeBrand[product.brand] || CarBrand[product.brand]}
+                      </p>
                     </div>
                     <div className="flex">
                       <p className="w-36">Color</p>
@@ -155,14 +169,19 @@ const ProductInfo = () => {
                     </div>
                     <div className="flex">
                       <p className="w-36">Fuel Type</p>
-                      <p>{product.fuleType}</p>
+                      <p>{FuelType[product.fuleType]}</p>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 py-2">
                   <p className="text-lg font-semibold">Location</p>
                   <div className="flex flex-col gap-1">
-                    <div className="h-48 w-full rounded-xl"></div>
+                    <MapContainer
+                      isLoaded={isLoaded}
+                      lat={product.location.coordinates[0]}
+                      lng={product.location.coordinates[1]}
+                      drag={true}
+                    />
                     <p>Koteswor-5,Ktm</p>
                   </div>
                 </div>
@@ -273,7 +292,9 @@ const ProductInfo = () => {
                   <div className="flex flex-col gap-1">
                     <div className="flex">
                       <p className="w-36">Brand</p>
-                      <p>{product.brand}</p>
+                      <p>
+                        {BikeBrand[product.brand] || CarBrand[product.brand]}
+                      </p>
                     </div>
                     <div className="flex">
                       <p className="w-36">Made Year</p>
@@ -281,7 +302,7 @@ const ProductInfo = () => {
                     </div>
                     <div className="flex">
                       <p className="w-36">Fuel Type</p>
-                      <p>{product.fuleType}</p>
+                      <p>{FuelType[product.fuleType]}</p>
                     </div>
 
                     <div className="flex">
@@ -294,7 +315,7 @@ const ProductInfo = () => {
                     </div>
                     <div className="flex">
                       <p className="w-36">Transmission</p>
-                      <p>{product.transmission}</p>
+                      <p>{Transmission[product.transmission]}</p>
                     </div>
                     <div className="flex">
                       <p className="w-36">KMs Run</p>
@@ -317,7 +338,12 @@ const ProductInfo = () => {
                 <div className="flex flex-col gap-2 py-2">
                   <p className="text-lg font-semibold">Location</p>
                   <div className="flex flex-col gap-1">
-                    <div className="h-48 w-full bg-gray-300 rounded-xl"></div>
+                    <MapContainer
+                      isLoaded={isLoaded}
+                      lat={product.location.coordinates[0]}
+                      lng={product.location.coordinates[1]}
+                      drag={true}
+                    />
                     <p>Koteswor-5,Ktm</p>
                   </div>
                 </div>

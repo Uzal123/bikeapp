@@ -1,5 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
+import { useUserStore } from "../../store/auth";
+import Router, { withRouter, useRouter } from "next/router";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";
 import Check from "../../assets/createpost/check.svg";
@@ -11,6 +13,11 @@ import CreatingSellInput from "./CreatingSellInput";
 import Link from "next/link";
 
 const CreatePost = () => {
+
+  const user = useUserStore((state) => state.user);
+
+  const router = useRouter();
+
   const [formStage, setformStage] = useState(1);
 
   const [title, setTitle] = useState("");
@@ -26,9 +33,16 @@ const CreatePost = () => {
     setformStage(formStage < 4 ? formStage + 1 : formStage);
   };
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("rent-app-token")) {
+        router.push("/login", { pathname: "/createpost" });
+      }
+    }
+  }, [user]);
+
   return (
     <App>
-      {console.log(process.env.GOOGLE_MAP_API_KEY)}
       <div className="p-4 h-screen flex justify-center">
         <div className="flex justify-start px-10 items-center flex-col bg-customGray-navbar gap-6 p-6 md:w-3/5 overflow-scroll rounded-2xl h-full">
           <div className="flex justify-between w-full">

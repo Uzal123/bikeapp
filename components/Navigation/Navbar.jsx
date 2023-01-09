@@ -17,7 +17,7 @@ const Navbar = ({ ...props }) => {
         <NavLink exact href={"/notification"} className="order-2">
           <Bell className="h-6 lg:h-8 " />
         </NavLink>
-        <NavLink exact href={"/chat"} className="order-3">
+        <NavLink href={"/chat"} className="order-3">
           <Chat className="h-6 lg:h-8" />
         </NavLink>
         <NavLink exact href="/profile" className="order-4">

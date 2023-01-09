@@ -9,10 +9,11 @@ import Back from "../../assets/createpost/back.svg";
 import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
 import CREATING_SELL from "../../graphql/Mutation/CreatingSell";
-import MapContainer from "./Map";
+import MapContainer from "../../components/UI/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { Router } from "next/router";
 import Link from "next/link";
+import PriceType from "../../assets/fakeData/PriceType";
 
 const CreatingSellInput = ({
   formStage,
@@ -101,6 +102,7 @@ const CreatingSellInput = ({
         },
       }));
       setLng(position.coords.longitude);
+      setLat(position.coords.latitude);
     });
   };
 
@@ -139,9 +141,9 @@ const CreatingSellInput = ({
                 value={sellInput.brand}
                 onChange={(e) => onChange(e)}
               >
-                {CarBrand.map((d, key) => (
-                  <option key={key} value={d.value}>
-                    {d.brand}
+                {Object.keys(CarBrand).map((key, i) => (
+                  <option key={i} value={key}>
+                    {CarBrand[key]}
                   </option>
                 ))}
               </select>
@@ -154,9 +156,9 @@ const CreatingSellInput = ({
                 value={sellInput.brand}
                 onChange={(e) => onChange(e)}
               >
-                {BikeBrand.map((d, key) => (
-                  <option key={key} value={d.value}>
-                    {d.brand}
+                {Object.keys(BikeBrand).map((key, i) => (
+                  <option key={i} value={key}>
+                    {BikeBrand[key]}
                   </option>
                 ))}
               </select>
@@ -171,9 +173,9 @@ const CreatingSellInput = ({
               value={sellInput.vehicleCondition}
               onChange={(e) => onChange(e)}
             >
-              {Condition.map((d, i) => (
-                <option key={i} value={d.value}>
-                  {d.brand}
+              {Object.keys(Condition).map((key, i) => (
+                <option key={i} value={key}>
+                  {Condition[key]}
                 </option>
               ))}
             </select>
@@ -187,9 +189,9 @@ const CreatingSellInput = ({
               value={sellInput.fuleType}
               onChange={(e) => onChange(e)}
             >
-              {FuelType.map((d, key) => (
-                <option key={key} value={d.value}>
-                  {d.brand}
+              {Object.keys(FuelType).map((key, i) => (
+                <option key={i} value={key}>
+                  {FuelType[key]}
                 </option>
               ))}
             </select>
@@ -252,9 +254,9 @@ const CreatingSellInput = ({
               value={sellInput.transmission}
               onChange={(e) => onChange(e)}
             >
-              {Transmission.map((d, key) => (
-                <option key={key} value={d.value}>
-                  {d.brand}
+              {Object.keys(Transmission).map((key, i) => (
+                <option key={i} value={key}>
+                  {Transmission[key]}
                 </option>
               ))}
             </select>
@@ -330,8 +332,11 @@ const CreatingSellInput = ({
               className="p-2 rounded-lg"
               onChange={(e) => onChange(e)}
             >
-              <option value="fi">Fixed</option>
-              <option value="ne">Negotiable</option>
+              {Object.keys(PriceType).map((key, i) => (
+                <option key={i} value={key}>
+                  {PriceType[key]}
+                </option>
+              ))}
             </select>
           </div>
           <div className="p-2 col-span-2 flex flex-col">
@@ -352,6 +357,7 @@ const CreatingSellInput = ({
               lng={lng}
               setLat={setLat}
               setLng={setLng}
+              drag={true}
             />
           </div>
           <div className="flex gap-2 justify-between my-2 col-span-2">

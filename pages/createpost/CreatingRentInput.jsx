@@ -7,7 +7,7 @@ import FuelType from "../../assets/fakeData/FuelType";
 import Back from "../../assets/createpost/back.svg";
 import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
-import MapContainer from "./Map";
+import MapContainer from "../../components/UI/Map";
 import { useJsApiLoader } from "@react-google-maps/api";
 import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
 import {
@@ -17,6 +17,7 @@ import {
   PlacesAutocomplete,
 } from "react-places-autocomplete";
 import Link from "next/link";
+import PriceType from "../../assets/fakeData/PriceType";
 
 const CreatingRentInput = ({
   formStage,
@@ -100,8 +101,8 @@ const CreatingRentInput = ({
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
-    googleMapsApiKey: "AIzaSyCfR_KurrIFg6SkS1Lmmlp2PQfeuVc9Anw",
+    id: process.env.GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
   });
 
   return (
@@ -138,9 +139,9 @@ const CreatingRentInput = ({
                 className="w-full p-2 rounded-lg"
                 onChange={(e) => onChange(e)}
               >
-                {CarBrand.map((d, key) => (
-                  <option key={key} value={d.value}>
-                    {d.brand}
+                {Object.keys(CarBrand).map((key, i) => (
+                  <option key={i} value={key}>
+                    {CarBrand[key]}
                   </option>
                 ))}
               </select>
@@ -153,9 +154,9 @@ const CreatingRentInput = ({
                 value={rentInput.brand}
                 onChange={(e) => onChange(e)}
               >
-                {BikeBrand.map((d, i) => (
-                  <option key={i} value={d.value}>
-                    {d.brand}
+                {Object.keys(BikeBrand).map((key, i) => (
+                  <option key={i} value={key}>
+                    {BikeBrand[key]}
                   </option>
                 ))}
               </select>
@@ -170,9 +171,9 @@ const CreatingRentInput = ({
               value={rentInput.fuleType}
               onChange={(e) => onChange(e)}
             >
-              {FuelType.map((d, i) => (
-                <option key={i} value={d.value}>
-                  {d.brand}
+              {Object.keys(FuelType).map((key, i) => (
+                <option key={i} value={key}>
+                  {FuelType[key]}
                 </option>
               ))}
             </select>
@@ -236,8 +237,11 @@ const CreatingRentInput = ({
               className="p-2 rounded-lg"
               onChange={(e) => onChange(e)}
             >
-              <option value="fi">Fixed</option>
-              <option value="ne">Negotiable</option>
+              {Object.keys(PriceType).map((key, i) => (
+                <option key={i} value={key}>
+                  {PriceType[key]}
+                </option>
+              ))}
             </select>
           </div>
           <div className="p-2 col-span-2 flex flex-col">
@@ -258,6 +262,7 @@ const CreatingRentInput = ({
               lng={lng}
               setLat={setLat}
               setLng={setLng}
+              drag={true}
             />
           </div>
 

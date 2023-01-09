@@ -1,8 +1,8 @@
-const FuelType = [
-  { brand: "Petrol", value: "pe" },
-  { brand: "Diesel", value: "di" },
-  { brand: "Electric", value: "el" },
-  { brand: "Hybrid", value: "hy" },
-];
+const FuelType = {
+  pe: "Petrol",
+  di: "Diesel",
+  el: "Electric",
+  hy: "Hybrid",
+};
 
 export default FuelType;
