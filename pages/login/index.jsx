@@ -15,6 +15,10 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
+    /// for notiti 
+    // setNotifdation
+    //settime
+    //  removeNotification
     if (data?.login?.["success"] && !loading) {
       const user = data.login["user"];
       setUser(user.accessToken, user);

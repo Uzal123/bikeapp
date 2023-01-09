@@ -18,15 +18,6 @@ const Profile = ({ ...props }) => {
   const user = useUserStore((state) => state.user);
   const removeUser = useUserStore((state) => state.removeUser);
   const router = useRouter();
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!user.email) {
-        router.push("/login", { pathname: "/profile" });
-      }
-    }
-  }, [user]);
-
   const [settingTab, setSettingTab] = useState(null);
 
   const [tab, setTab] = useState("re");
@@ -37,6 +28,20 @@ const Profile = ({ ...props }) => {
     count: 10,
   });
 
+  const { loading, error, data } = useQuery(MY_PROFILE_AND_PRODUCT, {
+    variables: {
+      fetchInput,
+    },
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (!localStorage.getItem("rent-app-token") | error) {
+        router.push("/login", { pathname: "/profile" });
+      }
+    }
+  }, [user, error]);
+
   useEffect(() => {
     setFetchInput((prev) => {
       return {
@@ -45,12 +50,6 @@ const Profile = ({ ...props }) => {
       };
     });
   }, [tab]);
-
-  const { loading, error, data } = useQuery(MY_PROFILE_AND_PRODUCT, {
-    variables: {
-      fetchInput,
-    },
-  });
 
   const [profileData, setProfileData] = useState(null);
   useEffect(() => {

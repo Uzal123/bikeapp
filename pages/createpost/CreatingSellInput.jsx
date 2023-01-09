@@ -66,10 +66,10 @@ const CreatingSellInput = ({
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
   };
 
-    const { isLoaded } = useJsApiLoader({
-      id: process.env.GOOGLEMAPAPIKEY,
-      googleMapsApiKey: process.env.GOOGLEMAPAPIKEY,
-    });
+  const { isLoaded } = useJsApiLoader({
+    id: process.env.GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
+  });
 
   const onSubmit = (e) => {
     e?.preventDefault();
@@ -89,9 +89,8 @@ const CreatingSellInput = ({
     console.log(data);
   }
 
-
- const [lat, setLat] = useState(-3.745);
- const [lng, setLng] = useState(-38.523);
+  const [lat, setLat] = useState(-3.745);
+  const [lng, setLng] = useState(-38.523);
 
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
