@@ -9,8 +9,8 @@ import { useUserStore } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import UPLOAD_PROFILE_PIC from "../../graphql/Mutation/UploadProfilePic";
-
-import MY_PROFILE_AND_PRODUCT from "../../graphql/Query/MyProfileAndProduct";
+import MY_PRODUCTS from "../../graphql/Query/MyProducts";
+import MY_PROFILE from "../../graphql/Query/MyProfile";
 import { client } from "../../graphql/client";
 
 const Profile = ({ ...props }) => {
@@ -22,17 +22,27 @@ const Profile = ({ ...props }) => {
 
   const [tab, setTab] = useState("re");
 
+  const [products, setProducts] = useState([]);
+
   const [fetchInput, setFetchInput] = useState({
-    offerType: ["re"],
+    offerType: [tab],
     pageNo: 1,
     count: 10000,
   });
 
-  const { loading, error, data } = useQuery(MY_PROFILE_AND_PRODUCT, {
-    variables: {
-      fetchInput,
-    },
-  });
+  const { loading, error, data } = useQuery(MY_PROFILE);
+
+  const getUserProducts = async () => {
+    const response = await client.query({
+      query: MY_PRODUCTS,
+      variables: { fetchInput },
+    });
+    setProducts(response.data?.myProducts.products);
+  };
+
+  useEffect(() => {
+    getUserProducts();
+  }, [fetchInput]);
 
   useEffect(() => {
     setFetchInput((prev) => {
@@ -41,6 +51,7 @@ const Profile = ({ ...props }) => {
         offerType: [tab],
       };
     });
+    setProducts([])
   }, [tab]);
 
   const [profileData, setProfileData] = useState(null);
@@ -79,7 +90,6 @@ const Profile = ({ ...props }) => {
   return (
     <App>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
-        {console.log(profileData)}
         {!loading && profileData ? (
           <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
             <Setting
@@ -155,9 +165,7 @@ const Profile = ({ ...props }) => {
               <p>This is my bio 8347853465 hello i am ths</p>
             </div>
             <div className="text-center">
-              <p className="font-semibold">
-                Total Ads : {data && data.myProducts.products.length}
-              </p>
+              <p className="font-semibold">Total Ads : {products.length}</p>
             </div>
           </div>
         ) : (
@@ -183,8 +191,8 @@ const Profile = ({ ...props }) => {
             />
           </div>
           <div className="grid md:grid-cols-4 gap-6">
-            {data &&
-              data.myProducts.products.map((item, i) => (
+            {products &&
+              products.map((item, i) => (
                 <ProductItem key={item._id} data={item} />
               ))}
           </div>
