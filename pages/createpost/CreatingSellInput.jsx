@@ -14,6 +14,9 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import { Router } from "next/router";
 import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
+import DropInput from "../../components/UI/DropInput";
+import FormInput from "../../components/UI/FormInput";
+import Colors from "../../assets/fakeData/colors";
 
 const CreatingSellInput = ({
   formStage,
@@ -23,6 +26,8 @@ const CreatingSellInput = ({
   title,
   imageLinks,
   setImageLinks,
+  setLocation,
+  location,
 }) => {
   const [sellInput, setSellInput] = useState({
     offerType: "se",
@@ -40,25 +45,28 @@ const CreatingSellInput = ({
     color: "",
     price: "",
     priceType: "fi",
-    location: {
-      coordinates: [],
-    },
   });
 
   const onNext = (e) => {
     e.preventDefault();
-    setformStage(formStage < 5 ? formStage + 1 : formStage);
+    if (formStage === 4) {
+      onSubmit(e);
+      setformStage(formStage + 1);
+    } else {
+      setformStage(formStage + 1);
+    }
   };
 
   const onBack = (e) => {
     e.preventDefault();
-    setformStage(formStage > 1 ? formStage - 1 : formStage);
+    setformStage(formStage - 1);
   };
 
   const onChange = (e) => {
     const val = e.target.value;
     const key = e.target.name;
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
+    console.log(sellInput);
   };
 
   const handleFloat = (e) => {
@@ -67,21 +75,16 @@ const CreatingSellInput = ({
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
   };
 
-  const { isLoaded } = useJsApiLoader({
-    id: process.env.GOOGLE_MAP_API_KEY,
-    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
-  });
-
   const onSubmit = (e) => {
     e?.preventDefault();
     const data = {
       ...sellInput,
       images: imageLinks,
       title: title,
+      location: location,
       vehicleType: vehicleType,
     };
     submitSellProduct({ variables: { sellProductInput: data } });
-    onNext(e);
   };
 
   const [submitSellProduct, { data, loading, error }] =
@@ -90,118 +93,56 @@ const CreatingSellInput = ({
     console.log(data);
   }
 
-  const [lat, setLat] = useState(-3.745);
-  const [lng, setLng] = useState(-38.523);
+  const [center, setCenter] = useState({
+    lat: -3.745,
+    lng: -38.523,
+  });
 
-  const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setSellInput((prevs) => ({
-        ...prevs,
-        location: {
-          coordinates: [position.coords.latitude, position.coords.longitude],
-        },
-      }));
-      setLng(position.coords.longitude);
-      setLat(position.coords.latitude);
-    });
-  };
+  const [address, setAddress] = useState("");
 
   return (
-    <div>
+    <div className="flex flex-col">
       {formStage === 2 && (
-        <form onSubmit={(e) => onNext(e)}>
+        <form className="h-full grid grid-cols-1" onSubmit={(e) => onNext(e)}>
           <p className="p-2">Upload the images of the Vehicle</p>
           <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
-          <div className="flex gap-2 justify-between my-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Next
-            </button>
-          </div>
         </form>
       )}
 
       {formStage === 3 && offerType === "se" && (
-        <form className="grid grid-cols-2" onSubmit={(e) => onNext(e)}>
+        <form className="h-full grid grid-cols-2" onSubmit={(e) => onNext(e)}>
           <div className="flex flex-col p-2">
-            <label className="p-2">Brand</label>
-            {vehicleType === `ca` && (
-              <select
-                id="brand"
-                name="brand"
-                className="w-full p-2 rounded-lg"
-                value={sellInput.brand}
-                onChange={(e) => onChange(e)}
-              >
-                {Object.keys(CarBrand).map((key, i) => (
-                  <option key={i} value={key}>
-                    {CarBrand[key]}
-                  </option>
-                ))}
-              </select>
-            )}
-            {vehicleType === `bi` && (
-              <select
-                id="brand"
-                name="brand"
-                className="w-full p-2 rounded-lg"
-                value={sellInput.brand}
-                onChange={(e) => onChange(e)}
-              >
-                {Object.keys(BikeBrand).map((key, i) => (
-                  <option key={i} value={key}>
-                    {BikeBrand[key]}
-                  </option>
-                ))}
-              </select>
-            )}
+            <DropInput
+              title="Brand"
+              name="brand"
+              onChange={(e) => onChange(e)}
+              items={vehicleType === `ca` ? CarBrand : BikeBrand}
+              value={sellInput.brand}
+            />
           </div>
           <div className="flex flex-col p-2">
-            <label className="whitespace-nowrap p-2">Condition</label>
-            <select
-              id="vehicleCondition"
+            <DropInput
+              title="Condition"
               name="vehicleCondition"
-              className="w-full p-2 rounded-lg"
-              value={sellInput.vehicleCondition}
               onChange={(e) => onChange(e)}
-            >
-              {Object.keys(Condition).map((key, i) => (
-                <option key={i} value={key}>
-                  {Condition[key]}
-                </option>
-              ))}
-            </select>
+              items={Condition}
+              value={sellInput.vehicleCondition}
+            />
           </div>
           <div className="flex flex-col p-2">
-            <label className="whitespace-nowrap p-2">Fuel</label>
-            <select
-              id="fuleType"
+            <DropInput
+              title="Fuel"
               name="fuleType"
-              className="w-full p-2 rounded-lg"
-              value={sellInput.fuleType}
               onChange={(e) => onChange(e)}
-            >
-              {Object.keys(FuelType).map((key, i) => (
-                <option key={i} value={key}>
-                  {FuelType[key]}
-                </option>
-              ))}
-            </select>
+              items={FuelType}
+              value={sellInput.fuleType}
+            />
           </div>
           <div className="p-2 flex flex-col">
-            <label className="p-2">Used For</label>
-            <input
+            <FormInput
+              title="Used For"
               type="number"
               name="usedFor"
-              className="p-2 rounded-lg"
               value={sellInput.usedFor}
               onChange={(e) => handleFloat(e)}
             />
@@ -215,110 +156,81 @@ const CreatingSellInput = ({
               onChange={(e) => onChange(e)}
             />
           </div>
-          <div className="p-2 flex flex-col gap-2">
-            <label>Make Year</label>
-            <input
+          <div className="p-2 flex flex-col">
+            <FormInput
+              title="Make Year"
               type="number"
               name="madeYear"
-              className="p-2 rounded-lg"
               value={sellInput.madeYear}
               onChange={(e) => handleFloat(e)}
             />
           </div>
-          <div className="p-2 flex flex-col gap-2">
-            <label>Engine (CC)</label>
-            <input
+          <div className="p-2 flex flex-col">
+            <FormInput
+              title="Engine (CC)"
               type="number"
               name="engine"
-              className="p-2 rounded-lg"
               value={sellInput.engine}
               onChange={(e) => handleFloat(e)}
             />
           </div>
-          <div className="p-2 flex flex-col gap-2">
-            <label>Milege</label>
-            <input
+          <div className="p-2 flex flex-col">
+            <FormInput
+              title="Milege"
               type="text"
               name="milege"
-              className="p-2 rounded-lg"
               value={sellInput.milege}
               onChange={(e) => onChange(e)}
             />
           </div>
-          <div className="flex flex-col p-2 gap-2 ">
-            <label className="whitespace-nowrap">Transmission</label>
-            <select
-              id="transmission"
+          <div className="flex flex-col p-2">
+            <DropInput
+              title="Transmission"
               name="transmission"
-              className="w-full p-2 rounded-lg"
-              value={sellInput.transmission}
               onChange={(e) => onChange(e)}
-            >
-              {Object.keys(Transmission).map((key, i) => (
-                <option key={i} value={key}>
-                  {Transmission[key]}
-                </option>
-              ))}
-            </select>
+              items={Transmission}
+              value={sellInput.transmission}
+            />
           </div>
 
-          <div className="p-2 flex flex-col gap-2">
-            <label>Lot Number</label>
-            <input
+          <div className="p-2 flex flex-col">
+            <FormInput
+              title="Lot Number"
               type="text"
               name="lotNo"
-              className="p-2 rounded-lg"
               value={sellInput.lotNo}
               onChange={(e) => onChange(e)}
             />
           </div>
 
-          <div className="p-2 flex flex-col gap-2">
-            <label>Kilometer run</label>
-            <input
+          <div className="p-2 flex flex-col">
+            <FormInput
+              title="Kilometer run"
               type="number"
               name="kmRun"
-              className="p-2 rounded-lg"
               value={sellInput.kmRun}
               onChange={(e) => handleFloat(e)}
             />
           </div>
-          <div className="p-2 flex flex-col gap-2">
-            <label>Color</label>
-            <input
-              type="text"
+          <div className="p-2 flex flex-col">
+            <DropInput
+              title="Color"
               name="color"
-              className="p-2 rounded-lg"
-              value={sellInput.color}
               onChange={(e) => onChange(e)}
+              items={Colors}
+              value={sellInput.color}
             />
-          </div>
-          <div className="flex gap-2 justify-between my-2 col-span-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Next
-            </button>
           </div>
         </form>
       )}
 
       {formStage === 4 && (
-        <form className="grid grid-cols-2" onSubmit={(e) => onSubmit(e)}>
+        <form className="h-full grid grid-cols-2">
           <div className="p-2 flex flex-col">
-            <label className="p-2">Price</label>
-            <input
+            <FormInput
+              title="Price"
               type="number"
-              className="p-2 rounded-lg"
               name="price"
-              required
               value={sellInput.price}
               onChange={(e) => handleFloat(e)}
             />
@@ -332,47 +244,27 @@ const CreatingSellInput = ({
               className="p-2 rounded-lg"
               onChange={(e) => onChange(e)}
             >
-              {Object.keys(PriceType).map((key, i) => (
-                <option key={i} value={key}>
+              {Object.keys(PriceType).map((key) => (
+                <option key={key} value={key}>
                   {PriceType[key]}
                 </option>
               ))}
             </select>
           </div>
           <div className="p-2 col-span-2 flex flex-col">
-            <label className="p-2">Location</label>
-            <div className="flex w-full justify-between gap-2">
-              <input type="text" className="p-2 rounded-lg w-full" />
-              <Gps
-                className="h-8 "
-                fill="#1FC39E"
-                onClick={() => getLocation()}
-              />
-            </div>
+            <label className="px-2 pt-2">Location</label>
           </div>
-          <div className="p-2 col-span-2 flex flex-col">
+          <div className="p-2 col-span-2 h-full flex flex-col relative">
             <MapContainer
-              isLoaded={isLoaded}
-              lat={lat}
-              lng={lng}
-              setLat={setLat}
-              setLng={setLng}
               drag={true}
+              center={center}
+              setCenter={setCenter}
+              address={address}
+              setAddress={setAddress}
+              setSellInput={setSellInput}
+              setLocation={setLocation}
+              location={location}
             />
-          </div>
-          <div className="flex gap-2 justify-between my-2 col-span-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Submit
-            </button>
           </div>
         </form>
       )}
@@ -390,6 +282,30 @@ const CreatingSellInput = ({
               Ok
             </Link>
           </div>
+        </div>
+      )}
+
+      {formStage !== 5 && (
+        <div
+          className={`flex gap-2  ${
+            formStage == 1 ? "justify-end" : "justify-between "
+          } my-2`}
+        >
+          {formStage !== 1 && (
+            <button
+              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
+              onClick={(e) => onBack(e)}
+            >
+              <Back className="h-6" fill="#1FC39E" /> Back
+            </button>
+          )}
+          <button
+            className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
+            type="submit"
+            onClick={(e) => onNext(e)}
+          >
+            {formStage === 4 ? "Submit" : "Next"}
+          </button>
         </div>
       )}
     </div>

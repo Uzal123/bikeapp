@@ -28,12 +28,14 @@ const Login = () => {
 
   useEffect(() => {
     console.log(router);
-    if (user.accessToken) {
+    console.log({ user });
+    if (user.email) {
       if (router.asPath !== "/register") {
         router.push(router.asPath);
       } else {
         router.push("/");
       }
+      router.back();
     }
   }, [user]);
 

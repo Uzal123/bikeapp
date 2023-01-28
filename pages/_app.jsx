@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
       }
     } catch (error) {
       console.log(error);
-      // removeUser();
+      removeUser();
     }
   };
 

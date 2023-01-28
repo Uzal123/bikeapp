@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import Upload from "../../assets/createpost/upload.svg";
 import Loading from "../../assets/createpost/loading.svg";
+import Trash from "../../assets/createpost/trash.svg";
 import IMAGE_UPLOAD from "../../graphql/Mutation/ImageUpload";
 
 const ImageUpload = ({ setImageLinks, imageLinks }) => {
@@ -22,6 +23,11 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
     }
   };
 
+  const removeImg = (key) => {
+    const updatedImages = imageLinks.filter((item) => item.key != key);
+    setImageLinks(updatedImages);
+  };
+
   useEffect(() => {
     if (data && !loading) {
       let key = data.uploadImage.data.key;
@@ -31,8 +37,12 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
   }, [data]);
 
   return (
-    <div className="grid grid-cols-3 gap-2">
-      <div className="flex justify-center cursor-pointer">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
+      <div
+        className={`flex justify-center cursor-pointer ${
+          imageLinks.length > 0 ? " " : "pb-20"
+        }`}
+      >
         <input
           type="file"
           hidden={true}
@@ -41,20 +51,28 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
           onChange={(e) => onChange(e)}
         />
         <div
-          className="bg-gray-50 text-center flex flex-col justify-center aspect-square h-36 w-36 rounded-lg items-center"
+          className="bg-gray-50 text-center flex flex-col justify-center aspect-square h-full w-full rounded-lg items-center"
           onClick={(e) => inputref.click()}
         >
           <Upload />
           <h2>{loading ? "Uploading..." : "Upload"}</h2>
         </div>
       </div>
-      {imageLinks?.map((d, i) => (
-        <div className="h-36 w-36" key={i}>
+      {imageLinks?.map((d) => (
+        <div className="h-full w-full relative" key={d.key}>
           <img
             src={d.url}
             key={d.key}
-            className="rounded-lg object-cover aspect-square"
+            className="rounded-lg object-cover aspect-square "
           />
+          <div
+            className="absolute -top-1 -right-1  hover:scale-110 bg-white rounded-full"
+            onClick={(e) => {
+              removeImg(d.key);
+            }}
+          >
+            <Trash className="h-6" fill="red" />
+          </div>
         </div>
       ))}
       {loading ? (

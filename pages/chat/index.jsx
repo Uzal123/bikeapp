@@ -24,6 +24,8 @@ const Chat = () => {
     }
   }, [user]);
 
+//   const [active, setActive] = useState(1)
+
   return (
     <App>
       <TopBar />

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Router from "next/router";
 import ImageUpload from "./ImageUpload";
 import CarBrand from "../../assets/fakeData/CarBrand";
 import BikeBrand from "../../assets/fakeData/BikeBrand";
@@ -8,16 +7,11 @@ import Back from "../../assets/createpost/back.svg";
 import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
 import MapContainer from "../../components/UI/Map";
-import { useJsApiLoader } from "@react-google-maps/api";
 import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
-import {
-  geocodeByAddress,
-  geocodeByPlaceId,
-  getLatLng,
-  PlacesAutocomplete,
-} from "react-places-autocomplete";
 import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
+import Geocode from "react-geocode";
+import Colors from "../../assets/fakeData/colors";
 
 const CreatingRentInput = ({
   formStage,
@@ -27,6 +21,8 @@ const CreatingRentInput = ({
   title,
   imageLinks,
   setImageLinks,
+  location,
+  setLocation
 }) => {
   const [rentInput, setRentInput] = useState({
     offerType: "re",
@@ -41,15 +37,6 @@ const CreatingRentInput = ({
     },
   });
 
-  const onNext = (e) => {
-    e.preventDefault();
-    setformStage(formStage < 5 ? formStage + 1 : formStage);
-  };
-
-  const onBack = (e) => {
-    e.preventDefault();
-    setformStage(formStage > 1 ? formStage - 1 : formStage);
-  };
 
   const onChange = (e) => {
     const val = e.target.value;
@@ -65,66 +52,54 @@ const CreatingRentInput = ({
     console.log(rentInput);
   };
 
+  const onNext = (e) => {
+    e.preventDefault();
+    if (formStage === 4) {
+      onSubmit(e);
+      setformStage(formStage + 1);
+    } else {
+      setformStage(formStage + 1);
+    }
+  };
+
+   const onBack = (e) => {
+     e.preventDefault();
+     setformStage(formStage - 1);
+   };
+
   const onSubmit = (e) => {
     e?.preventDefault();
     const data = {
       ...rentInput,
       images: imageLinks,
       title: title,
+      location: location,
       vehicleType: vehicleType,
     };
     console.log(data);
     submitRentProduct({ variables: { rentProductInput: data } });
-    onNext(e);
   };
 
   const [submitRentProduct, { data, loading, error }] =
-
     useMutation(CREATING_RENT);
   if (data) {
     console.log(data);
   }
-  const [lat, setLat] = useState(-3.745);
-  const [lng, setLng] = useState(-38.523);
 
-  const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setRentInput((prevs) => ({
-        ...prevs,
-        location: {
-          coordinates: [position.coords.latitude, position.coords.longitude],
-        },
-      }));
-      setLng(position.coords.longitude);
-      setLat(position.coords.latitude);
-    });
-  };
-
-  const { isLoaded } = useJsApiLoader({
-    id: process.env.GOOGLE_MAP_API_KEY,
-    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
+  const [center, setCenter] = useState({
+    lat: -3.745,
+    lng: -38.523,
   });
 
+  const [address, setAddress] = useState("");
+
+
   return (
-    <div>
+    <div className="w-full">
       {formStage === 2 && (
-        <form onSubmit={(e) => onNext(e)}>
+        <form onSubmit={(e) => onNext(e)} className="flex flex-col gap-2 ">
           <p className="p-2">Upload the images of the Vehicle</p>
           <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
-          <div className="flex gap-2 justify-between my-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Next
-            </button>
-          </div>
         </form>
       )}
       {formStage === 3 && offerType === "re" && (
@@ -181,13 +156,18 @@ const CreatingRentInput = ({
 
           <div className="p-2 flex flex-col ">
             <label className="p-2">Color</label>
-            <input
-              type="text"
-              className="p-2 rounded-lg"
+            <select
               name="color"
+              className="w-full p-2 rounded-lg"
               value={rentInput.color}
               onChange={(e) => onChange(e)}
-            />
+            >
+              {Object.keys(Colors).map((key, i) => (
+                <option key={i} value={key}>
+                  {Colors[key]}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="col-span-2 p-2">
             <label className="p-2">Description</label>
@@ -198,25 +178,10 @@ const CreatingRentInput = ({
               onChange={(e) => onChange(e)}
             />
           </div>
-
-          <div className="flex gap-2 justify-between my-2 col-span-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Next
-            </button>
-          </div>
         </form>
       )}
       {formStage === 4 && (
-        <form className="grid grid-cols-2" onSubmit={(e) => onSubmit(e)}>
+        <form className="grid grid-cols-2 pb-20" onSubmit={(e) => onSubmit(e)}>
           <div className="p-2 flex flex-col">
             <label className="p-2">Price per day</label>
             <input
@@ -245,40 +210,20 @@ const CreatingRentInput = ({
             </select>
           </div>
           <div className="p-2 col-span-2 flex flex-col">
-            <label className="p-2">Location</label>
-            <div className="flex w-full justify-between gap-2">
-              <input type="text" className="p-2 rounded-lg w-full" />
-              <Gps
-                className="h-8 "
-                fill="#1FC39E"
-                onClick={() => getLocation()}
-              />
-            </div>
+            <label className="px-2 pt-2">Location</label>
           </div>
-          <div className="p-2 col-span-2 flex flex-col">
+          {/* <LocationAutoComplete /> */}
+          <div className="p-2 col-span-2 h-full flex flex-col relative">
             <MapContainer
-              isLoaded={isLoaded}
-              lat={lat}
-              lng={lng}
-              setLat={setLat}
-              setLng={setLng}
               drag={true}
+              center={center}
+              setCenter={setCenter}
+              address={address}
+              setAddress={setAddress}
+              setRentInput={setRentInput}
+              setLocation={setLocation}
+              location={location}
             />
-          </div>
-
-          <div className="flex gap-2 justify-between my-2 col-span-2">
-            <button
-              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
-              onClick={(e) => onBack(e)}
-            >
-              <Back className="h-6" fill="#1FC39E" /> Back
-            </button>
-            <button
-              className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
-              type="submit"
-            >
-              Next
-            </button>
           </div>
         </form>
       )}
@@ -296,6 +241,30 @@ const CreatingRentInput = ({
               Ok
             </Link>
           </div>
+        </div>
+      )}
+
+      {formStage !== 5 && (
+        <div
+          className={`flex gap-2  ${
+            formStage == 1 ? "justify-end" : "justify-between "
+          } my-2`}
+        >
+          {formStage !== 1 && (
+            <button
+              className="flex gap-2 p-2  rounded-lg w-2/5 justify-center border-2 border-transparent text-primary hover:border-primary"
+              onClick={(e) => onBack(e)}
+            >
+              <Back className="h-6" fill="#1FC39E" /> Back
+            </button>
+          )}
+          <button
+            className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
+            type="submit"
+            onClick={(e) => onNext(e)}
+          >
+            {formStage === 4 ? "Submit" : "Next"}
+          </button>
         </div>
       )}
     </div>

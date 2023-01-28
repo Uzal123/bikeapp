@@ -1,5 +1,5 @@
 const BikeBrand = {
-  ba: "bajaj",
+  ba: "Bajaj",
   ho: "Honda",
   ya: "Yamaha",
   tv: "TVS",

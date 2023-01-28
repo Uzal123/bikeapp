@@ -25,7 +25,7 @@ const Profile = ({ ...props }) => {
   const [fetchInput, setFetchInput] = useState({
     offerType: ["re"],
     pageNo: 1,
-    count: 10,
+    count: 10000,
   });
 
   const { loading, error, data } = useQuery(MY_PROFILE_AND_PRODUCT, {
@@ -52,8 +52,8 @@ const Profile = ({ ...props }) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!localStorage.getItem("rent-app-token") | error) {
-        router.push("/login", { pathname: "/profile" });
+      if (!user.email | error) {
+        router.push("/login");
       }
     }
   }, [user, error]);
@@ -155,13 +155,15 @@ const Profile = ({ ...props }) => {
               <p>This is my bio 8347853465 hello i am ths</p>
             </div>
             <div className="text-center">
-              <p className="font-semibold">Total Ads : 5</p>
+              <p className="font-semibold">
+                Total Ads : {data && data.myProducts.products.length}
+              </p>
             </div>
           </div>
         ) : (
           <p>loading</p>
         )}
-        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl p-6 ">
+        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2">
           <div>
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>
@@ -183,7 +185,7 @@ const Profile = ({ ...props }) => {
           <div className="grid md:grid-cols-4 gap-6">
             {data &&
               data.myProducts.products.map((item, i) => (
-                <ProductItem key={data._id} data={item} />
+                <ProductItem key={item._id} data={item} />
               ))}
           </div>
         </div>

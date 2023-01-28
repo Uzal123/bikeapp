@@ -11,8 +11,8 @@ import CarBrand from "../../assets/fakeData/CarBrand";
 import FuelType from "../../assets/fakeData/FuelType";
 import Transmission from "../../assets/fakeData/Transmission";
 import MapContainer from "../../components/UI/Map";
+import Geocode from "react-geocode";
 import { useJsApiLoader } from "@react-google-maps/api";
-
 
 const ProductInfo = () => {
   const router = useRouter();
@@ -23,6 +23,13 @@ const ProductInfo = () => {
   const [images, setImages] = useState(null);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const [center, setCenter] = useState({
+    lat: -3.745,
+    lng: -38.523,
+  });
+
+  const [address, setAddress] = useState("");
 
   const { loading, error, data } = useQuery(GET_PRODUCT_DETAILS, {
     variables: {
@@ -51,8 +58,17 @@ const ProductInfo = () => {
     if (!loading && data?.getProductDetails.success) {
       setProduct(data.getProductDetails.product);
       setImages(data.getProductDetails.product.images);
+      setCenter({
+        lat: data.getProductDetails.product.location.coordinates[0],
+        lng: data.getProductDetails.product.location.coordinates[1],
+      });
+      getAddress();
     }
   }, [data]);
+
+  useEffect(() => {
+    getAddress();
+  }, [center]);
 
   const onChat = (product) => {
     console.table(product._id, product.createdBy._id);
@@ -60,6 +76,14 @@ const ProductInfo = () => {
       pathname: `/chat/q`,
       query: { uid: product.createdBy._id, pid: product._id },
     });
+  };
+
+  Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
+  const getAddress = async () => {
+    try {
+      const response = await Geocode.fromLatLng(center.lat, center.lng);
+      setAddress(response.results[0].formatted_address);
+    } catch (error) {}
   };
 
   const { isLoaded } = useJsApiLoader({
@@ -178,11 +202,10 @@ const ProductInfo = () => {
                   <div className="flex flex-col gap-1">
                     <MapContainer
                       isLoaded={isLoaded}
-                      lat={product.location.coordinates[0]}
-                      lng={product.location.coordinates[1]}
-                      drag={true}
+                      center={center}
+                      drag={false}
                     />
-                    <p>Koteswor-5,Ktm</p>
+                    <p>{address}</p>
                   </div>
                 </div>
               </div>
@@ -340,11 +363,10 @@ const ProductInfo = () => {
                   <div className="flex flex-col gap-1">
                     <MapContainer
                       isLoaded={isLoaded}
-                      lat={product.location.coordinates[0]}
-                      lng={product.location.coordinates[1]}
-                      drag={true}
+                      center={center}
+                      drag={false}
                     />
-                    <p>Koteswor-5,Ktm</p>
+                    <p>{address}</p>
                   </div>
                 </div>
               </div>
