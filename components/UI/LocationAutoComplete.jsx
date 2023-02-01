@@ -12,6 +12,8 @@ const LocationAutoComplete = ({
   address,
   setAddress,
   setLocation,
+  errors,
+  setErrors
 }) => {
   const { placePredictions, getPlacePredictions, isPlacePredictionsLoading } =
     usePlacesService({});
@@ -40,7 +42,9 @@ const LocationAutoComplete = ({
   return (
     <div className="w-full">
       <input
-        className="w-full p-2 rounded-md "
+        className={
+          !errors.location ? "w-full p-2 rounded-md border-2 border-transparent" : "w-full p-2 rounded-md border-2 border-red-500"
+        }
         placeholder="Enter product location..."
         value={address}
         onChange={(evt) => {
@@ -49,6 +53,7 @@ const LocationAutoComplete = ({
           console.log(evt.target.value);
           getPlacePredictions({ input: evt.target.value });
           setAddress(evt.target.value);
+          setErrors({})
         }}
         onClick={() => setPlacesList(1)}
         loading={isPlacePredictionsLoading.toString()}

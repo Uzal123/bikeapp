@@ -33,10 +33,12 @@ const CreatePost = () => {
 
   const [location, setLocation] = useState();
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!user.email) {
-        router.push("/login",);
+        router.push("/login");
       }
     }
   }, [user]);
@@ -164,12 +166,21 @@ const CreatePost = () => {
                   <h2 className="text-md">Ad Title</h2>
                   <input
                     type="text"
-                    className="p-2 rounded-lg focus:outline-none"
-                    placeholder="Enter the title of the Ad"
+                    className={
+                      !errors.title
+                        ? "p-2 border-2 border-transparent rounded-lg focus:outline-none"
+                        : "border-2 border-red-500 p-2 rounded-lg focus:outline-none"
+                    }
+                    placeholder={
+                      !errors.title ? "Enter the title of the Ad" : errors.title
+                    }
                     required
                     value={title}
                     name="title"
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                      setErrors({});
+                    }}
                   />
                 </div>
               </form>
@@ -186,6 +197,8 @@ const CreatePost = () => {
                 setImageLinks={setImageLinks}
                 setLocation={setLocation}
                 location={location}
+                errors={errors}
+                setErrors={setErrors}
               />
             ) : (
               <CreatingSellInput

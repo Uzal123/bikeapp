@@ -22,43 +22,90 @@ const CreatingRentInput = ({
   imageLinks,
   setImageLinks,
   location,
-  setLocation
+  setLocation,
+  errors,
+  setErrors
 }) => {
   const [rentInput, setRentInput] = useState({
     offerType: "re",
     brand: "ho",
     fuleType: "pe",
-    color: "",
+    color: "bl",
     description: "",
     price: 0,
     priceType: "fi",
-    location: {
-      coordinates: [],
-    },
   });
+
 
 
   const onChange = (e) => {
     const val = e.target.value;
     const key = e.target.name;
     setRentInput((prevs) => ({ ...prevs, [key]: val }));
-    console.log(rentInput);
+    setErrors((prevs) => ({...prevs,[key] : ""}))
   };
 
   const handleFloat = (e) => {
     const val = parseFloat(e.target.value);
     const key = e.target.name;
     setRentInput((prevs) => ({ ...prevs, [key]: val }));
-    console.log(rentInput);
+    setErrors({})
   };
+
+  useEffect(() => {
+  }, [errors])
+  
 
   const onNext = (e) => {
     e.preventDefault();
+    if(formStage === 1 ){
+        let newErrors = {};
+        if(!title){
+            newErrors.title = "title is required"
+        }
+        setErrors(newErrors)
+        if (!Object.keys(newErrors).length) {
+          setformStage(formStage + 1);
+        }
+    }
+
+    if(formStage === 2 ){
+        let newErrors = {};
+        if (imageLinks.length === 0) {
+          newErrors.imageLinks = "Image is required";
+        }
+        setErrors(newErrors);
+        if (!Object.keys(newErrors).length) {
+          setformStage(formStage + 1);
+        }
+    }
+
+    if (formStage === 3) {
+      let newErrors = {};
+      if (!rentInput.description) {
+        newErrors.description = "Description is required";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
+    }
+
     if (formStage === 4) {
-      onSubmit(e);
-      setformStage(formStage + 1);
-    } else {
-      setformStage(formStage + 1);
+
+        let newErrors = {};
+        if (rentInput.price < 50) {
+          newErrors.price = "price must be more than 100";
+        }
+        if (!location) {
+          newErrors.location = "Enter your location";
+        }
+        setErrors(newErrors);
+        if (!Object.keys(newErrors).length) {
+          onSubmit(e);
+          setformStage(formStage + 1);
+        }
+      
     }
   };
 
@@ -99,7 +146,12 @@ const CreatingRentInput = ({
       {formStage === 2 && (
         <form onSubmit={(e) => onNext(e)} className="flex flex-col gap-2 ">
           <p className="p-2">Upload the images of the Vehicle</p>
-          <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
+          <ImageUpload
+            imageLinks={imageLinks}
+            setImageLinks={setImageLinks}
+            errors={errors}
+            setErrors={setErrors}
+          />
         </form>
       )}
       {formStage === 3 && offerType === "re" && (
@@ -172,10 +224,15 @@ const CreatingRentInput = ({
           <div className="col-span-2 p-2">
             <label className="p-2">Description</label>
             <textarea
-              className="w-full rounded-lg h-24 p-2 focus:outline-none"
+              className={
+                !errors.description
+                  ? "w-full rounded-lg h-24 p-2 focus:outline-none border-2 border-transparent"
+                  : "w-full rounded-lg h-24 p-2 focus:outline-none border-2 border-red-500"
+              }
               name="description"
               value={rentInput.description}
               onChange={(e) => onChange(e)}
+              placeholder={errors.description}
             />
           </div>
         </form>
@@ -186,8 +243,13 @@ const CreatingRentInput = ({
             <label className="p-2">Price per day</label>
             <input
               type="number"
-              className="p-2 rounded-lg"
+              className={
+                !errors.price
+                  ? "p-2 rounded-lg"
+                  : "p-2 rounded-lg border-2 border-red-500"
+              }
               name="price"
+              placeholder={errors.price}
               required
               value={rentInput.price}
               onChange={(e) => handleFloat(e)}
@@ -223,6 +285,8 @@ const CreatingRentInput = ({
               setRentInput={setRentInput}
               setLocation={setLocation}
               location={location}
+              errors={errors}
+              setErrors={setErrors}
             />
           </div>
         </form>

@@ -5,7 +5,7 @@ import Loading from "../../assets/createpost/loading.svg";
 import Trash from "../../assets/createpost/trash.svg";
 import IMAGE_UPLOAD from "../../graphql/Mutation/ImageUpload";
 
-const ImageUpload = ({ setImageLinks, imageLinks }) => {
+const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
   let inputref;
 
   const [uploadImage, { data, loading, error }] = useMutation(IMAGE_UPLOAD);
@@ -18,6 +18,7 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
           variables: { data: { image: image } },
         });
       }
+      setErrors({})
     } catch (error) {
       console.log(error);
     }
@@ -51,11 +52,16 @@ const ImageUpload = ({ setImageLinks, imageLinks }) => {
           onChange={(e) => onChange(e)}
         />
         <div
-          className="bg-gray-50 text-center flex flex-col justify-center aspect-square h-full w-full rounded-lg items-center"
+          className={
+            !errors.imageLinks
+              ? "bg-gray-50 text-center flex flex-col justify-center aspect-square h-full w-full rounded-lg items-center border-2 border-transparent"
+              : "bg-gray-50 text-center flex flex-col justify-center aspect-square h-full w-full rounded-lg items-center border-2 border-red-500"
+          }
           onClick={(e) => inputref.click()}
         >
           <Upload />
           <h2>{loading ? "Uploading..." : "Upload"}</h2>
+          <h3 className="text-red-500">{errors.imageLinks ? "1 image is required" : ""}</h3>
         </div>
       </div>
       {imageLinks?.map((d) => (

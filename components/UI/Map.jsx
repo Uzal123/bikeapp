@@ -18,6 +18,8 @@ const MapContainer = ({
   address,
   setAddress,
   setLocation,
+  errors,
+  setErrors,
   location,
 }) => {
   const getLocation = () => {
@@ -69,13 +71,15 @@ const MapContainer = ({
     isLoaded && (
       <Fragment>
         <div className="flex flex-col gap-2 h-full w-full">
-          {drag  && (
+          {drag && (
             <div className="flex w-full justify-between gap-2">
               <LocationAutoComplete
                 setCenter={setCenter}
                 address={address}
                 setAddress={setAddress}
                 setLocation={setLocation}
+                errors={errors}
+                setErrors={setErrors}
               />
               <Gps
                 className="h-8 "
