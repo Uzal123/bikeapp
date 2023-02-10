@@ -3,7 +3,7 @@ import React from "react";
 const ChatItem = ({ onClick, image, adTitle, userName, active = false }) => {
   return (
     <div
-      className={`"w-full flex p-2   border-b-2 border-gray-200 ${
+      className={`"w-full flex p-2   border-b-2 border-gray-200 cursor-pointer ${
         active ? " active-message rounded-md" : ""
       }  }`}
       onClick={onClick}

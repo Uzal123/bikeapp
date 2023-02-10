@@ -17,17 +17,17 @@ const Navbar = ({ ...props }) => {
         <NavLink exact href={"/"} className="order-1">
           <Home className="h-6 lg:h-8 " />
         </NavLink>
-        <NavLink exact href={"/notification"} className="order-2">
+        <NavLink exact href={user.id ?"/notification"  : '/login'} className="order-2">
           <Bell className="h-6 lg:h-8 " />
         </NavLink>
-        <NavLink href={"/chat"} className="order-3">
+        <NavLink href={user.id ? "/chat" : '/login'} className="order-3">
           <Chat className="h-6 lg:h-8" />
         </NavLink>
-        <NavLink exact href={`/profile/${user.id}`} className="order-4">
+        <NavLink exact href={user.id ? `/profile/${user.id}` : '/login'} className="order-4">
           <User className="h-6 lg:h-8" />
         </NavLink>
         <Link
-          href={"/createpost"}
+          href={user.id ?"/createpost" : "/login"}
           className="flex items-center p-2 h-12 w-12 justify-center lg:mt-6 bg-primary rounded-full shadow-xl order-2 lg:order-5"
         >
           <Add className="h-5 w-5 lg:h-6" />
