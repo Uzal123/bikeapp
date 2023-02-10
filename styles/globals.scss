@@ -9,6 +9,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Poppins", sans-serif;
+  @apply text-gray-1000
 }
 
 a {
@@ -25,17 +26,26 @@ a {
 
 
 .message-list {
-    height: calc(100vh - $topbar-thickness - $topbar-thickness - 2rem);
+    height: calc(100vh - $topbar-thickness  - 2rem);
 }
 
 .active-message {
-    @apply bg-primary
+    @apply bg-primary text-white;
 }
+
+
+.chatbox{
+    height: calc(100vh  - $nav-thickness - 8rem);
+}
+
 
 @screen lg {
     .message-list{
-        height: calc(100vh - $topbar-thickness - 2rem);
+        height: calc(100vh  - 2rem);
     }
+    .chatbox{
+    height: calc(100vh  - 10rem);
+}
 }
 
 

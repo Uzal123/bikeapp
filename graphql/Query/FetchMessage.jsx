@@ -7,11 +7,13 @@ const FETCH_MESSAGE = gql`
       message
       data {
         _id
-        sender {
-          _id
-        }
         receiver {
           _id
+          fullName
+        }
+        sender {
+          _id
+          fullName
         }
         message
       }

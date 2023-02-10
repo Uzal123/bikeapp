@@ -6,8 +6,11 @@ import Bell from "../../assets/NavigationBar/bell.svg";
 import Chat from "../../assets/NavigationBar/chat.svg";
 import User from "../../assets/NavigationBar/user.svg";
 import Add from "../../assets/NavigationBar/add.svg";
+import { useUserStore } from "../../store/auth";
 
 const Navbar = ({ ...props }) => {
+
+    const user = useUserStore((state) => state.user);
   return (
     <div className="navbar">
       <ul className="flex w-full h-full justify-between items-center lg:flex-col lg:justify-start lg:my-12 lg:gap-4">
@@ -20,7 +23,7 @@ const Navbar = ({ ...props }) => {
         <NavLink href={"/chat"} className="order-3">
           <Chat className="h-6 lg:h-8" />
         </NavLink>
-        <NavLink exact href="/profile" className="order-4">
+        <NavLink exact href={`/profile/${user.id}`} className="order-4">
           <User className="h-6 lg:h-8" />
         </NavLink>
         <Link

@@ -28,6 +28,8 @@ const CreatingSellInput = ({
   setImageLinks,
   setLocation,
   location,
+  setErrors,
+  errors,
 }) => {
   const [sellInput, setSellInput] = useState({
     offerType: "se",
@@ -42,18 +44,89 @@ const CreatingSellInput = ({
     transmission: "au",
     lotNo: "",
     kmRun: "",
-    color: "",
+    color: "bl",
     price: "",
     priceType: "fi",
   });
 
   const onNext = (e) => {
     e.preventDefault();
+    if (formStage === 1) {
+      let newErrors = {};
+      if (!title) {
+        newErrors.title = "title is required";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
+    }
+
+    if (formStage === 2) {
+      let newErrors = {};
+      if (imageLinks.length === 0) {
+        newErrors.imageLinks = "Image is required";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
+    }
+
+    if (formStage === 3) {
+      let newErrors = {};
+      if (!sellInput.description) {
+        newErrors.description = "Description is required";
+      }
+      setErrors(newErrors);
+
+      if (!sellInput.usedFor) {
+        newErrors.usedFor = "Enter the months used";
+      }
+      setErrors(newErrors);
+
+      if (!sellInput.madeYear) {
+        newErrors.madeYear = "Enter the made year";
+      }
+      setErrors(newErrors);
+
+      if (!sellInput.engine) {
+        newErrors.engine = "Enter the engine";
+      }
+      setErrors(newErrors);
+      if (!sellInput.milege) {
+        newErrors.milege = "Enter the milege";
+      }
+      setErrors(newErrors);
+
+      if (!sellInput.lotNo) {
+        newErrors.lotNo = "Enter the lot number";
+      }
+      setErrors(newErrors);
+
+      if (!sellInput.kmRun) {
+        newErrors.kmRun = "Enter the km run";
+      }
+      setErrors(newErrors);
+
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
+    }
+
     if (formStage === 4) {
-      onSubmit(e);
-      setformStage(formStage + 1);
-    } else {
-      setformStage(formStage + 1);
+      let newErrors = {};
+      if (sellInput.price < 50) {
+        newErrors.price = "price must be more than 100";
+      }
+      if (!location) {
+        newErrors.location = "Enter your location";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        onSubmit(e);
+        setformStage(formStage + 1);
+      }
     }
   };
 
@@ -66,6 +139,7 @@ const CreatingSellInput = ({
     const val = e.target.value;
     const key = e.target.name;
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
+    setErrors((prevs) => ({ ...prevs, [key]: "" }));
     console.log(sellInput);
   };
 
@@ -73,6 +147,7 @@ const CreatingSellInput = ({
     const val = parseFloat(e.target.value);
     const key = e.target.name;
     setSellInput((prevs) => ({ ...prevs, [key]: val }));
+    setErrors((prevs) => ({ ...prevs, [key]: "" }));
   };
 
   const onSubmit = (e) => {
@@ -105,7 +180,12 @@ const CreatingSellInput = ({
       {formStage === 2 && (
         <form className="h-full grid grid-cols-1" onSubmit={(e) => onNext(e)}>
           <p className="p-2">Upload the images of the Vehicle</p>
-          <ImageUpload imageLinks={imageLinks} setImageLinks={setImageLinks} />
+          <ImageUpload
+            imageLinks={imageLinks}
+            setImageLinks={setImageLinks}
+            errors={errors}
+            setErrors={setErrors}
+          />
         </form>
       )}
 
@@ -143,6 +223,8 @@ const CreatingSellInput = ({
               title="Used For"
               type="number"
               name="usedFor"
+              placeholder={errors.usedFor}
+              errors={errors.usedFor}
               value={sellInput.usedFor}
               onChange={(e) => handleFloat(e)}
             />
@@ -150,8 +232,13 @@ const CreatingSellInput = ({
           <div className="col-span-2 p-2">
             <label className="p-2">Description</label>
             <textarea
-              className="w-full rounded-lg h-24 p-2 focus:outline-none"
+              className={
+                !errors.description
+                  ? "w-full rounded-lg h-24 p-2 focus:outline-none border-2 border-transparent"
+                  : "w-full rounded-lg h-24 p-2 focus:outline-none border-2 border-red-500"
+              }
               name="description"
+              placeholder={errors.description}
               value={sellInput.description}
               onChange={(e) => onChange(e)}
             />
@@ -161,6 +248,8 @@ const CreatingSellInput = ({
               title="Make Year"
               type="number"
               name="madeYear"
+              placeholder={errors.madeYear}
+              errors={errors.madeYear}
               value={sellInput.madeYear}
               onChange={(e) => handleFloat(e)}
             />
@@ -170,6 +259,8 @@ const CreatingSellInput = ({
               title="Engine (CC)"
               type="number"
               name="engine"
+              errors={errors.engine}
+              placeholder={errors.engine}
               value={sellInput.engine}
               onChange={(e) => handleFloat(e)}
             />
@@ -179,6 +270,8 @@ const CreatingSellInput = ({
               title="Milege"
               type="text"
               name="milege"
+              errors={errors.milege}
+              placeholder={errors.milege}
               value={sellInput.milege}
               onChange={(e) => onChange(e)}
             />
@@ -198,6 +291,8 @@ const CreatingSellInput = ({
               title="Lot Number"
               type="text"
               name="lotNo"
+              placeholder={errors.lotNo}
+              errors={errors.lotNo}
               value={sellInput.lotNo}
               onChange={(e) => onChange(e)}
             />
@@ -208,7 +303,9 @@ const CreatingSellInput = ({
               title="Kilometer run"
               type="number"
               name="kmRun"
+              placeholder={errors.kmRun}
               value={sellInput.kmRun}
+              errors={errors.kmRun}
               onChange={(e) => handleFloat(e)}
             />
           </div>
@@ -231,6 +328,8 @@ const CreatingSellInput = ({
               title="Price"
               type="number"
               name="price"
+              errors={errors.price}
+              placeholder={errors.price}
               value={sellInput.price}
               onChange={(e) => handleFloat(e)}
             />
@@ -264,6 +363,8 @@ const CreatingSellInput = ({
               setSellInput={setSellInput}
               setLocation={setLocation}
               location={location}
+              errors={errors}
+              setErrors={setErrors}
             />
           </div>
         </form>

@@ -5,8 +5,8 @@ import Heart from "../../assets/Product/heart.svg";
 
 const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
   return (
-    <div>
-      <Link className=" bg-white rounded-xl relative" href={`/product/${_id}`}>
+    <div className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2">
+      <Link href={`/product/${_id}`}>
         <div className="aspect-square  ">
           <img
             src={images[0].url}
@@ -14,7 +14,7 @@ const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
           />
         </div>
         <div className="p-2 relative">
-          <Bookmark className="absolute right-2 bottom-4 h-6" />
+          {/* <Bookmark className="absolute right-2 bottom-4 h-6" /> */}
           <div className="flex justify-between">
             <p className="font-semibold text-md">Rs. {price}</p>
             <p className="text-xs">1.5 Km</p>

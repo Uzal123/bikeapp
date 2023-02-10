@@ -211,6 +211,8 @@ const CreatePost = () => {
                 setImageLinks={setImageLinks}
                 setLocation={setLocation}
                 location={location}
+                errors={errors}
+                setErrors={setErrors}
               />
             )}
           </section>

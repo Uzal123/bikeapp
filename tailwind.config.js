@@ -13,6 +13,9 @@ module.exports = {
                     navbar: "#F4F0F0E0",
                     dark: "#545454",
                 },
+                gray: {
+                    1000: "#2D2D2D",
+                },
                 customWhite: {
                     light: "rgba(203, 201, 201, 0.56)"
                 }

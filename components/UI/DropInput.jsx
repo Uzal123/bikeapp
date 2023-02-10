@@ -6,7 +6,7 @@ const DropInput = ({title,value,onChange,items,name}) => {
       <label className="whitespace-nowrap p-2">{title}</label>
       <select
         name={name}
-        className="w-full p-2 rounded-lg"
+        className="w-full p-2 rounded-lg border-2 border-transparent"
         value={value}
         onChange={(e) => onChange(e)}
       >

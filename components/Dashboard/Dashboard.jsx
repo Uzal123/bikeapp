@@ -5,6 +5,7 @@ import Search from "../../assets/TopBar/search.svg";
 import Category from "./Category/Category";
 import ButtonTab from "../UI/Tab";
 import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
+import Spinner from "../UI/Spinner";
 
 const Dashboard = () => {
   const [tab, setTab] = useState("re");
@@ -30,7 +31,7 @@ const Dashboard = () => {
 
   const { loading, error, data } = useQuery(FETCHPRODUCTS, {
     variables: {
-      fetchInput : inputVariables.fetchInput,
+      fetchInput: inputVariables.fetchInput,
     },
   });
 
@@ -68,17 +69,25 @@ const Dashboard = () => {
       <h2 className="font-bold text-xl">Discover</h2>
       {inputVariables.fetchInput.offerType === "re" ? (
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {data &&
+          {data && data.fetchProducts.products ? (
             data.fetchProducts.products.map((item, i) => (
               <ProductItem key={item._id} data={item} offer="rent" />
-            ))}
+            ))
+          ) : (
+            <div className="w-full col-span-5">
+              <Spinner />
+            </div>
+          )}
         </div>
       ) : (
         <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {data &&
+          {data && data.fetchProducts.products ? (
             data.fetchProducts.products.map((item, i) => (
               <ProductItem data={item} key={item._id} offer="sell" />
-            ))}
+            ))
+          ) : (
+            <Spinner />
+          )}
         </div>
       )}
     </div>
@@ -86,5 +95,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-

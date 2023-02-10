@@ -2,7 +2,7 @@ $nav-thickness: 4rem;
 
 .navbar {
   height: $nav-thickness;
-  z-index: 10000;
+  z-index: 1000;
   @apply w-screen fixed bottom-0 left-0 bg-white p-2;
 
   .active {
