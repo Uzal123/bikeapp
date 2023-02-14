@@ -38,7 +38,7 @@ const CreatePost = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!user.email) {
-        router.push("/login");
+        router.push("/login", { basePath : "/createpost"});
       }
     }
   }, [user]);

@@ -7,15 +7,15 @@ const useStore = create((set) => ({
     email: "",
     id: "",
   },
-  setUser: (token, data) => {
+  setUser: (token, id, email, fullName) => {
     if (token) {
       localStorage.setItem("rent-app-token", token);
     }
     set((state) => ({
       user: {
-        name: data.fullName,
-        email: data.email,
-        id: data._id,
+        name: fullName,
+        email: email,
+        id: id,
       },
     }));
   },

@@ -1,11 +1,14 @@
-import create, {
-    createStore
-} from "zustand";
+import create, {} from "zustand";
 // import { devtools, persist } from "zustand/middleware";
 
-const useStore = create((set) => ({
+export const useStore = create((set) => ({
     notifications: [],
-    setNotification: (id, message, status) => {
+    removeNotification: (id) => {
+        set((state) => ({
+            notifications: state.notifications.filter((item) => item.id != id),
+        }));
+    },
+    setNotification: (id, message, status, timeDelay = 3000) => {
 
         set((state) => ({
             notifications: [...state.notifications, {
@@ -14,12 +17,15 @@ const useStore = create((set) => ({
                 status
             }]
         }));
+        setTimeout(() => {
+            set((state) => ({
+                notifications: state.notifications.filter((item) => item.id != id),
+            }));
+        }, timeDelay);
     },
-    removeNotification: (id) => {
-        set((state) => ({
-            notifications: state.notifications.filter((item) => item.id != id),
-        }));
-    },
+
 }));
 
-export const useUserStore = useStore;
+export const useNotificationStore = useStore;
+
+export default useStore;

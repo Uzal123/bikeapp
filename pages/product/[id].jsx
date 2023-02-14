@@ -21,10 +21,16 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
 import Spinner from "../../components/UI/Spinner";
 import Link from "next/link";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const ProductInfo = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
 
   const user = useUserStore((state) => state.user);
 
@@ -48,6 +54,8 @@ const ProductInfo = () => {
   const [peerId, setPeerId] = useState(null);
 
   const [productId, setProductId] = useState(null);
+
+  const [msgData, setMgsData] = useState();
 
   const { loading, error, data } = useQuery(GET_PRODUCT_DETAILS, {
     variables: {
@@ -92,6 +100,8 @@ const ProductInfo = () => {
 
   const sendMessage = async (productId, peerId, message) => {
     try {
+      setNotification(uuid(), "Sending", "Success", 3000);
+      setMessageModal(false);
       console.log({ productId, peerId, message });
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,
@@ -103,14 +113,12 @@ const ProductInfo = () => {
           },
         },
       });
-
-      setMessage("");
-      setMessageModal(false);
-      console.log(msgResponse);
-    } catch (error) {
-      console.log(error);
-    }
+      setMgsData(msgResponse);
+      setNotification(uuid(), "Message sent successfully", "Success", 3000);
+    } catch (error) {}
   };
+
+ 
 
   Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
   const getAddress = async () => {
@@ -223,16 +231,16 @@ const ProductInfo = () => {
 
                   {user.id !== product.createdBy._id ? (
                     <div className="flex flex-col gap-4 py-4 w-full">
-                    <Link href={`/profile/${product.createdBy._id}`}>
-                      <div className="flex gap-4">
-                        <div className="bg-gray-400 rounded-full h-14 w-14"></div>
-                        <div>
-                          <p className="font-semibold">
-                            {product.createdBy.fullName}
-                          </p>
-                          <p>5 Ads</p>
+                      <Link href={`/profile/${product.createdBy._id}`}>
+                        <div className="flex gap-4">
+                          <div className="bg-gray-400 rounded-full h-14 w-14"></div>
+                          <div>
+                            <p className="font-semibold">
+                              {product.createdBy.fullName}
+                            </p>
+                            <p>5 Ads</p>
+                          </div>
                         </div>
-                      </div>
                       </Link>
                       <div className="flex w-full gap-6">
                         <button

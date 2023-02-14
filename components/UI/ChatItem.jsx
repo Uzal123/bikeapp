@@ -9,9 +9,10 @@ const ChatItem = ({ onClick, image, adTitle, userName, active = false }) => {
       onClick={onClick}
     >
       <img src={image} className="rounded-full h-16 w-16 b" />
+      
       <div className="flex flex-col justify-center p-2">
-        <h2 className="font-semibold">{userName}</h2>
-        <p>{adTitle}</p>
+        <h2 className="font-semibold line-clamp">{userName}</h2>
+        <p className="line-clamp overflow-hidden">{adTitle}</p>
       </div>
     </div>
   );

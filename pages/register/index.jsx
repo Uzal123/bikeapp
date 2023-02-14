@@ -6,6 +6,10 @@ import Input from "../../components/UI/Input";
 import { gql, useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
 import Router, { withRouter, useRouter } from "next/router";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
+
+
 const Register = () => {
   const [registerData, setregisterData] = useState({
     email: "",
@@ -14,6 +18,9 @@ const Register = () => {
   });
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
 
   const [submitRegister, { data, loading, error }] = useMutation(REGISTER_USER);
   const router = useRouter();
@@ -21,8 +28,13 @@ const Register = () => {
   useEffect(() => {
     if (data?.register["success"]) {
       const user = data.register["user"];
-      setUser(user.accessToken, user);
+      setUser(user.accessToken, user._id, user.email, user.fullName);
+      setNotification(uuid(), "Registered and Logged in", "Success", 3000);
       router.push("/");
+    }
+
+    if (data?.register?.success == false) {
+      setNotification(uuid(), data.register.message, "Error", 3000);
     }
   }, [data]);
 
@@ -98,11 +110,6 @@ const Register = () => {
             >
               Password
             </Input>
-            {data?.register?.success == false && (
-              <p className="text-red-600 text-center">
-                {data?.register.message}
-              </p>
-            )}
             <button
               type="submit"
               className="bg-primary text-white w-full p-2 rounded-full my-6"
@@ -118,8 +125,14 @@ const Register = () => {
           <p className="text-center text-customGray-normal font-medium">
             Already a <spam className="text-primary">RentingApp</spam> User ?
           </p>
-          <div className="flex justify-center"><Link className="text-center cursor-pointer font-medium text-primary" href="/login">LOGIN</Link></div>
-          
+          <div className="flex justify-center">
+            <Link
+              className="text-center cursor-pointer font-medium text-primary"
+              href="/login"
+            >
+              LOGIN
+            </Link>
+          </div>
         </div>
       </div>
     </div>

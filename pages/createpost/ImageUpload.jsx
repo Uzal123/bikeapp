@@ -41,7 +41,7 @@ const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
       <div
         className={`flex justify-center cursor-pointer
-        ${imageLinks?.length > 0 ? " " : "pb-20"}
+        ${imageLinks?.length > 1 ? " " : "pb-20"}
         `}
       >
         <input

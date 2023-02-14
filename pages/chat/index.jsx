@@ -18,7 +18,7 @@ const Chat = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (!user.email | error) {
-        router.push("/login");
+        router.push("/login", { basePath: "/chat" });
       }
     }
   }, [user, error]);
@@ -34,27 +34,37 @@ const Chat = () => {
 
   return (
     <ChatLayout
-    showMessagePage={false}
+      showMessagePage={false}
       chat={
         <Fragment>
-          {data &&
-            !loading &&
-            data.fetchChat.map((item, i) => (
-              <ChatItem
-                key={item._id}
-                onClick={() => {
-                  onChat(
-                    item.user1._id === user.id
-                      ? item.user2._id
-                      : item.user1._id,
-                    item.product._id
-                  );
-                }}
-                image={item.product.images[0].url}
-                adTitle={item.product.title}
-                userName={item.user1._id === user.id ? item.user2.fullName : item.user1.fullName }
-              />
-            ))}
+          {data && !loading && (
+            <Fragment>
+              {data.fetchChat.length > 0 ? (
+                data.fetchChat.map((item, i) => (
+                  <ChatItem
+                    key={item._id}
+                    onClick={() => {
+                      onChat(
+                        item.user1._id === user.id
+                          ? item.user2._id
+                          : item.user1._id,
+                        item.product._id
+                      );
+                    }}
+                    image={item.product.images[0].url}
+                    adTitle={item.product.title}
+                    userName={
+                      item.user1._id === user.id
+                        ? item.user2.fullName
+                        : item.user1.fullName
+                    }
+                  />
+                ))
+              ) : (
+                <p1>no chats</p1>
+              )}
+            </Fragment>
+          )}
         </Fragment>
       }
     />
@@ -62,4 +72,3 @@ const Chat = () => {
 };
 
 export default Chat;
-

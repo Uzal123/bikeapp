@@ -7,8 +7,9 @@ const LOGIN_USER = gql`
       success
       message
       user {
+        _id
         accessToken
-        username
+        fullName
         email
       }
     }

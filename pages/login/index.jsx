@@ -3,39 +3,40 @@ import Input from "../../components/UI/Input";
 import { useMutation, useQuery } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
 import { useUserStore } from "../../store/auth";
+import { useNotificationStore } from "../../store/notifications";
 import Router, { withRouter, useRouter } from "next/router";
 import Link from "next/link";
+import { uuid } from "uuidv4";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ email: "", password: "" });
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
 
   const [login, { loading, error, data }] = useMutation(LOGIN_USER);
   const router = useRouter();
 
   useEffect(() => {
-    /// for notiti 
-    // setNotifdation
-    //settime
-    //  removeNotification
     if (data?.login?.["success"] && !loading) {
       const user = data.login["user"];
-      setUser(user.accessToken, user);
-      router.push("/");
+      setUser(user.accessToken, user._id, user.email, user.fullName);
+      setNotification(uuid(), "Login Successfull", "Success", 3000);
+    }
+    if (data?.login?.success == false) {
+      setNotification(uuid(), data.login.message, "Error", 3000);
     }
   }, [data]);
 
   useEffect(() => {
-    console.log(router);
-    console.log({ user });
     if (user.email) {
-      if (router.asPath !== "/register") {
-        router.push(router.asPath);
-      } else {
+      if (router.asPath === "/register" || router.asPath === "/login") {
         router.push("/");
+      } else {
+        router.push(router.asPath);
       }
-      router.back();
     }
   }, [user]);
 
@@ -48,9 +49,11 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    login({
-      variables: loginData,
-    });
+    if (!loading) {
+      login({
+        variables: loginData,
+      });
+    }
   };
 
   return (
@@ -92,11 +95,8 @@ const Login = () => {
               Password
             </Input>
 
-            {data?.login?.success == false && (
-              <p className="text-red-600 text-center">{data?.login.message}</p>
-            )}
             <button className="bg-primary text-white w-full p-2 rounded-full my-6">
-              Login
+              {loading ? "Loading..." : "Login"}
             </button>
           </form>
 

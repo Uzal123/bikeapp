@@ -12,6 +12,8 @@ import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
 import Geocode from "react-geocode";
 import Colors from "../../assets/fakeData/colors";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const CreatingRentInput = ({
   formStage,
@@ -24,8 +26,12 @@ const CreatingRentInput = ({
   location,
   setLocation,
   errors,
-  setErrors
+  setErrors,
 }) => {
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
+
   const [rentInput, setRentInput] = useState({
     offerType: "re",
     brand: "ho",
@@ -36,48 +42,51 @@ const CreatingRentInput = ({
     priceType: "fi",
   });
 
+  const [center, setCenter] = useState({
+    lat: -3.745,
+    lng: -38.523,
+  });
 
+  const [address, setAddress] = useState("");
 
   const onChange = (e) => {
     const val = e.target.value;
     const key = e.target.name;
     setRentInput((prevs) => ({ ...prevs, [key]: val }));
-    setErrors((prevs) => ({...prevs,[key] : ""}))
+    setErrors((prevs) => ({ ...prevs, [key]: "" }));
   };
 
   const handleFloat = (e) => {
     const val = parseFloat(e.target.value);
     const key = e.target.name;
     setRentInput((prevs) => ({ ...prevs, [key]: val }));
-    setErrors({})
+    setErrors({});
   };
 
-  useEffect(() => {
-  }, [errors])
-  
+  useEffect(() => {}, [errors]);
 
   const onNext = (e) => {
     e.preventDefault();
-    if(formStage === 1 ){
-        let newErrors = {};
-        if(!title){
-            newErrors.title = "title is required"
-        }
-        setErrors(newErrors)
-        if (!Object.keys(newErrors).length) {
-          setformStage(formStage + 1);
-        }
+    if (formStage === 1) {
+      let newErrors = {};
+      if (!title) {
+        newErrors.title = "title is required";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
     }
 
-    if(formStage === 2 ){
-        let newErrors = {};
-        if (imageLinks.length === 0) {
-          newErrors.imageLinks = "Image is required";
-        }
-        setErrors(newErrors);
-        if (!Object.keys(newErrors).length) {
-          setformStage(formStage + 1);
-        }
+    if (formStage === 2) {
+      let newErrors = {};
+      if (imageLinks.length === 0) {
+        newErrors.imageLinks = "Image is required";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        setformStage(formStage + 1);
+      }
     }
 
     if (formStage === 3) {
@@ -92,27 +101,25 @@ const CreatingRentInput = ({
     }
 
     if (formStage === 4) {
-
-        let newErrors = {};
-        if (rentInput.price < 50) {
-          newErrors.price = "price must be more than 100";
-        }
-        if (!location) {
-          newErrors.location = "Enter your location";
-        }
-        setErrors(newErrors);
-        if (!Object.keys(newErrors).length) {
-          onSubmit(e);
-          setformStage(formStage + 1);
-        }
-      
+      let newErrors = {};
+      if (rentInput.price < 50) {
+        newErrors.price = "price must be more than 100";
+      }
+      if (!location) {
+        newErrors.location = "Enter your location";
+      }
+      setErrors(newErrors);
+      if (!Object.keys(newErrors).length) {
+        onSubmit(e);
+        //   setformStage(formStage + 1);
+      }
     }
   };
 
-   const onBack = (e) => {
-     e.preventDefault();
-     setformStage(formStage - 1);
-   };
+  const onBack = (e) => {
+    e.preventDefault();
+    setformStage(formStage - 1);
+  };
 
   const onSubmit = (e) => {
     e?.preventDefault();
@@ -120,7 +127,10 @@ const CreatingRentInput = ({
       ...rentInput,
       images: imageLinks,
       title: title,
-      location: location,
+      location: {
+        coordinates: [parseFloat(location[0]), parseFloat(location[1])],
+        location: address,
+      },
       vehicleType: vehicleType,
     };
     console.log(data);
@@ -129,17 +139,17 @@ const CreatingRentInput = ({
 
   const [submitRentProduct, { data, loading, error }] =
     useMutation(CREATING_RENT);
-  if (data) {
+  useEffect(() => {
     console.log(data);
-  }
 
-  const [center, setCenter] = useState({
-    lat: -3.745,
-    lng: -38.523,
-  });
-
-  const [address, setAddress] = useState("");
-
+    if (data?.rentProduct?.success) {
+      setNotification(uuid(), "Ad submitted successfully", "Success", 5000);
+      setformStage(5);
+    }
+    if (error) {
+      setNotification(uuid(), "Something went wrong !!!", "Error", 5000);
+    }
+  }, [data, loading, error]);
 
   return (
     <div className="w-full">
@@ -327,7 +337,7 @@ const CreatingRentInput = ({
             type="submit"
             onClick={(e) => onNext(e)}
           >
-            {formStage === 4 ? "Submit" : "Next"}
+            {formStage === 4 ? (loading ? "Loading..." : "Submit") : "Next"}
           </button>
         </div>
       )}

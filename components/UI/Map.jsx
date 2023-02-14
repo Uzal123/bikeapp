@@ -24,9 +24,7 @@ const MapContainer = ({
 }) => {
   const getLocation = () => {
     navigator.geolocation.getCurrentPosition(async function (position) {
-      setLocation({
-        coordinates: [position.coords.latitude, position.coords.longitude],
-      });
+      setLocation([position.coords.latitude, position.coords.longitude]);
       Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
       const response = await Geocode.fromLatLng(
         position.coords.latitude,
@@ -59,9 +57,7 @@ const MapContainer = ({
 
       setCenter({ lat: e.latLng.lat(), lng: e.latLng.lng() });
       setAddress(response.results[0].formatted_address);
-      setLocation({
-        coordinates: [e.latLng.lat(), e.latLng.lng()],
-      });
+      setLocation([e.latLng.lat(), e.latLng.lng()],);
     } catch (error) {}
   };
 

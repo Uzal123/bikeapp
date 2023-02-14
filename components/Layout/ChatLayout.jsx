@@ -12,6 +12,9 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
               showMessagePage ? "hidden" : ""
             } md:flex`}
           >
+            <h2 className="p-4 text-white bg-primary mb-4 lg:rounded-t-md text-lg font-semibold">
+              Chats
+            </h2>
             {chat}
           </div>
 

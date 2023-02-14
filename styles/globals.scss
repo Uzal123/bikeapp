@@ -20,6 +20,9 @@ a {
 * {
   box-sizing: border-box;
 }
+*:focus {
+  outline: none !important;
+}
 
 @import "navbar";
 @import "topbar";
@@ -33,11 +36,37 @@ a {
     @apply bg-primary text-white;
 }
 
+.line-clamp {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 .chatbox{
     height: calc(100vh  - $nav-thickness - 8rem);
 }
 
+.notification{
+  bottom: 0;
+  transform: translateY(-50%);
+  animation: slide-up 1s ease-in-out forwards, disappear 1s 5s forwards;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes disappear {
+  100% {
+    opacity: 0;
+  }
+}
 
 @screen lg {
     .message-list{

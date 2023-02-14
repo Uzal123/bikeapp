@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImageUpload from "./ImageUpload";
 import CarBrand from "../../assets/fakeData/CarBrand";
 import Condition from "../../assets/fakeData/Condition";
@@ -17,6 +17,8 @@ import PriceType from "../../assets/fakeData/PriceType";
 import DropInput from "../../components/UI/DropInput";
 import FormInput from "../../components/UI/FormInput";
 import Colors from "../../assets/fakeData/colors";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const CreatingSellInput = ({
   formStage,
@@ -31,6 +33,9 @@ const CreatingSellInput = ({
   setErrors,
   errors,
 }) => {
+
+const setNotification = useNotificationStore((state) => state.setNotification);
+
   const [sellInput, setSellInput] = useState({
     offerType: "se",
     brand: "ba",
@@ -48,6 +53,8 @@ const CreatingSellInput = ({
     price: "",
     priceType: "fi",
   });
+
+  const [product, setProduct] = useState({});
 
   const onNext = (e) => {
     e.preventDefault();
@@ -125,7 +132,7 @@ const CreatingSellInput = ({
       setErrors(newErrors);
       if (!Object.keys(newErrors).length) {
         onSubmit(e);
-        setformStage(formStage + 1);
+        //setformStage(formStage + 1);
       }
     }
   };
@@ -156,7 +163,10 @@ const CreatingSellInput = ({
       ...sellInput,
       images: imageLinks,
       title: title,
-      location: location,
+      location: {
+        coordinates: [parseFloat(location[0]), parseFloat(location[1])],
+        location: address,
+      },
       vehicleType: vehicleType,
     };
     submitSellProduct({ variables: { sellProductInput: data } });
@@ -164,9 +174,17 @@ const CreatingSellInput = ({
 
   const [submitSellProduct, { data, loading, error }] =
     useMutation(CREATING_SELL);
-  if (data) {
+  useEffect(() => {
     console.log(data);
-  }
+
+    if (data?.sellProduct?.success) {
+        setNotification(uuid(), "Ad submitted successfully", "Success",5000)
+      setformStage(5);
+    }
+    if(error){
+        setNotification(uuid(), "Something went wrong !!!", "Error",5000)
+    }
+  }, [data, loading,error]);
 
   const [center, setCenter] = useState({
     lat: -3.745,
@@ -403,9 +421,11 @@ const CreatingSellInput = ({
           <button
             className="bg-primary w-2/5 p-2 rounded-xl text-white border-2 border-transparent"
             type="submit"
-            onClick={(e) => onNext(e)}
+            onClick={(e) => {
+              onNext(e);
+            }}
           >
-            {formStage === 4 ? "Submit" : "Next"}
+            {formStage === 4 ? (loading ? "Loading..." : "Submit") : "Next"}
           </button>
         </div>
       )}
