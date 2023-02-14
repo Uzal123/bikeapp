@@ -82,6 +82,7 @@ const CreatingRentInput = ({
       let newErrors = {};
       if (imageLinks.length === 0) {
         newErrors.imageLinks = "Image is required";
+        setNotification(uuid(), "Image is required", "Error", 3000);
       }
       setErrors(newErrors);
       if (!Object.keys(newErrors).length) {
@@ -337,7 +338,7 @@ const CreatingRentInput = ({
             type="submit"
             onClick={(e) => onNext(e)}
           >
-            {formStage === 4 ? (loading ? "Loading..." : "Submit") : "Next"}
+            {formStage === 4 ? (loading ? "Submitting..." : "Submit") : "Next"}
           </button>
         </div>
       )}

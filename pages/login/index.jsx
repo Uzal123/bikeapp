@@ -61,7 +61,7 @@ const Login = () => {
       {console.log(data)}
       <div className="hidden md:block left w-3/5 h-screen">
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
-          RentingApp
+          WheelzHub
         </h2>
         <div className="flex justify-center items-center h-full ">
           <div className="flex justify-center">
@@ -96,7 +96,7 @@ const Login = () => {
             </Input>
 
             <button className="bg-primary text-white w-full p-2 rounded-full my-6">
-              {loading ? "Loading..." : "Login"}
+              {loading ? "Submitting..." : "Login"}
             </button>
           </form>
 

@@ -14,6 +14,8 @@ import MY_PROFILE from "../../graphql/Query/MyProfile";
 import USER_PROFILE from "../../graphql/Query/UserProfile";
 import { client } from "../../graphql/client";
 import Spinner from "../../components/UI/Spinner";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const Profile = ({ ...props }) => {
   let inputref;
@@ -21,13 +23,16 @@ const Profile = ({ ...props }) => {
   const removeUser = useUserStore((state) => state.removeUser);
   const router = useRouter();
   const { id } = router.query;
+
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
   const [settingTab, setSettingTab] = useState(null);
 
   const [tab, setTab] = useState("re");
 
   const [products, setProducts] = useState([]);
 
-  const [productloading, setProductLoading] = useState(false);
 
   const [fetchInput, setFetchInput] = useState({
     offerType: [tab],
@@ -84,6 +89,8 @@ const Profile = ({ ...props }) => {
 
   const onChange = async (e) => {
     try {
+      setNotification(uuid(), "Uploading", "Loading", 3000);
+      setSettingTab(false);
       const image = e.target.files[0];
       const response = await client.mutate({
         mutation: UPLOAD_PROFILE_PIC,
@@ -91,8 +98,9 @@ const Profile = ({ ...props }) => {
       });
 
       setProfileData(response.data.uploadProfilePic.profile);
+      setNotification(uuid(), "Image uploaded successfully", "Success", 3000);
     } catch (error) {
-      console.log(error);
+      setNotification(uuid(), "Error while uploading image", "Error", 3000);
     }
   };
 
@@ -133,6 +141,12 @@ const Profile = ({ ...props }) => {
                     className="hover:bg-red-500 hover:text-white p-2 rounded-md cursor-pointer"
                     onClick={(e) => {
                       removeUser();
+                      setNotification(
+                        uuid(),
+                        "Logged Out",
+                        "Error",
+                        3000
+                      );
                     }}
                   >
                     Log Out

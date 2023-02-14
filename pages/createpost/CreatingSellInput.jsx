@@ -33,8 +33,9 @@ const CreatingSellInput = ({
   setErrors,
   errors,
 }) => {
-
-const setNotification = useNotificationStore((state) => state.setNotification);
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
 
   const [sellInput, setSellInput] = useState({
     offerType: "se",
@@ -73,6 +74,7 @@ const setNotification = useNotificationStore((state) => state.setNotification);
       let newErrors = {};
       if (imageLinks.length === 0) {
         newErrors.imageLinks = "Image is required";
+        setNotification(uuid(), "Image is required", "Error", 3000);
       }
       setErrors(newErrors);
       if (!Object.keys(newErrors).length) {
@@ -178,13 +180,13 @@ const setNotification = useNotificationStore((state) => state.setNotification);
     console.log(data);
 
     if (data?.sellProduct?.success) {
-        setNotification(uuid(), "Ad submitted successfully", "Success",5000)
+      setNotification(uuid(), "Ad submitted successfully", "Success", 5000);
       setformStage(5);
     }
-    if(error){
-        setNotification(uuid(), "Something went wrong !!!", "Error",5000)
+    if (error) {
+      setNotification(uuid(), "Something went wrong !!!", "Error", 5000);
     }
-  }, [data, loading,error]);
+  }, [data, loading, error]);
 
   const [center, setCenter] = useState({
     lat: -3.745,
@@ -425,7 +427,7 @@ const setNotification = useNotificationStore((state) => state.setNotification);
               onNext(e);
             }}
           >
-            {formStage === 4 ? (loading ? "Loading..." : "Submit") : "Next"}
+            {formStage === 4 ? (loading ? "Submitting..." : "Submit") : "Next"}
           </button>
         </div>
       )}

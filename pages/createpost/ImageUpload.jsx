@@ -2,23 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import Upload from "../../assets/createpost/upload.svg";
 import Loading from "../../assets/createpost/loading.svg";
-import Trash from "../../assets/createpost/trash.svg";
+import Cross from "../../assets/createpost/cross.svg";
 import IMAGE_UPLOAD from "../../graphql/Mutation/ImageUpload";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
-const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
+const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
+
   let inputref;
 
   const [uploadImage, { data, loading, error }] = useMutation(IMAGE_UPLOAD);
-
   const onChange = async (e) => {
     try {
+      setNotification(uuid(), "Uploading..", "Loading", 3000);
       const image = e.target.files[0];
       if (image) {
         uploadImage({
           variables: { data: { image: image } },
         });
       }
-      setErrors({})
+      setErrors({});
     } catch (error) {
       console.log(error);
     }
@@ -27,6 +33,7 @@ const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
   const removeImg = (key) => {
     const updatedImages = imageLinks.filter((item) => item.key != key);
     setImageLinks(updatedImages);
+    setNotification(uuid(), "Image removed", "Error", 3000);
   };
 
   useEffect(() => {
@@ -34,6 +41,7 @@ const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
       let key = data.uploadImage.data.key;
       let url = data.uploadImage.data.url;
       setImageLinks((prevs) => [...prevs, { key: key, url: url }]);
+      setNotification(uuid(), "Image uploaded", "Success", 3000);
     }
   }, [data]);
 
@@ -61,7 +69,6 @@ const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
         >
           <Upload />
           <h2>{loading ? "Uploading..." : "Upload"}</h2>
-          <h3 className="text-red-500">{errors?.imageLinks ? "1 image is required" : ""}</h3>
         </div>
       </div>
       {imageLinks?.map((d) => (
@@ -72,12 +79,12 @@ const ImageUpload = ({ setImageLinks, imageLinks,errors,setErrors }) => {
             className="rounded-lg object-cover aspect-square "
           />
           <div
-            className="absolute -top-1 -right-1  hover:scale-110 bg-white rounded-full"
+            className="absolute -top-2 -right-2  hover:scale-110 bg-white rounded-full"
             onClick={(e) => {
               removeImg(d.key);
             }}
           >
-            <Trash className="h-6" fill="red" />
+            <Cross className="h-6" fill="red" />
           </div>
         </div>
       ))}

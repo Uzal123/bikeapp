@@ -23,7 +23,6 @@ const Chat = () => {
     }
   }, [user, error]);
 
-  //   const [active, setActive] = useState(1)
 
   const onChat = (peerId, productId) => {
     router.push({
@@ -61,7 +60,9 @@ const Chat = () => {
                   />
                 ))
               ) : (
-                <p1>no chats</p1>
+                <div className="flex justify-center text-center p-4">
+                  <p1 className="text-xl">Its so empty. 🙃</p1>
+                </div>
               )}
             </Fragment>
           )}

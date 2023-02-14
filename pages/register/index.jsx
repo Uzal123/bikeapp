@@ -9,7 +9,6 @@ import Router, { withRouter, useRouter } from "next/router";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
-
 const Register = () => {
   const [registerData, setregisterData] = useState({
     email: "",
@@ -66,7 +65,7 @@ const Register = () => {
       {console.log(data)}
       <div className="left hidden md:block w-3/5 h-screen">
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
-          RentingApp
+          WheelzHub
         </h2>
         <div className="flex items-center justify-center h-screen w-full">
           <div className="flex-col justify-center">
@@ -114,7 +113,7 @@ const Register = () => {
               type="submit"
               className="bg-primary text-white w-full p-2 rounded-full my-6"
             >
-              {loading ? "loading..." : "Register"}
+              {loading ? "Submitting..." : "Register"}
             </button>
           </form>
 
@@ -123,7 +122,7 @@ const Register = () => {
           </button> */}
 
           <p className="text-center text-customGray-normal font-medium">
-            Already a <spam className="text-primary">RentingApp</spam> User ?
+            Already a <spam className="text-primary">WheelzHub</spam> User ?
           </p>
           <div className="flex justify-center">
             <Link

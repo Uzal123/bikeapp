@@ -6,7 +6,7 @@ const TopBar = () => {
   return (
     <div className="topbar ">
       <Link href="/" className="font-bold text-2xl text-primary">
-        RentingApp
+        Wheelz<span className="px-1 mx-1 rounded-md bg-primary text-white">Hub</span>
       </Link>
       <div className="flex items-center">
         <Location className="h-8 w-8" />
