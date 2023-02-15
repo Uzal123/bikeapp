@@ -19,9 +19,7 @@ a {
 
 * {
   box-sizing: border-box;
-}
-*:focus {
-  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @import "navbar";
