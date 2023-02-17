@@ -9,6 +9,8 @@ import {
 import Geocode from "react-geocode";
 import LocationAutoComplete from "./LocationAutoComplete";
 import Gps from "../../assets/createpost/gps.svg";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const LIBRARIES = ["places", "marker", "geometry"];
 const MapContainer = ({
@@ -22,21 +24,34 @@ const MapContainer = ({
   setErrors,
   location,
 }) => {
-  const getLocation = () => {
-    navigator.geolocation.getCurrentPosition(async function (position) {
-      setLocation([position.coords.latitude, position.coords.longitude]);
-      Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
-      const response = await Geocode.fromLatLng(
-        position.coords.latitude,
-        position.coords.longitude
-      );
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
 
-      setAddress(response.results[0].formatted_address);
-      setCenter({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    });
+  const getLocation = () => {
+    setNotification(uuid(), "Fetching Location", "Loading", 3000);
+    navigator.geolocation.getCurrentPosition(
+      async function (position) {
+        setLocation([position.coords.latitude, position.coords.longitude]);
+        if(position){
+            setNotification(uuid(), "Location Fetched", "Success", 3000);
+        }
+        Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
+        const response = await Geocode.fromLatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+
+        setAddress(response.results[0].formatted_address);
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        setNotification(uuid(), error.message, "Error", 3000);
+      }
+    );
   };
 
   const { isLoaded } = useLoadScript({
@@ -57,7 +72,7 @@ const MapContainer = ({
 
       setCenter({ lat: e.latLng.lat(), lng: e.latLng.lng() });
       setAddress(response.results[0].formatted_address);
-      setLocation([e.latLng.lat(), e.latLng.lng()],);
+      setLocation([e.latLng.lat(), e.latLng.lng()]);
     } catch (error) {}
   };
 

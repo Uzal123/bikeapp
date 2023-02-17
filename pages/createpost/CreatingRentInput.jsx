@@ -155,7 +155,7 @@ const CreatingRentInput = ({
   return (
     <div className="w-full">
       {formStage === 2 && (
-        <form onSubmit={(e) => onNext(e)} className="flex flex-col gap-2 ">
+        <form onSubmit={(e) => onNext(e)} className="flex flex-col gap-2">
           <p className="p-2">Upload the images of the Vehicle</p>
           <ImageUpload
             imageLinks={imageLinks}

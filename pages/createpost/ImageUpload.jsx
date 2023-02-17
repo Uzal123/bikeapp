@@ -26,6 +26,7 @@ const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
       }
       setErrors({});
     } catch (error) {
+      setNotification(uuid(), "Error uploading image", "Error", 3000);
       console.log(error);
     }
   };
@@ -47,11 +48,7 @@ const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-      <div
-        className={`flex justify-center cursor-pointer
-        ${imageLinks?.length > 1 ? " " : "pb-20"}
-        `}
-      >
+      <div className={"flex justify-center cursor-pointer"}>
         <input
           type="file"
           hidden={true}
