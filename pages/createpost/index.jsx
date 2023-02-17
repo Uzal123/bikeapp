@@ -21,7 +21,7 @@ const CreatePost = () => {
 
   const router = useRouter();
 
-  const [formStage, setformStage] = useState(4);
+  const [formStage, setformStage] = useState(1);
 
   const [title, setTitle] = useState("");
 
