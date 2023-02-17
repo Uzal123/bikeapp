@@ -25,6 +25,7 @@ const GET_PRODUCT_DETAILS = gql`
         priceType
         location {
           coordinates
+          location
         }
         kmRun
         lotNo
@@ -53,6 +54,7 @@ const GET_PRODUCT_DETAILS = gql`
           url
           key
         }
+        createdAt
       }
     }
   }

@@ -24,6 +24,7 @@ const Profile = ({ ...props }) => {
   const router = useRouter();
   const { id } = router.query;
 
+
   const setNotification = useNotificationStore(
     (state) => state.setNotification
   );
@@ -32,7 +33,6 @@ const Profile = ({ ...props }) => {
   const [tab, setTab] = useState("re");
 
   const [products, setProducts] = useState([]);
-
 
   const [fetchInput, setFetchInput] = useState({
     offerType: [tab],
@@ -141,12 +141,7 @@ const Profile = ({ ...props }) => {
                     className="hover:bg-red-500 hover:text-white p-2 rounded-md cursor-pointer"
                     onClick={(e) => {
                       removeUser();
-                      setNotification(
-                        uuid(),
-                        "Logged Out",
-                        "Error",
-                        3000
-                      );
+                      setNotification(uuid(), "Logged Out", "Error", 3000);
                     }}
                   >
                     Log Out
@@ -206,7 +201,7 @@ const Profile = ({ ...props }) => {
           )}
         </div>
 
-        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2">
+        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2 overflow-y-scroll">
           <div>
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>

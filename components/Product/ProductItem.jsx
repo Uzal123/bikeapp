@@ -1,11 +1,22 @@
 import Link from "next/link";
 import React from "react";
-import Bookmark from "../../assets/Product/bookmark.svg";
-import Heart from "../../assets/Product/heart.svg";
+// import Bookmark from "../../assets/Product/bookmark.svg";
+// import Heart from "../../assets/Product/heart.svg";
 
-const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
+const ProductItem = ({
+  data: { price, title, images, _id, createdAt },
+  ...props
+}) => {
+  const date = new Date(createdAt);
+  const options = {
+    day: "numeric",
+    month: "short",
+  };
+  const localDate = date.toLocaleString("en-US", options);
+
   return (
     <div className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2">
+      {console.log(createdAt)}
       <Link href={`/product/${_id}`}>
         <div className="aspect-square  ">
           <img
@@ -21,7 +32,7 @@ const ProductItem = ({ data: { price, title, images, _id }, ...props }) => {
           </div>
 
           <h2>{title}</h2>
-          <p className="text-xs">14th jan</p>
+          <p className="text-xs">{localDate}</p>
         </div>
       </Link>
     </div>

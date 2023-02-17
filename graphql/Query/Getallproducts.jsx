@@ -13,6 +13,7 @@ const FETCHPRODUCTS = gql`
           url
           key
         }
+        createdAt
         title
         fuleType
         price

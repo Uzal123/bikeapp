@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, Fragment } from "react";
 import { useQuery } from "@apollo/client";
 import ProductItem from "../Product/ProductItem";
 import Search from "../../assets/TopBar/search.svg";
@@ -67,28 +67,30 @@ const Dashboard = () => {
       <Category />
 
       <h2 className="font-bold text-xl">Discover</h2>
-      {inputVariables.fetchInput.offerType === "re" ? (
-        <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {data && data.fetchProducts.products ? (
-            data.fetchProducts.products.map((item, i) => (
-              <ProductItem key={item._id} data={item} offer="rent" />
-            ))
-          ) : (
-            <div className="w-full col-span-5">
-              <Spinner />
-            </div>
-          )}
+      {!data || data.fetchProducts.products.length === 0 ? (
+        <div className="col-start-1 col-end-5">
+          <Spinner />
         </div>
       ) : (
-        <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
-          {data && data.fetchProducts.products ? (
-            data.fetchProducts.products.map((item, i) => (
-              <ProductItem data={item} key={item._id} offer="sell" />
-            ))
+        <Fragment>
+          {inputVariables.fetchInput.offerType === "re" ? (
+            <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
+              {data &&
+                data.fetchProducts.products.length > 0 &&
+                data.fetchProducts.products.map((item, i) => (
+                  <ProductItem key={item._id} data={item} offer="rent" />
+                ))}
+            </div>
           ) : (
-            <Spinner />
+            <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3">
+              {data &&
+                data.fetchProducts.products.length > 0 &&
+                data.fetchProducts.products.map((item, i) => (
+                  <ProductItem data={item} key={item._id} offer="sell" />
+                ))}
+            </div>
           )}
-        </div>
+        </Fragment>
       )}
     </div>
   );

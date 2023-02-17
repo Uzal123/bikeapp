@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 import FETCH_CHAT from "../../graphql/Query/FetchChat";
 import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
+import Spinner from "../../components/UI/Spinner";
 
 const Chat = () => {
   const user = useUserStore((state) => state.user);
@@ -23,7 +24,6 @@ const Chat = () => {
     }
   }, [user, error]);
 
-
   const onChat = (peerId, productId) => {
     router.push({
       pathname: `/chat/q`,
@@ -36,9 +36,11 @@ const Chat = () => {
       showMessagePage={false}
       chat={
         <Fragment>
-          {data && !loading && (
+          {loading ? (
+            <Spinner />
+          ) : (
             <Fragment>
-              {data.fetchChat.length > 0 ? (
+              {data && !loading && data.fetchChat.length > 0 ? (
                 data.fetchChat.map((item, i) => (
                   <ChatItem
                     key={item._id}
