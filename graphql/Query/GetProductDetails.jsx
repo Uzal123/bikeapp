@@ -40,6 +40,12 @@ const GET_PRODUCT_DETAILS = gql`
           fullName
           _id
         }
+        profile {
+          profilePic {
+            imageKey
+            url
+          }
+        }
       }
     }
     fetchProducts(fetchInput: $fetchInput) {
@@ -55,6 +61,9 @@ const GET_PRODUCT_DETAILS = gql`
           key
         }
         createdAt
+        createdBy {
+          _id
+        }
       }
     }
   }

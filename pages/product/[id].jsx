@@ -138,6 +138,7 @@ const ProductInfo = () => {
         />
       )}
       <App>
+        {console.log(product)}
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">
@@ -154,17 +155,17 @@ const ProductInfo = () => {
                       ""
                     )}
 
-                    <div className="absolute left-0 top-0 h-full flex items-center">
-                      <p
+                    <div className="absolute left-0 top-0 h-full flex items-center p-1">
+                      <div
                         className={
                           currentImageIndex === 0
-                            ? "text-2xl  cursor-pointer bg-gray-500 hidden"
-                            : "text-2xl bg-white cursor-pointer "
+                            ? "text-2xl bg-gray-800 text-white opacity-80 w-8 h-8 justify-center items-center text-center rounded-full cursor-pointer  hidden"
+                            : "text-2xl bg-gray-800 text-white opacity-80 w-8 h-8 flex justify-center items-center text-center rounded-full cursor-pointer "
                         }
                         onClick={(e) => previousImage(e)}
                       >
                         {"<"}
-                      </p>
+                      </div>
                     </div>
                     <div className="absolute bottom-0 flex gap-2 w-full justify-center p-2">
                       {product.images.map((d, index) => (
@@ -179,12 +180,12 @@ const ProductInfo = () => {
                         ></div>
                       ))}
                     </div>
-                    <div className="absolute right-0 top-0 h-full flex items-center">
+                    <div className="absolute right-0 top-0 h-full flex items-center p-1">
                       <p
                         className={
                           currentImageIndex === product.images.length - 1
-                            ? "text-2xl  cursor-pointer bg-gray-500 hidden"
-                            : "text-2xl bg-white cursor-pointer "
+                            ? "text-2xl bg-gray-800 text-white opacity-80 w-8 h-8 justify-center items-center text-center rounded-full cursor-pointer  hidden"
+                            : "text-2xl bg-gray-800 text-white opacity-80 w-8 h-8 flex justify-center items-center text-center rounded-full cursor-pointer "
                         }
                         onClick={(e) => nextImage(e)}
                       >
@@ -229,6 +230,7 @@ const ProductInfo = () => {
                       </p>
                     </div>
                   </div>
+                  
                   {console.log(product)}
 
                   {user.id !== product.createdBy._id ? (
@@ -236,7 +238,12 @@ const ProductInfo = () => {
                       <p className="text-lg font-semibold">Ad posted by</p>
                       <Link href={`/profile/${product.createdBy._id}`}>
                         <div className="flex gap-4">
-                          <div className="bg-gray-400 rounded-full h-14 w-14"></div>
+                          <div className=" rounded-full h-14 w-14">
+                            {/* <img
+                              src={product.profile.profilePic[0].url}
+                              className="h-14 w-14"
+                            /> */}
+                          </div>
                           <div>
                             <div className="flex items-center gap-2">
                               <p className="font-semibold">

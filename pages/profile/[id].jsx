@@ -16,6 +16,7 @@ import { client } from "../../graphql/client";
 import Spinner from "../../components/UI/Spinner";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
+import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
 
 const Profile = ({ ...props }) => {
   let inputref;
@@ -23,7 +24,6 @@ const Profile = ({ ...props }) => {
   const removeUser = useUserStore((state) => state.removeUser);
   const router = useRouter();
   const { id } = router.query;
-
 
   const setNotification = useNotificationStore(
     (state) => state.setNotification
@@ -87,6 +87,17 @@ const Profile = ({ ...props }) => {
     setSettingTab(!settingTab);
   };
 
+  const handleDelete = async (e, _id) => {
+    const response = await client.mutate({
+      mutation: DELETEPRODUCT,
+      variables: { productId: _id },
+    });
+    if (response?.data?.deleteProductById.success) {
+      getUserProducts();
+      setNotification(uuid(), "Product deleted successfully", "Error", 3000);
+    }
+  };
+
   const onChange = async (e) => {
     try {
       setNotification(uuid(), "Uploading", "Loading", 3000);
@@ -107,7 +118,6 @@ const Profile = ({ ...props }) => {
   return (
     <App>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
-        {console.log(router.query)}
         <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
           {!loading && profileData ? (
             <Fragment>
@@ -201,7 +211,7 @@ const Profile = ({ ...props }) => {
           )}
         </div>
 
-        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2 overflow-y-scroll">
+        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2 lg:overflow-y-scroll overflow-none">
           <div>
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>
@@ -225,7 +235,11 @@ const Profile = ({ ...props }) => {
               <div className="grid md:grid-cols-4 gap-6">
                 {products &&
                   products.map((item, i) => (
-                    <ProductItem key={item._id} data={item} />
+                    <ProductItem
+                      key={item._id}
+                      data={item}
+                      handleDelete={handleDelete}
+                    />
                   ))}
               </div>
             ) : (

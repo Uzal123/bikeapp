@@ -7,22 +7,10 @@ import FETCHPRODUCTS from "../graphql/Query/Getallproducts";
 
 export default function Main() {
     
-  const { loading, error, data } = useQuery(FETCHPRODUCTS, {
-    variables: {
-      fetchInput: {
-        offerType: ["re", "se"],
-        pageNo: 1,
-        count: 10,
-      },
-    },
-  });
-
-  console.log(data);
-
   return (
     <App>
       <TopBar />
-      <Dashboard data={data} />
+      <Dashboard/>
     </App>
   );
 }

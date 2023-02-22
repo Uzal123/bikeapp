@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/globals.scss";
 import {
   ApolloClient,
@@ -41,13 +41,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={client}>
-      {/* {console.log(notifications)}
-      {notifications.length > 0 && ( */}
       <div className="relative">
         <PopUpNotification notifications={notifications} />
       </div>
-      {/* )}  */}
-
       <Component {...pageProps} />
     </ApolloProvider>
   );

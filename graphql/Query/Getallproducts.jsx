@@ -5,6 +5,7 @@ const FETCHPRODUCTS = gql`
     fetchProducts(fetchInput: $fetchInput) {
       success
       message
+      hasNextPage
       products {
         _id
         offerType
@@ -14,6 +15,9 @@ const FETCHPRODUCTS = gql`
           key
         }
         createdAt
+        createdBy {
+          _id
+        }
         title
         fuleType
         price

@@ -1,12 +1,18 @@
 import Link from "next/link";
 import React from "react";
-// import Bookmark from "../../assets/Product/bookmark.svg";
-// import Heart from "../../assets/Product/heart.svg";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Ellipsis from "../../assets/Product/ellipsis.svg";
+import { useUserStore } from "../../store/auth";
 
 const ProductItem = ({
-  data: { price, title, images, _id, createdAt },
+  handleDelete,
+  data: { price, title, images, _id, createdAt, createdBy },
   ...props
 }) => {
+  const user = useUserStore((state) => state.user);
+  const router = useRouter();
+
   const date = new Date(createdAt);
   const options = {
     day: "numeric",
@@ -14,27 +20,59 @@ const ProductItem = ({
   };
   const localDate = date.toLocaleString("en-US", options);
 
+  const [showOptions, setShowOptions] = useState(false);
   return (
-    <div className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2">
-      {console.log(createdAt)}
-      <Link href={`/product/${_id}`}>
-        <div className="aspect-square  ">
-          <img
-            src={images[0].url}
-            className="aspect-square object-cover rounded-lg h-full w-full"
-          />
+    <div
+      className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2 z-100 cursor-pointer"
+      onClick={() => router.push(`/product/${_id}`)}
+    >
+      <div className="aspect-square  ">
+        <img
+          src={images[0].url}
+          className="aspect-square object-cover rounded-lg h-full w-full"
+        />
+      </div>
+      <div className="p-2 relative">
+        <div className="flex justify-between">
+          <p className="font-semibold text-md">Rs. {price}</p>
+          <p className="text-xs">1.5 Km</p>
         </div>
-        <div className="p-2 relative">
-          {/* <Bookmark className="absolute right-2 bottom-4 h-6" /> */}
-          <div className="flex justify-between">
-            <p className="font-semibold text-md">Rs. {price}</p>
-            <p className="text-xs">1.5 Km</p>
+
+        <div className="flex justify-between">
+          <div className="">
+            <h2>{title}</h2>
+            <p className="text-xs">{localDate}</p>
           </div>
 
-          <h2>{title}</h2>
-          <p className="text-xs">{localDate}</p>
+          {user.id === createdBy._id &&
+            router.pathname.startsWith("/profile") && (
+              <div className="absolute right-2 bottom-2 flex items-center">
+                {showOptions ? (
+                  <div className="bg-white shadow-md rounded-md py-1 px-2 absolute right-0 bottom-8 z-20">
+                    <button
+                      className="flex items-center gap-2 text-red-500 hover:text-red-600 "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(e, _id);
+                      }}
+                    >
+                      Delete product
+                    </button>
+                  </div>
+                ) : null}
+                <button
+                  className="text-gray-600 hover:text-gray-800"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowOptions(!showOptions);
+                  }}
+                >
+                  <Ellipsis className="h-6" />
+                </button>
+              </div>
+            )}
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

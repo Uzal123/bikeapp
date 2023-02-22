@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client"
+import { gql } from "@apollo/client";
 
 const USER_PRODUCTS = gql`
   query ($fetchInput: FetchProductInput!, $userId: String!) {
@@ -13,6 +13,9 @@ const USER_PRODUCTS = gql`
           url
         }
         createdAt
+        createdBy {
+          _id
+        }
       }
     }
   }

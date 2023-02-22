@@ -9,7 +9,7 @@ const CarBrand = {
   ki: "Kia",
   ni: "Nissan",
   vo: "Volkswagen",
-  re: "Renault",
+  rt: "Renault",
   ho: "Honda",
   sk: "Skoda",
   da: "Datsun",

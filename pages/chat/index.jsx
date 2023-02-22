@@ -63,7 +63,7 @@ const Chat = () => {
                 ))
               ) : (
                 <div className="flex justify-center text-center p-4">
-                  <p1 className="text-xl">Its so empty. 🙃</p1>
+                  <p className="text-xl">Its so empty. 🙃</p>
                 </div>
               )}
             </Fragment>

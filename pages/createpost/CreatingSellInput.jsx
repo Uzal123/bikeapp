@@ -177,8 +177,6 @@ const CreatingSellInput = ({
   const [submitSellProduct, { data, loading, error }] =
     useMutation(CREATING_SELL);
   useEffect(() => {
-    console.log(data);
-
     if (data?.sellProduct?.success) {
       setNotification(uuid(), "Ad submitted successfully", "Success", 5000);
       setformStage(5);

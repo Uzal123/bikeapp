@@ -1,5 +1,4 @@
 import create, { createStore } from "zustand";
-// import { devtools, persist } from "zustand/middleware";
 
 const useStore = create((set) => ({
   user: {

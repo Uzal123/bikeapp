@@ -4,16 +4,15 @@ import CarBrand from "../../assets/fakeData/CarBrand";
 import BikeBrand from "../../assets/fakeData/BikeBrand";
 import FuelType from "../../assets/fakeData/FuelType";
 import Back from "../../assets/createpost/back.svg";
-import Gps from "../../assets/createpost/gps.svg";
 import { useMutation } from "@apollo/client";
 import MapContainer from "../../components/UI/Map";
 import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
 import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
-import Geocode from "react-geocode";
 import Colors from "../../assets/fakeData/colors";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
+import { useAppStore } from "../../store/appState";
 
 const CreatingRentInput = ({
   formStage,
@@ -32,6 +31,8 @@ const CreatingRentInput = ({
     (state) => state.setNotification
   );
 
+  const { city,coordinates } = useAppStore((state) => state);
+
   const [rentInput, setRentInput] = useState({
     offerType: "re",
     brand: "ho",
@@ -42,12 +43,12 @@ const CreatingRentInput = ({
     priceType: "fi",
   });
 
-  const [center, setCenter] = useState({
-    lat: -3.745,
-    lng: -38.523,
-  });
 
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(city);
+
+
+  const [center, setCenter] = useState(coordinates);
+
 
   const onChange = (e) => {
     const val = e.target.value;
@@ -141,7 +142,6 @@ const CreatingRentInput = ({
   const [submitRentProduct, { data, loading, error }] =
     useMutation(CREATING_RENT);
   useEffect(() => {
-    console.log(data);
 
     if (data?.rentProduct?.success) {
       setNotification(uuid(), "Ad submitted successfully", "Success", 5000);
