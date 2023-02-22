@@ -13,6 +13,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const Dashboard = () => {
   const [tab, setTab] = useState("re");
 
+  const [loading, setLoading] = useState(true);
+
   const [hasMore, setHasMore] = useState(true);
 
   const [pageNo, setPageNo] = useState(1);
@@ -24,7 +26,6 @@ const Dashboard = () => {
   const [inputVariables, setInputVariables] = useState({
     fetchInput: {
       offerType: ["re"],
-      pageNo: pageNo,
       count: 10,
       vehicleType: ["bi", "ca", "sc"],
     },
@@ -32,12 +33,13 @@ const Dashboard = () => {
 
   useEffect(() => {
     setProducts([]);
+    setPageNo(1);
+    setHasMore(true);
     setInputVariables((prev) => {
       return {
         fetchInput: {
           ...prev.fetchInput,
           offerType: [tab],
-          pageNo: 1,
         },
       };
     });
@@ -47,7 +49,7 @@ const Dashboard = () => {
     try {
       const productResponse = await client.query({
         query: FETCHPRODUCTS,
-        variables: { fetchInput: inputVariables.fetchInput },
+        variables: { fetchInput: { ...inputVariables.fetchInput, pageNo } },
       });
       if (productResponse?.data?.fetchProducts?.products?.length > 0) {
         const newProducts = productResponse.data.fetchProducts.products;
@@ -56,19 +58,21 @@ const Dashboard = () => {
           else return [...prev, ...newProducts];
         });
       }
+      if (productResponse.data.fetchProducts.success) {
+        setLoading(false);
+      }
       setHasMore(productResponse.data.fetchProducts.hasNextPage);
     } catch (error) {}
   };
 
   const loadMore = (e) => {
-    setInputVariables((prev) => {
-      return { fetchInput: { ...prev.fetchInput, pageNo: pageNo + 1 } };
-    });
+    setPageNo(pageNo + 1);
   };
 
   useEffect(() => {
+    setLoading(true);
     getProducts();
-  }, [inputVariables]);
+  }, [inputVariables, pageNo]);
 
   return (
     <div className="container bg-customGray-light rounded-lg" id="scrollDiv">
@@ -104,18 +108,13 @@ const Dashboard = () => {
 
       {!searchInput && <h2 className="font-bold text-xl pt-2">Discover</h2>}
       {searchInput && <Search searchInput={searchInput} tab={tab} />}
-      {!products ? (
-        <div className="col-start-1 col-end-5">
-          <Spinner />
-        </div>
-      ) : (
+      {products && (
         <InfiniteScroll
           dataLength={products.length}
           next={loadMore}
-          hasMore={false}
+          hasMore={hasMore}
           scrollableTarget="scrollDiv"
           className="grid lg:grid-cols-5 gap-4 md:grid-cols-3"
-          loader={<Spinner />}
         >
           {products &&
             products.length > 0 &&
@@ -124,6 +123,17 @@ const Dashboard = () => {
               <ProductItem key={item._id} data={item} />
             ))}
         </InfiniteScroll>
+      )}
+
+      {loading && (
+        <div className="col-start-1 col-end-5 p-6">
+          <Spinner />
+        </div>
+      )}
+      {!hasMore && !searchInput && (
+        <h1 className="text-center text-lg py-4 font-bold">
+          No More Products 😕
+        </h1>
       )}
     </div>
   );

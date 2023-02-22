@@ -30,6 +30,8 @@ const Profile = ({ ...props }) => {
   );
   const [settingTab, setSettingTab] = useState(null);
 
+  const [productsloading, setProductsLoading] = useState(true);
+
   const [tab, setTab] = useState("re");
 
   const [products, setProducts] = useState([]);
@@ -45,11 +47,18 @@ const Profile = ({ ...props }) => {
   });
 
   const getUserProducts = async () => {
-    const response = await client.query({
-      query: USER_PRODUCTS,
-      variables: { fetchInput, userId: id },
-    });
-    setProducts(response.data?.getUserProducts.products);
+    try {
+      const { data, loading } = await client.query({
+        query: USER_PRODUCTS,
+        variables: { fetchInput, userId: id },
+      });
+
+      if (!loading) {
+        setProducts(data?.getUserProducts.products);
+        setProductsLoading(false);
+      }
+
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -59,6 +68,7 @@ const Profile = ({ ...props }) => {
   }, [fetchInput, id]);
 
   useEffect(() => {
+    setProductsLoading(true);
     setFetchInput((prev) => {
       return {
         ...prev,
@@ -93,7 +103,8 @@ const Profile = ({ ...props }) => {
       variables: { productId: _id },
     });
     if (response?.data?.deleteProductById.success) {
-      getUserProducts();
+      const updated = products.filter((product) => product._id !== _id);
+      setProducts(updated);
       setNotification(uuid(), "Product deleted successfully", "Error", 3000);
     }
   };
@@ -230,8 +241,9 @@ const Profile = ({ ...props }) => {
               tab={tab}
             />
           </div>
-          {products ? (
-            products.length > 0 ? (
+          {products &&
+            !productsloading &&
+            (products.length > 0 ? (
               <div className="grid md:grid-cols-4 gap-6">
                 {products &&
                   products.map((item, i) => (
@@ -246,9 +258,11 @@ const Profile = ({ ...props }) => {
               <div className="flex justify-center  p-10">
                 <h4 className="font-semibold text-xl">No Ads Posted 😕</h4>
               </div>
-            )
-          ) : (
-            <Spinner />
+            ))}
+          {productsloading && (
+            <div className="p-6 ">
+              <Spinner />
+            </div>
           )}
         </div>
       </div>

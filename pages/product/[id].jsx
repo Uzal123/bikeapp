@@ -63,7 +63,6 @@ const ProductInfo = () => {
     },
   });
 
-  console.log(data);
 
   const nextImage = (e) => {
     setCurrentImageIndex(
@@ -96,7 +95,6 @@ const ProductInfo = () => {
     try {
       setNotification(uuid(), "Sending", "Success", 3000);
       setMessageModal(false);
-      console.log({ productId, peerId, message });
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,
         variables: {
@@ -113,12 +111,6 @@ const ProductInfo = () => {
   };
 
   Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
-  const getAddress = async () => {
-    try {
-      const response = await Geocode.fromLatLng(center.lat, center.lng);
-      setAddress(response.results[0].formatted_address);
-    } catch (error) {}
-  };
 
   const { isLoaded } = useJsApiLoader({
     id: process.env.GOOGLE_MAP_API_KEY,
@@ -138,7 +130,6 @@ const ProductInfo = () => {
         />
       )}
       <App>
-        {console.log(product)}
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">
@@ -231,7 +222,6 @@ const ProductInfo = () => {
                     </div>
                   </div>
                   
-                  {console.log(product)}
 
                   {user.id !== product.createdBy._id ? (
                     <div className="flex flex-col gap-4 py-4 w-full">
