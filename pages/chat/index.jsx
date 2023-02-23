@@ -38,7 +38,9 @@ const Chat = () => {
         chat={
           <Fragment>
             {loading ? (
-              <Loading className="h-12" />
+              <div className="flex w-full justify-center">
+                <Loading className="h-12" />
+              </div>
             ) : (
               <Fragment>
                 {data && !loading && data.fetchChat.length > 0 ? (
@@ -72,7 +74,6 @@ const Chat = () => {
           </Fragment>
         }
       />
-      
     </div>
   );
 };
