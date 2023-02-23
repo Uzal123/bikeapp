@@ -7,6 +7,8 @@ import { useNotificationStore } from "../../store/notifications";
 import Router, { withRouter, useRouter } from "next/router";
 import Link from "next/link";
 import { uuid } from "uuidv4";
+import LoginImage from "../../assets/Login.svg";
+
 
 const Login = () => {
   const [loginData, setloginData] = useState({ email: "", password: "" });
@@ -44,7 +46,6 @@ const Login = () => {
     const val = e.target.value;
     const key = e.target.name;
     setloginData((prevs) => ({ ...prevs, [key]: val }));
-    // console.log(loginData);
   };
 
   const onSubmit = (e) => {
@@ -58,15 +59,12 @@ const Login = () => {
 
   return (
     <div className="w-screen h-screen flex">
-      {console.log(data)}
       <div className="hidden md:block left w-3/5 h-screen">
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
           WheelzHub
         </h2>
         <div className="flex justify-center items-center h-full ">
-          <div className="flex justify-center">
-            {/* <Image src="/assets/login.png" width={500} height={500} /> */}
-          </div>
+          <img src="/signup.png" alt="Login"  height={800} width={800}/>
         </div>
       </div>
       <div className="right w-full  md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">
@@ -99,10 +97,6 @@ const Login = () => {
               {loading ? "Submitting..." : "Login"}
             </button>
           </form>
-
-          {/* <button className="bg-customGray-navbar w-full p-2 rounded-full mb-6">
-            Login with Google
-          </button> */}
           <p className="text-center text-customGray-dark font-medium">
             Not yet Registerd ?
           </p>

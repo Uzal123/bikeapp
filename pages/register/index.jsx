@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useUserStore } from "../../store/auth";
 import Input from "../../components/UI/Input";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
-import Router, { withRouter, useRouter } from "next/router";
+import { withRouter, useRouter } from "next/router";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
@@ -51,7 +51,6 @@ const Register = () => {
     const val = e.target.value;
     const key = e.target.name;
     setregisterData((prevs) => ({ ...prevs, [key]: val }));
-    console.log(registerData);
   };
 
   const onSubmit = (e) => {
@@ -67,12 +66,8 @@ const Register = () => {
         <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
           WheelzHub
         </h2>
-        <div className="flex items-center justify-center h-screen w-full">
-          <div className="flex-col justify-center">
-            <div className="flex justify-center py-8">
-              {/* <Image src="/assets/signup.png" width={400} height={350} /> */}
-            </div>
-          </div>
+        <div className="flex items-center justify-center h-full">
+          <img src="/signup.png" alt="Image" height={800} width={800} />
         </div>
       </div>
       <div className="right w-full md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">
@@ -116,11 +111,6 @@ const Register = () => {
               {loading ? "Submitting..." : "Register"}
             </button>
           </form>
-
-          {/* <button className="bg-customGray-navbar  w-full p-2 rounded-full mb-6">
-            Register with Google
-          </button> */}
-
           <p className="text-center text-customGray-normal font-medium">
             Already a <spam className="text-primary">WheelzHub</spam> User ?
           </p>
@@ -131,6 +121,25 @@ const Register = () => {
             >
               LOGIN
             </Link>
+          </div>
+          <div className="text-center py-4 text-sm md:px-6 lg:px-8">
+            <p>
+              If you register, you are accepting Wheelzhub
+              <Link
+                href="/termsandconditions"
+                className="text-primary cursor-pointer"
+              >
+                {" "}
+                Terms and Conditions
+              </Link>{" "}
+              and{" "}
+              <Link
+                className="text-primary cursor-pointer"
+                href="privacypolicies"
+              >
+                Privacy Policy
+              </Link>
+            </p>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ import { client } from "../../graphql/client";
 import FETCH_MESSAGE from "../../graphql/Query/FetchMessage";
 import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
-import Spinner from "../../components/UI/Spinner";
+import Loading from "../../assets/createpost/loading.svg";
 
 const ChatWithID = () => {
   const [message, setMessage] = useState("");
@@ -67,8 +67,6 @@ const ChatWithID = () => {
     } catch (error) {}
   };
 
-
-
   useEffect(() => {
     if (query.pid && query.uid) {
       setPeerId(query.uid);
@@ -97,7 +95,9 @@ const ChatWithID = () => {
       showMessagePage={true}
       chat={
         <Fragment>
+          {loading && <Loading className="h-12" />}
           {data &&
+            !loading &&
             data.fetchChat.map((item, i) => (
               <ChatItem
                 key={item._id}
@@ -160,7 +160,7 @@ const ChatWithID = () => {
         </Fragment>
       ) : (
         <div className="flex justify-center items-center h-1/2">
-          <Spinner />
+          <Loading className="h-12" />
         </div>
       )}
       <div className="absolute bottom-0  w-full flex justify-between">

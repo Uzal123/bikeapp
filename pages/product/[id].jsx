@@ -20,10 +20,11 @@ import { client } from "../../graphql/client";
 import { useUserStore } from "../../store/auth";
 import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
-import Spinner from "../../components/UI/Spinner";
+import Loading from "../../assets/createpost/loading.svg";
 import Link from "next/link";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
+import { useSwipeable } from "react-swipeable";
 
 const ProductInfo = () => {
   const router = useRouter();
@@ -56,13 +57,14 @@ const ProductInfo = () => {
 
   const [msgData, setMgsData] = useState();
 
+  const [offerType, setOfferType] = useState([]);
+
   const { loading, error, data } = useQuery(GET_PRODUCT_DETAILS, {
     variables: {
       productId: id,
-      fetchInput: { offerType: ["re", "se"], pageNo: 1, count: 10 },
+      fetchInput: { offerType: offerType, pageNo: 1, count: 10 },
     },
   });
-
 
   const nextImage = (e) => {
     setCurrentImageIndex(
@@ -88,6 +90,7 @@ const ProductInfo = () => {
       });
       setPeerId(data.getProductDetails.product.createdBy._id);
       setProductId(data.getProductDetails.product._id);
+      setOfferType(data.getProductDetails.product.offerType);
     }
   }, [data]);
 
@@ -109,6 +112,20 @@ const ProductInfo = () => {
       setNotification(uuid(), "Message sent successfully", "Success", 3000);
     } catch (error) {}
   };
+
+  const handleSwiped = (eventData) => {
+    if (eventData.dir === "Left" && currentImageIndex < images.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    } else if (eventData.dir === "Right" && currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwiped: (eventData) => handleSwiped(eventData),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
 
   Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
 
@@ -136,7 +153,10 @@ const ProductInfo = () => {
             {!error && product && !loading ? (
               <Fragment>
                 <div className="w-full md:w-2/5">
-                  <div className="h-96 w-full lg:col-span-2 order-0 relative shadow rounded-lg border-2 border-gray-200 ">
+                  <div
+                    {...swipeHandlers}
+                    className="h-96 w-full lg:col-span-2 order-0 relative shadow rounded-lg border-2 border-gray-200 "
+                  >
                     {images ? (
                       <img
                         src={product.images[currentImageIndex].url}
@@ -221,7 +241,6 @@ const ProductInfo = () => {
                       </p>
                     </div>
                   </div>
-                  
 
                   {user.id !== product.createdBy._id ? (
                     <div className="flex flex-col gap-4 py-4 w-full">
@@ -370,7 +389,11 @@ const ProductInfo = () => {
 
                   <div className="lg:col-span-3">
                     <h2 className="text-xl font-semibold py-6">
-                      Discover More Products For Rent
+                      {data &&
+                        ((data.getProductDetails.product.offerType === "re" &&
+                          "Discover More Products For Rent") ||
+                          (data.getProductDetails.product.offerType === "se" &&
+                            "Discover More Products For Sell"))}
                     </h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {data &&
@@ -386,7 +409,7 @@ const ProductInfo = () => {
                 </div>
               </Fragment>
             ) : (
-              <Spinner />
+                <Loading className="h-12" />
             )}
           </div>
         </div>

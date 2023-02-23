@@ -8,7 +8,7 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
       <Fragment>
         <div className="w-full h-full lg:p-4 flex gap-4">
           <div
-            className={`w-full md:w-2/5 lg:w-1/3 bg-customGray-light h-full flex-col rounded-md ${
+            className={`w-screen md:w-1/3 lg:w-1/4 bg-customGray-light h-full flex-col rounded-md ${
               showMessagePage ? "hidden" : ""
             } md:flex`}
           >
@@ -19,8 +19,13 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
           </div>
 
           {showMessagePage && (
-            <div className="w-full h-full bg-customGray-navbar rounded-md relative">
+            <div className="w-full h-full md:w-2/3 lg:w-3/4 bg-customGray-navbar rounded-md relative">
               {props.children}
+            </div>
+          )}
+          {!showMessagePage && (
+            <div className="hidden md:flex w-full h-full md:w-2/3 lg:w-3/4 bg-customGray-navbar rounded-md justify-center">
+              <img src="/signup.png" className="h-full object-cover" />
             </div>
           )}
         </div>

@@ -2,7 +2,6 @@ import React from "react";
 import Cross from "../../assets/Notification/Cross.svg";
 import Check from "../../assets/Notification/Check.svg";
 import Loading from "../../assets/Notification/Loading.svg";
-import Spinner from "../UI/Spinner";
 
 const PopUpNotification = ({ notifications }) => {
   return (

@@ -3,7 +3,7 @@ import ProductItem from "../Product/ProductItem";
 import { useState, useEffect } from "react";
 import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
 import { useQuery } from "@apollo/client";
-import Spinner from "../UI/Spinner";
+import Loading from "../../assets/createpost/loading.svg";
 
 const Search = ({ searchInput, tab }) => {
   const [inputVariables, setInputVariables] = useState({
@@ -34,12 +34,16 @@ const Search = ({ searchInput, tab }) => {
     },
   });
 
-
   return (
     <Fragment>
-
-    <h2 className="p-2 py-4 text-md font-semibold">Search Results for {searchInput}...</h2>
-      {loading ? <Spinner /> : null}
+      <h2 className="p-2 py-4 text-md font-semibold">
+        Search Results for {searchInput}...
+      </h2>
+      {loading ? (
+        <div className="flex justify-center w-full">
+          <Loading className="h-12" />
+        </div>
+      ) : null}
       <div className="grid lg:grid-cols-5 gap-4 md:grid-cols-3 pt-2">
         {data?.fetchProducts?.products.length > 0
           ? data?.fetchProducts?.products?.map((item) => (

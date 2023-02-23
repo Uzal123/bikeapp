@@ -6,9 +6,10 @@ import Search from "./Search";
 import Category from "./Category/Category";
 import ButtonTab from "../UI/Tab";
 import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
-import Spinner from "../UI/Spinner";
+import Loading from "../../assets/createpost/loading.svg";
 import { client } from "../../graphql/client";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useSwipeable } from "react-swipeable";
 
 const Dashboard = () => {
   const [tab, setTab] = useState("re");
@@ -68,6 +69,19 @@ const Dashboard = () => {
   const loadMore = (e) => {
     setPageNo(pageNo + 1);
   };
+  const handleSwiped = (eventData) => {
+    if (eventData.dir === "Left" && tab === "re") {
+      setTab("se");
+    } else if (eventData.dir === "Right" && tab === "se") {
+      setTab("re");
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwiped: (eventData) => handleSwiped(eventData),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -75,7 +89,11 @@ const Dashboard = () => {
   }, [inputVariables, pageNo]);
 
   return (
-    <div className="container bg-customGray-light rounded-lg" id="scrollDiv">
+    <div
+      className="container bg-customGray-light rounded-lg"
+      id="scrollDiv"
+      {...swipeHandlers}
+    >
       <div className="flex gap-6 font-semibold text-lg w-full pb-6">
         <ButtonTab
           val="re"
@@ -126,8 +144,8 @@ const Dashboard = () => {
       )}
 
       {loading && (
-        <div className="col-start-1 col-end-5 p-6">
-          <Spinner />
+        <div className="flex justify-center col-start-1 col-end-5 p-6">
+          <Loading  className="h-12"/>
         </div>
       )}
       {!hasMore && !searchInput && (

@@ -25,6 +25,16 @@ a {
 @import "navbar";
 @import "topbar";
 
+@keyframes move {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+
+.car {
+  animation: move 1s infinite;
+}
+
 
 .message-list {
     height: calc(100vh - $topbar-thickness  - 2rem);

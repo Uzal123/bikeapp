@@ -24,7 +24,13 @@ const ProductItem = ({
   return (
     <div
       className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2 z-100 cursor-pointer"
-      onClick={() => router.push(`/product/${_id}`)}
+      onClick={(event) => {
+        // if (swipeRef.current.swipe) {
+        //   event.preventDefault(); // prevent click if swipe was detected
+        // } else {
+        router.push(`/product/${_id}`);
+        // }
+      }}
     >
       <div className="aspect-square  ">
         <img

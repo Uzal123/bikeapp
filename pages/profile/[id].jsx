@@ -13,10 +13,11 @@ import USER_PRODUCTS from "../../graphql/Query/UserProducts";
 import MY_PROFILE from "../../graphql/Query/MyProfile";
 import USER_PROFILE from "../../graphql/Query/UserProfile";
 import { client } from "../../graphql/client";
-import Spinner from "../../components/UI/Spinner";
+import Loading from "../../assets/createpost/loading.svg";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
+import { useSwipeable } from "react-swipeable";
 
 const Profile = ({ ...props }) => {
   let inputref;
@@ -57,9 +58,22 @@ const Profile = ({ ...props }) => {
         setProducts(data?.getUserProducts.products);
         setProductsLoading(false);
       }
-
     } catch (error) {}
   };
+
+  const handleSwiped = (eventData) => {
+    if (eventData.dir === "Left" && tab === "re") {
+      setTab("se");
+    } else if (eventData.dir === "Right" && tab === "se") {
+      setTab("re");
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwiped: (eventData) => handleSwiped(eventData),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
 
   useEffect(() => {
     if (id) {
@@ -217,12 +231,15 @@ const Profile = ({ ...props }) => {
             </Fragment>
           ) : (
             <div className="h-36 flex justify-center items-center">
-              <Spinner />
+              <Loading className="h-12" />
             </div>
           )}
         </div>
 
-        <div className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2 lg:overflow-y-scroll overflow-none">
+        <div
+          {...swipeHandlers}
+          className="lg:w-4/5 w-full bg-customGray-navbar rounded-xl md:p-6 p-2 lg:overflow-y-scroll overflow-none"
+        >
           <div>
             <h2 className="text-xl font-semibold">Ads Posted</h2>
           </div>
@@ -260,8 +277,8 @@ const Profile = ({ ...props }) => {
               </div>
             ))}
           {productsloading && (
-            <div className="p-6 ">
-              <Spinner />
+            <div className="p-6 w-full flex justify-center">
+              <Loading className="h-12"/>
             </div>
           )}
         </div>
