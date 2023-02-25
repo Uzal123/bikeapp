@@ -129,12 +129,8 @@ const ProductInfo = () => {
     trackMouse: true,
   });
 
-  Geocode.setApiKey(process.env.GOOGLE_MAP_API_KEY);
 
-  const { isLoaded } = useJsApiLoader({
-    id: process.env.GOOGLE_MAP_API_KEY,
-    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
-  });
+ 
   return (
     <Fragment>
       {messageModal && (
@@ -233,7 +229,7 @@ const ProductInfo = () => {
                     <p className="text-lg font-semibold">Location</p>
                     <div className="flex flex-col py-4">
                       <MapContainer
-                        isLoaded={isLoaded}
+                        isLoaded={true}
                         center={center}
                         drag={false}
                         className="rounded"
