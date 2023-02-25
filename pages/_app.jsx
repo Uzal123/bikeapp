@@ -41,9 +41,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={client}>
-      <div className="relative">
         <PopUpNotification notifications={notifications} />
-      </div>
       <Component {...pageProps} />
     </ApolloProvider>
   );

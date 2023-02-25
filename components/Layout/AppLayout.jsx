@@ -1,16 +1,16 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Navbar from "../Navigation/Navbar";
 import TopBar from "../Topbar/TopBar";
 
-const App = ({ ...props }) => {
+const AppLayout = ({ ...props }) => {
   return (
-    <section>
-      <Navbar />    
+    <Fragment>
       <div className="main">
+      <Navbar />    
         {props.children}
       </div>
-    </section>
+    </Fragment>
   );
 };
 
-export default App;
+export default AppLayout;

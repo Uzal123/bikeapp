@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import { useUserStore } from "../../store/auth";
 
-import App from "../../components/Layout/App";
+import AppLayout from "../../components/Layout/AppLayout";
 import { useRouter } from "next/router";
 import TopBar from "../../components/Topbar/TopBar";
 import { useQuery } from "@apollo/client";
@@ -77,7 +77,7 @@ const ChatWithID = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!localStorage.getItem("rent-app-token")) {
+      if (!localStorage.getItem("rent-appLayout-token")) {
         router.push("/login");
       }
     }

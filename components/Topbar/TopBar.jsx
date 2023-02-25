@@ -6,7 +6,7 @@ import { useAppStore } from "../../store/appState";
 const TopBar = () => {
   const { city } = useAppStore((state) => state);
   return (
-    <div className="topbar shadow-md">
+    <div className="topbar ">
       <Link href="/" className="font-bold text-2xl text-primary">
         Wheelz
         <span className="px-1 mx-1 rounded-md bg-primary text-white">Hub</span>

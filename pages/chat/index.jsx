@@ -1,8 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useUserStore } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
-import App from "../../components/Layout/App";
-import TopBar from "../../components/Topbar/TopBar";
 import { useQuery } from "@apollo/client";
 import FETCH_CHAT from "../../graphql/Query/FetchChat";
 import ChatItem from "../../components/UI/ChatItem";

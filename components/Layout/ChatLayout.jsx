@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import App from "./App";
+import AppLayout from "./AppLayout";
 import TopBar from "../Topbar/TopBar";
 
 const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
   return (
-    <App>
+    <AppLayout>
       <Fragment>
         <div className="w-full h-full lg:p-4 flex gap-4">
           <div
@@ -30,7 +30,7 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
           )}
         </div>
       </Fragment>
-    </App>
+    </AppLayout>
   );
 };
 

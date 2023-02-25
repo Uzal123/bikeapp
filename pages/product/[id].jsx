@@ -2,7 +2,11 @@ import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
-import App from "../../components/Layout/App";
+import Link from "next/link";
+import { uuid } from "uuidv4";
+import { useSwipeable } from "react-swipeable";
+import Geocode from "react-geocode";
+
 import TopBar from "../../components/Topbar/TopBar";
 import ProductItem from "../../components/Product/ProductItem";
 import GET_PRODUCT_DETAILS from "../../graphql/Query/GetProductDetails";
@@ -15,16 +19,14 @@ import PriceType from "../../assets/fakeData/PriceType";
 import Transmission from "../../assets/fakeData/Transmission";
 import Condition from "../../assets/fakeData/Condition";
 import MapContainer from "../../components/UI/Map";
-import Geocode from "react-geocode";
 import { client } from "../../graphql/client";
 import { useUserStore } from "../../store/auth";
 import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
 import Loading from "../../assets/createpost/loading.svg";
-import Link from "next/link";
 import { useNotificationStore } from "../../store/notifications";
-import { uuid } from "uuidv4";
-import { useSwipeable } from "react-swipeable";
+
+import AppLayout from "../../components/Layout/AppLayout";
 
 const ProductInfo = () => {
   const router = useRouter();
@@ -146,7 +148,7 @@ const ProductInfo = () => {
           peerId={peerId}
         />
       )}
-      <App>
+      <AppLayout>
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">
@@ -413,7 +415,7 @@ const ProductInfo = () => {
             )}
           </div>
         </div>
-      </App>
+      </AppLayout>
     </Fragment>
   );
 };

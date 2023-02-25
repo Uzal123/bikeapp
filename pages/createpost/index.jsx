@@ -5,7 +5,7 @@ import Router, { withRouter, useRouter } from "next/router";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";
 import Check from "../../assets/createpost/check.svg";
-import App from "../../components/Layout/App";
+import AppLayout from "../../components/Layout/AppLayout";
 import Car from "../../assets/Category/car.svg";
 import Bike from "../../assets/Category/bike.svg";
 import CreatingRentInput from "./CreatingRentInput";
@@ -49,7 +49,7 @@ const CreatePost = () => {
   };
 
   return (
-    <App>
+    <AppLayout>
       <div className="p-4 h-full flex justify-center bg-customGray-navbar">
         <div className="flex justify-start md:px-10 pt-6 overflow-x-hidden  items-center flex-col bg-customGray-navbar gap-6 md:w-3/5 lg:w-1/2 w-full overflow-scroll rounded-2xl h-full relative">
           <div className="flex justify-between w-full">
@@ -218,7 +218,7 @@ const CreatePost = () => {
           </section>
         </div>
       </div>
-    </App>
+    </AppLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import App from "../../components/Layout/App";
+import AppLayout from "../../components/Layout/AppLayout";
 import Setting from "../../assets/Profile/setting.svg";
 import Cross from "../../assets/createpost/cross.svg";
 import Edit from "../../assets/Profile/edit.svg";
@@ -141,7 +141,7 @@ const Profile = ({ ...props }) => {
   };
 
   return (
-    <App>
+    <AppLayout>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
         <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
           {!loading && profileData ? (
@@ -283,7 +283,7 @@ const Profile = ({ ...props }) => {
           )}
         </div>
       </div>
-    </App>
+    </AppLayout>
   );
 };
 
