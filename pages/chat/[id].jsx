@@ -13,12 +13,14 @@ import FETCH_MESSAGE from "../../graphql/Query/FetchMessage";
 import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
 import Loading from "../../assets/createpost/loading.svg";
+import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 
 const ChatWithID = () => {
   const [message, setMessage] = useState("");
   const [peerId, setPeerId] = useState(null);
   const [productId, setProductId] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [profilePic, setProfilePic] = useState(null);
   const [messageLoading, setMessageLoading] = useState(true);
   const { query } = useRouter();
 
@@ -44,6 +46,13 @@ const ChatWithID = () => {
       });
       setMessages(new Array(...response.data.fetchMessages.data));
       setMessageLoading(false);
+      const profile = response.data.fetchMessages.profile;
+      console.info({ t: response.data.fetchMessages.profile.profilePic[0] });
+      setProfilePic(
+        profile.profilePic.length > 0
+          ? profile.profilePic[profile.profilePic.length - 1].url
+          : null
+      );
     } catch (error) {}
   };
 
@@ -70,6 +79,8 @@ const ChatWithID = () => {
 
   useEffect(() => {
     if (query.pid && query.uid) {
+      setMessageLoading(true);
+
       setPeerId(query.uid);
       setProductId(query.pid);
       fetchMesasges(query.pid, query.uid);
@@ -129,13 +140,34 @@ const ChatWithID = () => {
       {!messageLoading ? (
         <Fragment>
           <div className="flex bg-primary  md:rounded-md h-14 gap-2 justify-start items-center text-white">
-            <div className="h-10 w-10 bg-white rounded-full mx-4"></div>
-            <h2 className="text-lg md:text-xl">
-              {messages[0].sender._id === user.id
-                ? messages[0].receiver.fullName
-                : messages[0].sender.fullName}
-            </h2>
-            {console.log(messages)}
+            <div
+              className="flex justify-start items-center cursor-pointer"
+              onClick={() => {
+                router.push(
+                  `/profile/${
+                    messages[0].sender._id === user.id
+                      ? messages[0].receiver._id
+                      : messages[0].sender._id
+                  }`
+                );
+              }}
+            >
+              <ProfilePicContainer
+                url={profilePic}
+                className="h-10 w-10  mx-4 bg-white"
+                fullName={
+                  messages[0].sender._id === user.id
+                    ? messages[0].receiver.fullName
+                    : messages[0].sender.fullName
+                }
+              />
+
+              <h2 className="text-lg md:text-xl">
+                {messages[0].sender._id === user.id
+                  ? messages[0].receiver.fullName
+                  : messages[0].sender.fullName}
+              </h2>
+            </div>
           </div>
           <div className="flex flex-col chatbox overflow-y-scroll">
             {messages.map((item, i) => {

@@ -18,6 +18,7 @@ import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
 import { useSwipeable } from "react-swipeable";
+import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 
 const Profile = ({ ...props }) => {
   let inputref;
@@ -185,19 +186,18 @@ const Profile = ({ ...props }) => {
               )}
               <div className="flex flex-col items-center">
                 <div className=" rounded-full h-36 w-36 object-cover">
-                  <div className="w-full h-full bg-primary rounded-full text-center flex items-center justify-center text-white text-4xl font-semibold relative overflow-hidden">
-                    {profileData.profilePic.length === 0 ? (
-                      <p>{profileData.user.fullName[0]}</p>
-                    ) : (
-                      <img
-                        src={
-                          profileData.profilePic[
+                  <ProfilePicContainer
+                    url={
+                      profileData.profilePic.length === 0
+                        ? ""
+                        : profileData.profilePic[
                             profileData.profilePic.length - 1
                           ].url
-                        }
-                        className="h-full w-full object-cover rounded-full"
-                      />
-                    )}
+                    }
+                    fullName={profileData.user.fullName}
+                    className="bg-white text-primary"
+                  >
+                 
 
                     {id === user.id && (
                       <Fragment>
@@ -216,9 +216,9 @@ const Profile = ({ ...props }) => {
                         </div>
                       </Fragment>
                     )}
-                  </div>
+                  </ProfilePicContainer >
                 </div>
-                <h1 className="text-center font-semibold text-2xl">
+                <h1 className="text-center font-semibold text-2xl pt-4">
                   {profileData.user.fullName}
                 </h1>
               </div>

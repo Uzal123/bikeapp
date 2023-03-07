@@ -12,7 +12,7 @@ const Category = ({ vehicleType, setVehicleType }) => {
       </div>
       <div className="flex gap-6 ml-10 md:ml-16">
         <div
-          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex  flex-col justify-center items-center rounded-2xl ${
+          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex  flex-col justify-center items-center cursor-pointer rounded-2xl ${
             vehicleType.length > 2 && `border-2 border-primary text-primary`
           } `}
           onClick={() => {
@@ -22,7 +22,7 @@ const Category = ({ vehicleType, setVehicleType }) => {
           <h1 className="text-2xl font-medium">All</h1>
         </div>
         <div
-          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex  flex-col justify-center items-center rounded-2xl ${
+          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex cursor-pointer flex-col justify-center items-center rounded-2xl ${
             vehicleType.length === 1 &&
             vehicleType[0] === "ca" &&
             `border-2 border-primary text-primary`
@@ -35,7 +35,7 @@ const Category = ({ vehicleType, setVehicleType }) => {
           <h2>Car</h2>
         </div>
         <div
-          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex  flex-col justify-center items-center rounded-2xl ${
+          className={`bg-white shadow-md h-20 w-20 md:h-28 md:w-28 flex cursor-pointer flex-col justify-center items-center rounded-2xl ${
             vehicleType.length === 1 &&
             vehicleType[0] === "bi" &&
             `border-2 border-primary text-primary`

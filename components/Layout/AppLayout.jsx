@@ -6,7 +6,6 @@ const AppLayout = ({ title, ...props }) => {
   return (
     <Fragment>
       <div className="main">
-        {console.log({ title })}
         <Head>
           <meta
             property="og:title"

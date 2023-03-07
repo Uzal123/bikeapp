@@ -29,6 +29,7 @@ const Chat = () => {
     router.push({
       pathname: `/chat/q`,
       query: { uid: peerId, pid: productId },
+      asPath: `/chat`,
     });
   };
 

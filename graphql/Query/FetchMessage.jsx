@@ -5,6 +5,12 @@ const FETCH_MESSAGE = gql`
     fetchMessages(fetchMessageInput: $fetchMessageInput) {
       success
       message
+      profile {
+        profilePic {
+          url
+          imageKey
+        }
+      }
       data {
         _id
         receiver {
