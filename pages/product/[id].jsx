@@ -36,6 +36,9 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
   const setNotification = useNotificationStore(
     (state) => state.setNotification
   );
+  const removeNotification = useNotificationStore(
+    (state) => state.removeNotification
+  );
 
   const user = useUserStore((state) => state.user);
 
@@ -97,7 +100,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
     try {
       if (navigator.share) {
         const response = await navigator.share({
-          title: `Motor Ghar - ${data.getProductDetails.product.title}`,
+          title: `Moto Ghar - ${data.getProductDetails.product.title}`,
           text: "Check out this product on Moto Ghar",
           url: window.location.href,
         });
@@ -109,15 +112,18 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
 
   useEffect(() => {
     if (!loading && data?.getProductDetails.success) {
-      setProduct(data.getProductDetails.product);
-      setImages(data.getProductDetails.product.images);
+      const productData = data.getProductDetails.product;
+      removeNotification(productData._id);
+      setProduct(productData);
+      setImages(productData.images);
       setCenter({
-        lat: data.getProductDetails.product.location.coordinates[0],
-        lng: data.getProductDetails.product.location.coordinates[1],
+        lat: productData.location.coordinates[0],
+        lng: productData.location.coordinates[1],
       });
-      setPeerId(data.getProductDetails.product.createdBy._id);
-      setProductId(data.getProductDetails.product._id);
-      setOfferType([data.getProductDetails.product.offerType]);
+      setPeerId(productData.createdBy._id);
+      setProductId(productData._id);
+      setOfferType([productData.offerType]);
+      setCurrentImageIndex(0);
     }
   }, [data]);
 
@@ -129,7 +135,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
 
   const sendMessage = async (productId, peerId, message) => {
     try {
-      setNotification(uuid(), "Sending", "Success", 3000);
+      setNotification(uuid(), "Sending", "Success", 10000);
       setMessageModal(false);
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,
@@ -162,6 +168,23 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
 
   return (
     <Fragment>
+      <Head>
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:description"
+          content={`${data?.getProductDetails?.product?.description}`}
+        />
+        <meta
+          property="og:image"
+          content={data?.getProductDetails?.product?.images[0].url}
+        />
+        <meta
+          property="og:url"
+          content="https://www.motoghar.com/product/${product?._id}"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        {/* <title>{`${data?.getProductDetails?.product?.title}`}</title> */}
+      </Head>
       {messageModal && (
         <CreateChat
           setMessageModal={setMessageModal}
@@ -173,20 +196,8 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
           peerId={peerId}
         />
       )}
-      <Head>
-        <meta property="og:type" content="article" />
-        <meta property="og:description" content={`${product?.description}`} />
-        <meta
-          property="og:image"
-          content="product.images[currentImageIndex].url"
-        />
-        <meta
-          property="og:url"
-          content="https://www.motoghar.com/product/${product?._id}"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
-      <AppLayout title={`${product?.title}`}>
+
+      <AppLayout title={`${data?.getProductDetails?.product?.title}`}>
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">

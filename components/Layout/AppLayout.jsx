@@ -6,8 +6,13 @@ const AppLayout = ({ title, ...props }) => {
   return (
     <Fragment>
       <div className="main">
+        {console.log({ title })}
         <Head>
-          <title>Moto Ghar {title ? " - "+ title : ""}</title>
+          <meta
+            property="og:title"
+            content={`MotoGhar ${title ? " - " + title : ""}`}
+          />
+          <title>{`MotoGhar ${title ? " - " + title : ""}`}</title>
         </Head>
         <Navbar />
         {props.children}

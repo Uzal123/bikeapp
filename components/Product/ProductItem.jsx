@@ -4,12 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Ellipsis from "../../assets/Product/ellipsis.svg";
 import { useUserStore } from "../../store/auth";
+import { useNotificationStore } from "../../store/notifications";
+import { uuid } from "uuidv4";
 
 const ProductItem = ({
   handleDelete,
   data: { price, title, images, _id, createdAt, createdBy },
   ...props
 }) => {
+  const setNotification = useNotificationStore(
+    (state) => state.setNotification
+  );
+
   const user = useUserStore((state) => state.user);
   const router = useRouter();
 
@@ -25,6 +31,7 @@ const ProductItem = ({
     <div
       className=" bg-white shadow-md rounded-xl relative border-gray-100 border-2 z-100 cursor-pointer"
       onClick={(event) => {
+        setNotification(_id, "Loading", "Loading", 3000);
         // if (swipeRef.current.swipe) {
         //   event.preventDefault(); // prevent click if swipe was detected
         // } else {
