@@ -32,6 +32,7 @@ const ChatWithID = () => {
     try {
       const response = await client.query({
         query: FETCH_MESSAGE,
+        fetchPolicy: "no-cache",
         variables: {
           fetchMessageInput: {
             page: 1,
@@ -63,7 +64,7 @@ const ChatWithID = () => {
         },
       });
       setMessage("");
-      console.log(msgResponse);
+      setMessages((prevs) => [...prevs, msgResponse.data.sendMessage.data]);
     } catch (error) {}
   };
 
@@ -163,18 +164,29 @@ const ChatWithID = () => {
           <Loading className="h-12" />
         </div>
       )}
-      <div className="absolute bottom-0  w-full flex justify-between">
+      <form
+        className="absolute bottom-0  w-full flex justify-between"
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage(productId, peerId, message);
+        }}
+      >
         <textarea
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !event.shiftKey) {
+              e.preventDefault(); // prevent the default behavior of creating a newline
+              sendMessage(productId, peerId, message);
+            }
+          }}
           className="m-2 py-2 px-4 mr-1 rounded-full border border-gray-300 bg-gray-200 resize-none w-full"
           rows="1"
           placeholder="Message..."
           value={message}
         />
-        <button
-          className="m-2"
-          onClick={() => sendMessage(productId, peerId, message)}
-        >
+        <button className="m-2" type="submit">
           <svg
             className="svg-inline--fa text-green-400 fa-paper-plane fa-w-16 w-12 h-12 py-2 mr-2"
             aria-hidden="true"
@@ -191,7 +203,7 @@ const ChatWithID = () => {
             />
           </svg>
         </button>
-      </div>
+      </form>
     </ChatLayout>
   );
 };

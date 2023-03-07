@@ -65,7 +65,7 @@ const Login = () => {
       <div className="hidden md:block left w-3/5 h-screen">
         <Logo className="absolute h-24 mx-4" />
         <div className="flex justify-center items-center h-full ">
-          <img src="/signup.png" alt="Login" height={800} width={800} />
+          <img src="/signup.png" alt="Login" height={700} width={700} />
         </div>
       </div>
       <div className="right w-full  md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">

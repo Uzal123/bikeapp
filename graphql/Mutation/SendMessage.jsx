@@ -6,7 +6,17 @@ const SEND_MESSAGE = gql`
       success
       message
       data {
+        _id
         message
+        receiver {
+          _id
+          fullName
+        }
+        sender {
+          _id
+          fullName
+        }
+        status
       }
     }
   }

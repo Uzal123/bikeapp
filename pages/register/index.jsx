@@ -68,7 +68,7 @@ const Register = () => {
       <div className="left hidden md:block w-3/5 h-screen">
         <Logo className="absolute h-24 mx-4" />
         <div className="flex items-center justify-center h-full">
-          <img src="/signup.png" alt="Image" height={800} width={800} />
+          <img src="/signup.png" alt="Image" height={700} width={700} />
         </div>
       </div>
       <div className="right w-full md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">

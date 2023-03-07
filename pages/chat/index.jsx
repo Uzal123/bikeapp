@@ -13,7 +13,9 @@ const Chat = () => {
 
   const router = useRouter();
 
-  const { loading, error, data } = useQuery(FETCH_CHAT);
+  const { loading, error, data } = useQuery(FETCH_CHAT, {
+    fetchPolicy: "no-cache",
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
