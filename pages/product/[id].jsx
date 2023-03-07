@@ -6,7 +6,6 @@ import Link from "next/link";
 import { uuid } from "uuidv4";
 import { useSwipeable } from "react-swipeable";
 import Geocode from "react-geocode";
-
 import TopBar from "../../components/Topbar/TopBar";
 import ProductItem from "../../components/Product/ProductItem";
 import GET_PRODUCT_DETAILS from "../../graphql/Query/GetProductDetails";
@@ -25,12 +24,14 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
 import Loading from "../../assets/createpost/loading.svg";
 import { useNotificationStore } from "../../store/notifications";
+import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
+import ShareSvg from "../../assets/Product/share.svg";
 
 import AppLayout from "../../components/Layout/AppLayout";
+import Head from "next/head";
 
-const ProductInfo = () => {
+const ProductInfo = ({ data, error, loading, ...props }) => {
   const router = useRouter();
-  const { id } = router.query;
 
   const setNotification = useNotificationStore(
     (state) => state.setNotification
@@ -49,6 +50,8 @@ const ProductInfo = () => {
     lng: -38.523,
   });
 
+  const [discoverProducts, setDiscoverProducts] = useState([]);
+
   const [messageModal, setMessageModal] = useState(false);
 
   const [message, setMessage] = useState("");
@@ -60,13 +63,6 @@ const ProductInfo = () => {
   const [msgData, setMgsData] = useState();
 
   const [offerType, setOfferType] = useState([]);
-
-  const { loading, error, data } = useQuery(GET_PRODUCT_DETAILS, {
-    variables: {
-      productId: id,
-      fetchInput: { offerType: offerType, pageNo: 1, count: 10 },
-    },
-  });
 
   const nextImage = (e) => {
     setCurrentImageIndex(
@@ -82,6 +78,35 @@ const ProductInfo = () => {
     );
   };
 
+  const fetchProducts = async () => {
+    try {
+      const response = await client.query({
+        query: FETCHPRODUCTS,
+        variables: {
+          fetchInput: { offerType: offerType, pageNo: 1, count: 10 },
+        },
+      });
+      console.log(response);
+      setDiscoverProducts(response.data.fetchProducts.products);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onShare = async () => {
+    try {
+      if (navigator.share) {
+        const response = await navigator.share({
+          title: `Motor Ghar - ${data.getProductDetails.product.title}`,
+          text: "Check out this product on Moto Ghar",
+          url: window.location.href,
+        });
+      }
+    } catch (error) {
+      console.log("Share is not supported");
+    }
+  };
+
   useEffect(() => {
     if (!loading && data?.getProductDetails.success) {
       setProduct(data.getProductDetails.product);
@@ -92,9 +117,15 @@ const ProductInfo = () => {
       });
       setPeerId(data.getProductDetails.product.createdBy._id);
       setProductId(data.getProductDetails.product._id);
-      setOfferType(data.getProductDetails.product.offerType);
+      setOfferType([data.getProductDetails.product.offerType]);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (offerType.length > 0) {
+      fetchProducts();
+    }
+  }, [offerType]);
 
   const sendMessage = async (productId, peerId, message) => {
     try {
@@ -129,8 +160,6 @@ const ProductInfo = () => {
     trackMouse: true,
   });
 
-
- 
   return (
     <Fragment>
       {messageModal && (
@@ -144,7 +173,20 @@ const ProductInfo = () => {
           peerId={peerId}
         />
       )}
-      <AppLayout>
+      <Head>
+        <meta property="og:type" content="article" />
+        <meta property="og:description" content={`${product?.description}`} />
+        <meta
+          property="og:image"
+          content="product.images[currentImageIndex].url"
+        />
+        <meta
+          property="og:url"
+          content="https://www.motoghar.com/product/${product?._id}"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+      <AppLayout title={`${product?.title}`}>
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">
@@ -222,7 +264,16 @@ const ProductInfo = () => {
                     )}
                   </div>
                   <div className="py-4 md:hidden block">
-                    <h2 className="font-semibold text-xl">Description</h2>
+                    <div className="flex justify-between">
+                      <h2 className="font-semibold text-xl">Description</h2>
+                      <ShareSvg
+                        className="h-6 w-6 cursor-pointer"
+                        onClick={() => {
+                          onShare();
+                        }}
+                      />
+                    </div>
+
                     <p>{product.description}</p>
                   </div>
                   <div className="flex flex-col gap-2 py-2">
@@ -299,7 +350,15 @@ const ProductInfo = () => {
 
                 <div className="w-full md:w-3/5">
                   <div className="py-4 hidden md:block">
-                    <h2 className="font-semibold text-lg">Description</h2>
+                    <div className="flex justify-between">
+                      <h2 className="font-semibold text-xl">Description</h2>
+                      <ShareSvg
+                        className="h-6 w-6 cursor-pointer"
+                        onClick={() => {
+                          onShare();
+                        }}
+                      />
+                    </div>
                     <p className="text-md py-2">{product.description}</p>
                   </div>
                   {product.offerType === "re" ? (
@@ -394,8 +453,8 @@ const ProductInfo = () => {
                             "Discover More Products For Sell"))}
                     </h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {data &&
-                        data.fetchProducts.products.map((item, i) => (
+                      {discoverProducts &&
+                        discoverProducts.map((item, i) => (
                           <ProductItem
                             data={item}
                             offer="rent"
@@ -407,7 +466,7 @@ const ProductInfo = () => {
                 </div>
               </Fragment>
             ) : (
-                <Loading className="h-12" />
+              <Loading className="h-12" />
             )}
           </div>
         </div>
@@ -426,3 +485,31 @@ const SpecificationItem = ({ title, value }) => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  try {
+    console.log({ id: context.params.id });
+    const id = context?.query?.id;
+    const { data, loading } = await client.query({
+      query: GET_PRODUCT_DETAILS,
+      variables: {
+        productId: id,
+      },
+    });
+    return {
+      props: {
+        data,
+        loading,
+        error: null,
+      }, // will be passed to the page component as props
+    };
+  } catch (error) {
+    return {
+      props: {
+        data: null,
+        loading: false,
+        error: error,
+      }, // will be passed to the page component as props
+    };
+  }
+}

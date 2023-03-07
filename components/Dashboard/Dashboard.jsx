@@ -12,7 +12,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useSwipeable } from "react-swipeable";
 
 const Dashboard = () => {
-  const [tab, setTab] = useState("re");
+  const [tab, setTab] = useState("se");
+
+  const [vehicleType, setVehicleType] = useState(["ca", "bi", "sc"]);
 
   const [loading, setLoading] = useState(true);
 
@@ -26,9 +28,9 @@ const Dashboard = () => {
 
   const [inputVariables, setInputVariables] = useState({
     fetchInput: {
-      offerType: ["re"],
+      offerType: ["se"],
       count: 10,
-      vehicleType: ["bi", "ca", "sc"],
+      vehicleType,
     },
   });
 
@@ -45,6 +47,20 @@ const Dashboard = () => {
       };
     });
   }, [tab]);
+
+  useEffect(() => {
+    setProducts([]);
+    setPageNo(1);
+    setHasMore(true);
+    setInputVariables((prev) => {
+      return {
+        fetchInput: {
+          ...prev.fetchInput,
+          vehicleType: vehicleType,
+        },
+      };
+    });
+  }, [vehicleType]);
 
   const getProducts = async () => {
     try {
@@ -70,10 +86,10 @@ const Dashboard = () => {
     setPageNo(pageNo + 1);
   };
   const handleSwiped = (eventData) => {
-    if (eventData.dir === "Left" && tab === "re") {
-      setTab("se");
-    } else if (eventData.dir === "Right" && tab === "se") {
+    if (eventData.dir === "Left" && tab === "se") {
       setTab("re");
+    } else if (eventData.dir === "Right" && tab === "re") {
+      setTab("se");
     }
   };
 
@@ -96,16 +112,15 @@ const Dashboard = () => {
     >
       <div className="flex gap-6 font-semibold text-lg w-full pb-6">
         <ButtonTab
-          val="re"
-          onClick={() => setTab("re")}
-          label="For Rent"
-          tab={tab}
-        />
-
-        <ButtonTab
           val="se"
           onClick={() => setTab("se")}
           label="For Sell"
+          tab={tab}
+        />
+        <ButtonTab
+          val="re"
+          onClick={() => setTab("re")}
+          label="For Rent"
           tab={tab}
         />
       </div>
@@ -122,7 +137,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {!searchInput && <Category />}
+      {!searchInput && (
+        <Category vehicleType={vehicleType} setVehicleType={setVehicleType} />
+      )}
 
       {!searchInput && <h2 className="font-bold text-xl pt-2">Discover</h2>}
       {searchInput && <Search searchInput={searchInput} tab={tab} />}
@@ -145,7 +162,7 @@ const Dashboard = () => {
 
       {loading && (
         <div className="flex justify-center col-start-1 col-end-5 p-6">
-          <Loading  className="h-12"/>
+          <Loading className="h-12" />
         </div>
       )}
       {!hasMore && !searchInput && (

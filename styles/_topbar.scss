@@ -1,17 +1,17 @@
 $topbar-thickness: 4rem;
 
 .topbar {
-    height: $topbar-thickness;
-    z-index: 10000;
-    width: 100%;
-    @apply p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between;
-  }
+  height: $topbar-thickness;
+  z-index: 10000;
+  width: 100%;
+  @apply p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between;
+}
 
 .container {
   // height: calc(100vh - $topbar-thickness - $topbar-thickness);
-  min-height : 100vh;
+  min-height: 100vh;
   padding: 1rem;
-  // overflow-y: scroll;
+  overflow-y: hidden;
   padding-top: $topbar-thickness + 1rem;
 }
 @screen lg {
@@ -19,16 +19,16 @@ $topbar-thickness: 4rem;
     height: $topbar-thickness;
     z-index: 10000;
     width: calc(100vw - $topbar-thickness);
-    @apply  p-4 flex text-center items-center justify-between pr-10;
+    @apply p-4 flex text-center items-center justify-between pr-10;
   }
 
   .container {
     // height: calc(100vh - $topbar-thickness );
     margin: 1.5rem;
     margin-top: $topbar-thickness + 1rem;
-    margin-bottom :0;
+    margin-bottom: 0;
     padding: 1rem;
     width: calc(100vw - $topbar-thickness - 4rem);
-    @apply overflow-y-scroll
+    overflow-y: hidden;
   }
 }

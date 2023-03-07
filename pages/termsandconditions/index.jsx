@@ -1,11 +1,20 @@
 import React, { Fragment } from "react";
-import TopBar from "../../components/Topbar/TopBar";
+import Head from "next/head";
+import Logo from "../../assets/TopBar/logo.svg";
+import Link from "next/link";
 
 const TermsAndConditions = () => {
   return (
     <Fragment>
-      <TopBar />
-      <div className="w-full h-full lg:px-36 md:px-20 pb-8">
+      <Head>
+        <title>Moto Ghar - Terms and Conditions</title>
+      </Head>
+      <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
+        <Link href="/" className="font-bold text-2xl text-primary">
+          <Logo className="h-20 md:h-24" />
+        </Link>
+      </div>
+      <div className="w-full h-full lg:px-36 md:px-20 pb-8 pt-16">
         <h1 className="text-2xl font-semibold px-6 pt-6 pb-0">
           Terms and Conditions
         </h1>
@@ -27,7 +36,7 @@ const TermsAndConditions = () => {
         </ul>
         <TermsAndConditionsPoints
           title="Intellectual Property"
-          desc="The Service and its content, including all text, graphics, logos, icons, images, and software, are the property of Wheelzhub or its licensors and are protected by copyright, trademark, and other intellectual property laws. You may not use the Service or its content for any commercial or illegal purpose without Wheelzhub's express written permission."
+          desc="The Service and its content, including all text, graphics, logos, icons, images, and software, are the property of Moto Ghar or its licensors and are protected by copyright, trademark, and other intellectual property laws. You may not use the Service or its content for any commercial or illegal purpose without Moto Ghar's express written permission."
         />
         <TermsAndConditionsPoints
           title="Disclaimer of Warranties"
@@ -39,7 +48,7 @@ const TermsAndConditions = () => {
         />
         <TermsAndConditionsPoints
           title="Indemnification"
-          desc="You agree to indemnify and hold Wheelzhub and its subsidiaries, affiliates, officers, agents, and other partners and employees, harmless from any loss, liability, claim, or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your use of the Service, your violation of these Terms, or your violation of any rights of another."
+          desc="You agree to indemnify and hold Moto Ghar and its subsidiaries, affiliates, officers, agents, and other partners and employees, harmless from any loss, liability, claim, or demand, including reasonable attorneys' fees, made by any third party due to or arising out of your use of the Service, your violation of these Terms, or your violation of any rights of another."
         />
         <TermsAndConditionsPoints
           title="Termination"
@@ -47,7 +56,7 @@ const TermsAndConditions = () => {
         />
         <TermsAndConditionsPoints
           title="Governing Law"
-          desc="These Terms shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions. You and Wheelzhub agree to submit to the personal and exclusive jurisdiction of the courts located within the county of San Francisco, California."
+          desc="These Terms shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions. You and Moto Ghar agree to submit to the personal and exclusive jurisdiction of the courts located within the county of San Francisco, California."
         />
         <TermsAndConditionsPoints
           title="Changes to the Terms"

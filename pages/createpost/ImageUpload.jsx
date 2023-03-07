@@ -76,12 +76,12 @@ const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
             className="rounded-lg object-cover aspect-square "
           />
           <div
-            className="absolute -top-2 -right-2  hover:scale-110 bg-white rounded-full"
+            className="absolute -top-1 -right-1 p-1 hover:scale-110 bg-white rounded-full"
             onClick={(e) => {
               removeImg(d.key);
             }}
           >
-            <Cross className="h-6" fill="red" />
+            <Cross className="h-4" fill="red" />
           </div>
         </div>
       ))}

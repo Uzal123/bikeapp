@@ -33,7 +33,7 @@ const Profile = ({ ...props }) => {
 
   const [productsloading, setProductsLoading] = useState(true);
 
-  const [tab, setTab] = useState("re");
+  const [tab, setTab] = useState("se");
 
   const [products, setProducts] = useState([]);
 
@@ -62,10 +62,10 @@ const Profile = ({ ...props }) => {
   };
 
   const handleSwiped = (eventData) => {
-    if (eventData.dir === "Left" && tab === "re") {
-      setTab("se");
-    } else if (eventData.dir === "Right" && tab === "se") {
+    if (eventData.dir === "Left" && tab === "se") {
       setTab("re");
+    } else if (eventData.dir === "Right" && tab === "re") {
+      setTab("se");
     }
   };
 
@@ -141,7 +141,7 @@ const Profile = ({ ...props }) => {
   };
 
   return (
-    <AppLayout>
+    <AppLayout title={`Profile`}>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
         <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
           {!loading && profileData ? (
@@ -245,23 +245,22 @@ const Profile = ({ ...props }) => {
           </div>
           <div className="flex gap-10 text-xl py-2">
             <ButtonTab
-              val="re"
-              onClick={() => setTab("re")}
-              label="For Rent"
-              tab={tab}
-            />
-
-            <ButtonTab
               val="se"
               onClick={() => setTab("se")}
               label="For Sell"
+              tab={tab}
+            />
+            <ButtonTab
+              val="re"
+              onClick={() => setTab("re")}
+              label="For Rent"
               tab={tab}
             />
           </div>
           {products &&
             !productsloading &&
             (products.length > 0 ? (
-              <div className="grid md:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {products &&
                   products.map((item, i) => (
                     <ProductItem
@@ -278,7 +277,7 @@ const Profile = ({ ...props }) => {
             ))}
           {productsloading && (
             <div className="p-6 w-full flex justify-center">
-              <Loading className="h-12"/>
+              <Loading className="h-12" />
             </div>
           )}
         </div>

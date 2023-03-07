@@ -4,9 +4,9 @@ import TopBar from "../Topbar/TopBar";
 
 const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
   return (
-    <AppLayout>
+    <AppLayout title="Chats">
       <Fragment>
-        <div className="w-full h-full lg:p-4 flex gap-4">
+        <div className="chatContainer lg:p-4 flex gap-4">
           <div
             className={`w-screen md:w-1/3 lg:w-1/4 bg-customGray-light h-full flex-col rounded-md ${
               showMessagePage ? "hidden" : ""

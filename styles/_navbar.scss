@@ -15,12 +15,17 @@ $nav-thickness: 4rem;
 }
 
 .main {
-  // height: calc(100vh - 4rem);
+//   height: 100vh;
   min-height: 100vh;
-  padding-bottom: calc($nav-thickness);
+  padding-bottom: $nav-thickness;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
   @apply w-screen;
+}
+
+.chatContainer{
+    height: 100vh;
+    padding-bottom: 4rem;
 }
 
 @screen lg {

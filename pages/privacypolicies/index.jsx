@@ -1,11 +1,20 @@
 import React, { Fragment } from "react";
-import TopBar from "../../components/Topbar/TopBar";
+import Logo from "../../assets/TopBar/logo.svg";
+import Link from "next/link";
+import Head from "next/head";
 
 const PrivacyPolicies = () => {
   return (
     <Fragment>
-      <TopBar />
-      <div className="w-full h-full lg:px-36 md:px-20 ">
+      <Head>
+        <title>Moto Ghar - Privacy Policy</title>
+      </Head>
+      <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
+        <Link href="/" className="font-bold text-2xl text-primary">
+          <Logo className="h-20 md:h-24" />
+        </Link>
+      </div>
+      <div className="w-full h-full lg:px-36 md:px-20 pt-16">
         <h1 className="text-2xl font-semibold px-6 pt-6 pb-0">
           Privacy Policy
         </h1>
@@ -74,7 +83,7 @@ const PrivacyPolicies = () => {
           <h2 className="px-6  text-lg font-medium">Contact Us</h2>
           <p className="text-md px-6">
             If you have any questions or concerns about this privacy policy,
-            please contact us at support@wheelzhub.com.
+            please contact us at info@motoghar.com.
           </p>
         </div>
       </div>

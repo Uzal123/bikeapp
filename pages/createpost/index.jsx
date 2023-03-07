@@ -15,6 +15,7 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
+import Head from "next/head";
 
 const CreatePost = () => {
   const user = useUserStore((state) => state.user);
@@ -49,7 +50,7 @@ const CreatePost = () => {
   };
 
   return (
-    <AppLayout>
+    <AppLayout title="Post new Ad">
       <div className="p-4 h-full flex justify-center bg-customGray-navbar">
         <div className="flex justify-start md:px-10 pt-6 overflow-x-hidden  items-center flex-col bg-customGray-navbar gap-6 md:w-3/5 lg:w-1/2 w-full overflow-scroll rounded-2xl h-full relative">
           <div className="flex justify-between w-full">

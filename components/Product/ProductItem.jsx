@@ -67,13 +67,13 @@ const ProductItem = ({
                   </div>
                 ) : null}
                 <button
-                  className="text-gray-600 hover:text-gray-800"
+                  className="absolute right-0 bottom-0 hover:scale-110 "
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowOptions(!showOptions);
                   }}
                 >
-                  <Ellipsis className="h-6" />
+                  <Ellipsis className="h-5" />
                 </button>
               </div>
             )}

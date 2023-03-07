@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useUserStore } from "../../store/auth";
+import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
 import { withRouter, useRouter } from "next/router";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
+import Head from "next/head";
 
 const Register = () => {
   const [registerData, setregisterData] = useState({
@@ -60,12 +62,11 @@ const Register = () => {
 
   return (
     <div className="w-screen h-screen flex">
-      {console.log(registerData)}
-      {console.log(data)}
+      <Head>
+        <title>Moto Ghar - Register</title>
+      </Head>
       <div className="left hidden md:block w-3/5 h-screen">
-        <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
-          WheelzHub
-        </h2>
+        <Logo className="absolute h-24 mx-4" />
         <div className="flex items-center justify-center h-full">
           <img src="/signup.png" alt="Image" height={800} width={800} />
         </div>
@@ -112,7 +113,7 @@ const Register = () => {
             </button>
           </form>
           <p className="text-center text-customGray-normal font-medium">
-            Already a <spam className="text-primary">WheelzHub</spam> User ?
+            Already a <spam className="text-primary">Moto Ghar</spam> User ?
           </p>
           <div className="flex justify-center">
             <Link
@@ -124,7 +125,7 @@ const Register = () => {
           </div>
           <div className="text-center py-4 text-sm md:px-6 lg:px-8">
             <p>
-              If you register, you are accepting Wheelzhub
+              If you register, you are accepting MotoGhar
               <Link
                 href="/termsandconditions"
                 className="text-primary cursor-pointer"

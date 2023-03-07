@@ -1,14 +1,14 @@
 import { React, useState, useEffect } from "react";
+import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
 import { useUserStore } from "../../store/auth";
 import { useNotificationStore } from "../../store/notifications";
-import Router, { withRouter, useRouter } from "next/router";
+import { withRouter, useRouter } from "next/router";
 import Link from "next/link";
 import { uuid } from "uuidv4";
-import LoginImage from "../../assets/Login.svg";
-
+import Head from "next/head";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ email: "", password: "" });
@@ -59,12 +59,13 @@ const Login = () => {
 
   return (
     <div className="w-screen h-screen flex">
+      <Head>
+        <title>Moto Ghar - Login</title>
+      </Head>
       <div className="hidden md:block left w-3/5 h-screen">
-        <h2 className="text-2xl px-8 py-8 text-primary font-bold absolute">
-          WheelzHub
-        </h2>
+        <Logo className="absolute h-24 mx-4" />
         <div className="flex justify-center items-center h-full ">
-          <img src="/signup.png" alt="Login"  height={800} width={800}/>
+          <img src="/signup.png" alt="Login" height={800} width={800} />
         </div>
       </div>
       <div className="right w-full  md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">

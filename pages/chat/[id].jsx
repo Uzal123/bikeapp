@@ -77,8 +77,8 @@ const ChatWithID = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!localStorage.getItem("rent-appLayout-token")) {
-        router.push("/login");
+      if (!user.email | error) {
+        router.push("/login", { basePath: "/chat" });
       }
     }
   }, [user]);

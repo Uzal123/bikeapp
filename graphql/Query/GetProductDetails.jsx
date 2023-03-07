@@ -3,7 +3,6 @@ import { gql } from "@apollo/client";
 const GET_PRODUCT_DETAILS = gql`
   query GetProductDetails(
     $productId: String!
-    $fetchInput: FetchProductInput!
   ) {
     getProductDetails(productId: $productId) {
       success
@@ -48,24 +47,7 @@ const GET_PRODUCT_DETAILS = gql`
         }
       }
     }
-    fetchProducts(fetchInput: $fetchInput) {
-      success
-      message
-      products {
-        _id
-        offerType
-        price
-        title
-        images {
-          url
-          key
-        }
-        createdAt
-        createdBy {
-          _id
-        }
-      }
-    }
+    
   }
 `;
 

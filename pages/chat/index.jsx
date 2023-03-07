@@ -6,6 +6,7 @@ import FETCH_CHAT from "../../graphql/Query/FetchChat";
 import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
 import Loading from "../../assets/createpost/loading.svg";
+import Head from "next/head";
 
 const Chat = () => {
   const user = useUserStore((state) => state.user);
