@@ -195,7 +195,7 @@ const Profile = ({ ...props }) => {
                           ].url
                     }
                     fullName={profileData.user.fullName}
-                    className="bg-white text-primary"
+                    className="bg-white text-primary h-full w-full"
                   >
                  
 
