@@ -3,17 +3,17 @@ import create, { createStore } from "zustand";
 const useStore = create((set) => ({
   user: {
     name: "",
-    email: "",
+    phone: "",
     id: "",
   },
-  setUser: (token, id, email, fullName) => {
+  setUser: (token, id, phone, fullName) => {
     if (token) {
       localStorage.setItem("rent-app-token", token);
     }
     set((state) => ({
       user: {
         name: fullName,
-        email: email,
+        phone: phone,
         id: id,
       },
     }));
@@ -23,7 +23,7 @@ const useStore = create((set) => ({
     set((state) => ({
       user: {
         name: "",
-        email: "",
+        phone: "",
         id: "",
       },
     }));

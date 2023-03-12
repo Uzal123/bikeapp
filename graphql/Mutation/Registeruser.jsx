@@ -9,8 +9,9 @@ const REGISTER_USER = gql`
         _id
         accessToken
         createdAt
-        email
+        phone
         fullName
+        verifiedPhone
       }
     }
   }

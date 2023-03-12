@@ -38,7 +38,7 @@ const CreatePost = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!user.email) {
+      if (!user.phone) {
         router.push("/login", { basePath : "/createpost"});
       }
     }
@@ -54,7 +54,7 @@ const CreatePost = () => {
       <div className="p-4 h-full flex justify-center bg-customGray-navbar">
         <div className="flex justify-start md:px-10 pt-6 overflow-x-hidden  items-center flex-col bg-customGray-navbar gap-6 md:w-3/5 lg:w-1/2 w-full overflow-scroll rounded-2xl h-full relative">
           <div className="flex justify-between w-full">
-            <h2 className="font-bold text-2xl">Post Ad</h2>
+            <h1 className="font-bold text-2xl">Post Ad</h1>
             <Link className="cursor-pointer" href="/">
               <Cross className="h-6" />
             </Link>

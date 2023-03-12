@@ -74,6 +74,7 @@ const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
             src={d.url}
             key={d.key}
             className="rounded-lg object-cover aspect-square "
+            alt="Product Image"
           />
           <div
             className="absolute -top-1 -right-1 p-1 hover:scale-110 bg-white rounded-full"

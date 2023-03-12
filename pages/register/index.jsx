@@ -13,7 +13,7 @@ import Head from "next/head";
 
 const Register = () => {
   const [registerData, setregisterData] = useState({
-    email: "",
+    phone: "",
     fullName: "",
     password: "",
   });
@@ -29,7 +29,7 @@ const Register = () => {
   useEffect(() => {
     if (data?.register["success"]) {
       const user = data.register["user"];
-      setUser(user.accessToken, user._id, user.email, user.fullName);
+      setUser(user.accessToken, user._id, user.phone, user.fullName);
       setNotification(uuid(), "Registered and Logged in", "Success", 3000);
       router.push("/");
     }
@@ -55,6 +55,12 @@ const Register = () => {
     setregisterData((prevs) => ({ ...prevs, [key]: val }));
   };
 
+  const handleFloat = (e) => {  
+    const val = parseFloat(e.target.value);
+    const key = e.target.name;
+    setregisterData((prevs) => ({ ...prevs, [key]: val }));
+    };
+
   const onSubmit = (e) => {
     e.preventDefault();
     submitRegister({ variables: { user: registerData } });
@@ -71,6 +77,7 @@ const Register = () => {
           <img src="/signup.png" alt="Image" height={700} width={700} />
         </div>
       </div>
+      {console.log(registerData)}
       <div className="right w-full md:w-2/5 h-screen bg-white flex justify-center px-8 md:px-20 pt-20">
         <div>
           <h2 className="text-customGray-dark text-4xl font-semibold px-6 py-8 text-center">
@@ -88,13 +95,13 @@ const Register = () => {
               Name
             </Input>
             <Input
-              value={registerData.email}
-              type="email"
-              placeholder="test@example.com"
-              onChange={handleRegister}
-              name="email"
+              value={registerData.phone}
+              type="number"
+              placeholder="Enter your phone number"
+              onChange={handleFloat}
+              name="phone"
             >
-              Email
+              Phone
             </Input>
             <Input
               value={registerData.password}

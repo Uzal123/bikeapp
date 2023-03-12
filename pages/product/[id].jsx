@@ -29,6 +29,7 @@ import ShareSvg from "../../assets/Product/share.svg";
 
 import AppLayout from "../../components/Layout/AppLayout";
 import Head from "next/head";
+import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 
 const ProductInfo = ({ data, error, loading, ...props }) => {
   const router = useRouter();
@@ -212,6 +213,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                       <img
                         src={product.images[currentImageIndex].url}
                         className="w-full h-full object-cover rounded-lg"
+                        alt="Product Image"
                       />
                     ) : (
                       ""
@@ -307,11 +309,16 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                       <p className="text-lg font-semibold">Ad posted by</p>
                       <Link href={`/profile/${product.createdBy._id}`}>
                         <div className="flex gap-4">
-                          <div className=" rounded-full h-14 w-14">
-                            {/* <img
-                              src={product.profile.profilePic[0].url}
-                              className="h-14 w-14"
-                            /> */}
+                          <div className="h-14 w-14">
+                            <ProfilePicContainer
+                              url={
+                                product.profile.profilePic.length === 0
+                                  ? ""
+                                  : product.profile.profilePic[product.profile.profilePic.length - 1].url
+                              }
+                              fullName={product.createdBy.fullName}
+                              className="h-14 w-14 bg-white"
+                            />
                           </div>
                           <div>
                             <div className="flex items-center gap-2">

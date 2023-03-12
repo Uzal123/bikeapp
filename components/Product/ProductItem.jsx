@@ -43,6 +43,7 @@ const ProductItem = ({
         <img
           src={images[0].url}
           className="aspect-square object-cover rounded-lg h-full w-full"
+          alt="Product Image"
         />
       </div>
       <div className="p-2 relative">

@@ -89,7 +89,7 @@ const ChatWithID = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!user.email | error) {
+      if (!user.phone | error) {
         router.push("/login", { basePath: "/chat" });
       }
     }

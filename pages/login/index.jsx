@@ -11,7 +11,7 @@ import { uuid } from "uuidv4";
 import Head from "next/head";
 
 const Login = () => {
-  const [loginData, setloginData] = useState({ email: "", password: "" });
+  const [loginData, setloginData] = useState({ phone: "", password: "" });
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const setNotification = useNotificationStore(
@@ -24,7 +24,7 @@ const Login = () => {
   useEffect(() => {
     if (data?.login?.["success"] && !loading) {
       const user = data.login["user"];
-      setUser(user.accessToken, user._id, user.email, user.fullName);
+      setUser(user.accessToken, user._id, user.phone, user.fullName);
       setNotification(uuid(), "Login Successfull", "Success", 3000);
     }
     if (data?.login?.success == false) {
@@ -33,7 +33,7 @@ const Login = () => {
   }, [data]);
 
   useEffect(() => {
-    if (user.email) {
+    if (user.phone) {
       if (router.asPath === "/register" || router.asPath === "/login") {
         router.push("/");
       } else {
@@ -44,6 +44,12 @@ const Login = () => {
 
   const handleLogin = (e) => {
     const val = e.target.value;
+    const key = e.target.name;
+    setloginData((prevs) => ({ ...prevs, [key]: val }));
+  };
+
+  const handleFloat = (e) => {
+    const val = parseFloat(e.target.value);
     const key = e.target.name;
     setloginData((prevs) => ({ ...prevs, [key]: val }));
   };
@@ -75,13 +81,13 @@ const Login = () => {
           </h2>
           <form onSubmit={(e) => onSubmit(e)}>
             <Input
-              type="email"
-              placeholder="test@example.com"
-              value={loginData.email}
-              name="email"
-              onChange={handleLogin}
+              type="number"
+              placeholder="Enter your phone number"
+              value={loginData.phone}
+              name="phone"
+              onChange={handleFloat}
             >
-              Email
+              Phone
             </Input>
 
             <Input

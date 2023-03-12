@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
       const response = await client.query({ query: ME });
       if (response.data?.me?.["success"]) {
         const user = response.data.me["user"];
-        setUser(user.accessToken, user._id, user.email, user.fullName);
+        setUser(user.accessToken, user._id, user.phone, user.fullName);
       }
     } catch (error) {
       console.log(error);

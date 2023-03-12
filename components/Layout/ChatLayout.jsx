@@ -12,9 +12,9 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
               showMessagePage ? "hidden" : ""
             } md:flex`}
           >
-            <h2 className="p-4 text-white bg-primary mb-4 lg:rounded-t-md text-lg font-semibold">
+            <h1 className="p-4 text-white bg-primary mb-4 lg:rounded-t-md text-lg font-semibold">
               Chats
-            </h2>
+            </h1>
             {chat}
           </div>
 
@@ -25,7 +25,7 @@ const ChatLayout = ({ chat, showMessagePage = false, ...props }) => {
           )}
           {!showMessagePage && (
             <div className="hidden md:flex w-full h-full md:w-2/3 lg:w-3/4 bg-customGray-navbar rounded-md justify-center">
-              <img src="/signup.png" className="h-full object-cover" />
+              <img src="/signup.png" className="h-full object-cover"  alt="Signup Image"/>
             </div>
           )}
         </div>

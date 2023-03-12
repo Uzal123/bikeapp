@@ -10,7 +10,7 @@ const ME = gql`
         accessToken
         createdAt
         fullName
-        email
+        phone
         password
         updatedAt
         username

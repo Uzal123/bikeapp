@@ -9,7 +9,7 @@ const ChatItem = ({ onClick, image, adTitle, userName, active = false }) => {
       onClick={onClick}
     >
       <div className="flex shrink-0 w-14 h-14 rounded-full overflow-hidden justify-center bg-white">
-        <img src={image} className="w-full h-full object-cover" />
+        <img src={image} className="w-full h-full object-cover" alt="User image"/>
       </div>
 
       <div className="flex flex-col justify-center p-2 w-4/5">

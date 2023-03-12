@@ -8,7 +8,7 @@ const ProfilePicContainer = ({ url, fullName, className, ...props }) => {
       {!url ? (
         <p className="text-primary ">{fullName[0]}</p>
       ) : (
-        <img src={url} className="h-full w-full object-cover rounded-full" />
+        <img src={url} className="h-full w-full object-cover rounded-full" alt="User Image"/>
       )}
       {props.children}
     </div>
