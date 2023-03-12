@@ -35,7 +35,7 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
           <link rel="canonical" href={url ? url : defaultUrl} />
           <meta
             property="og:title"
-            content={title ? +"MotoGhar - " + title : defaultTitle}
+            content={title ? "MotoGhar - " + title : defaultTitle}
           />
           <meta
             property="og:description"
@@ -46,15 +46,23 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
           <meta property="og:type" content="website" />
           <meta
             name="twitter:title"
-            content={title ? +"MotoGhar - " + title : defaultTitle}
+            content={title ? "MotoGhar - " + title : defaultTitle}
           />
           <meta
             name="twitter:description"
             content={description ? description : defaultDescription}
           />
+
           <meta name="twitter:url" content={url ? url : defaultUrl} />
           <meta name="twitter:image" content={image ? image : defaultImage} />
           <meta name="twitter:card" content="summary_large_image" />
+          <meta property="og:street-address" content="Kathmandu" />
+          <meta property="og:locality" content="Kathmandu" />
+          <meta property="og:region" content="Bagmati" />
+          <meta property="og:postal-code" content="44600" />
+          <meta property="og:country-name" content="Nepal" />
+          <meta property="og:latitude" content="27.700001" />
+          <meta property="og:longitude" content="85.333336" />
         </Head>
         <Navbar />
         {props.children}

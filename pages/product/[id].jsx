@@ -177,11 +177,11 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
         />
         <meta
           property="og:image"
-          content={data?.getProductDetails?.product?.images[0].url}
+          content={`${data?.getProductDetails?.product?.images[0].url}`}
         />
         <meta
           property="og:url"
-          content="https://www.motoghar.com/product/${product?._id}"
+          content={`{https://www.motoghar.com/product/${product?._id}`}
         />
         <meta name="twitter:card" content="summary_large_image" />
         {/* <title>{`${data?.getProductDetails?.product?.title}`}</title> */}
