@@ -8,12 +8,12 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
     "Find the perfect bike or car for your needs at MotoGhar, the premier online marketplace for buying and renting vehicles.";
   const defaultKeywords = "MotoGhar, bikes, cars, rental, marketplace";
   const defaultUrl = "https://www.motoghar.com";
-  const defaultImage = "https://www.motoghar.com/assets/RentCar.png";
+  const defaultImage = "https://www.motoghar.com/RentCar.png";
   return (
     <Fragment>
       <div className="main">
         <Head>
-          <title>{title ? title + " - " + defaultTitle : defaultTitle}</title>
+          <title>{title ? "MotoGhar - " + title : defaultTitle}</title>
           <meta
             name="description"
             content={description ? description : defaultDescription}
@@ -22,8 +22,21 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
             name="keywords"
             content={keywords ? keywords : defaultKeywords}
           />
+          {/* <link
+            rel="icon"
+            href="www.motoghar.com/RentCar.png"
+            type="image/png"
+          />
+          <link
+            rel="shortcut icon"
+            href="www.motoghar.com/favicon.ico"
+            type="image/x-icon"
+          /> */}
           <link rel="canonical" href={url ? url : defaultUrl} />
-          <meta property="og:title" content={title ? title : defaultTitle} />
+          <meta
+            property="og:title"
+            content={title ? +"MotoGhar - " + title : defaultTitle}
+          />
           <meta
             property="og:description"
             content={description ? description : defaultDescription}
@@ -31,7 +44,10 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
           <meta property="og:url" content={url ? url : defaultUrl} />
           <meta property="og:image" content={image ? image : defaultImage} />
           <meta property="og:type" content="website" />
-          <meta name="twitter:title" content={title ? title : defaultTitle} />
+          <meta
+            name="twitter:title"
+            content={title ? +"MotoGhar - " + title : defaultTitle}
+          />
           <meta
             name="twitter:description"
             content={description ? description : defaultDescription}
