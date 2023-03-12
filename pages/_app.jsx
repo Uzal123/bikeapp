@@ -12,6 +12,7 @@ import { useUserStore } from "../store/auth";
 import { client } from "../graphql/client";
 import PopUpNotification from "../components/UI/PopUpNotification";
 import { useNotificationStore } from "../store/notifications";
+import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
   const setUser = useUserStore((state) => state.setUser);
@@ -41,7 +42,10 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ApolloProvider client={client}>
-        <PopUpNotification notifications={notifications} />
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+      </Head>
+      <PopUpNotification notifications={notifications} />
       <Component {...pageProps} />
     </ApolloProvider>
   );

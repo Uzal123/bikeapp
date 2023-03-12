@@ -22,16 +22,16 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
             name="keywords"
             content={keywords ? keywords : defaultKeywords}
           />
-          {/* <link
+          <link
             rel="icon"
             href="www.motoghar.com/RentCar.png"
             type="image/png"
           />
           <link
             rel="shortcut icon"
-            href="www.motoghar.com/favicon.ico"
+            href="/favicon.ico"
             type="image/x-icon"
-          /> */}
+          />
           <link rel="canonical" href={url ? url : defaultUrl} />
           <meta
             property="og:title"
