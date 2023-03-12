@@ -198,7 +198,12 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
         />
       )}
 
-      <AppLayout title={`${data?.getProductDetails?.product?.title}`}>
+      <AppLayout
+        title={`${data?.getProductDetails?.product?.title}`}
+        description={`${data?.getProductDetails?.product?.description}`}
+        image ={`${data?.getProductDetails?.product?.images[0].url}`}
+        url={`https://www.motoghar.com/product/${product?._id}`}
+      >
         <TopBar />
         <div className="container">
           <div className="flex w-full flex-col md:flex-row  md:gap-8 justify-center">
@@ -314,7 +319,9 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                               url={
                                 product.profile.profilePic.length === 0
                                   ? ""
-                                  : product.profile.profilePic[product.profile.profilePic.length - 1].url
+                                  : product.profile.profilePic[
+                                      product.profile.profilePic.length - 1
+                                    ].url
                               }
                               fullName={product.createdBy.fullName}
                               className="h-14 w-14 bg-white"
