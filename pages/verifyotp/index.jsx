@@ -175,12 +175,12 @@ const Index = () => {
                 </p>
               ) : (
                 <p className="text-sm px-6 pt-2 pb-0 text-center">
-                  Didn't receive the code?{" "}
+                  Didn&apos;t receive the code ?
                   <span
                     className="text-primary cursor-pointer"
-                    onClick={handleResendClick}
+                    onClick={() => handleResendClick()}
                   >
-                    Resend
+                    {" Resend"}
                   </span>
                 </p>
               )}
