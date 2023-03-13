@@ -201,7 +201,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
       <AppLayout
         title={`${data?.getProductDetails?.product?.title}`}
         description={`${data?.getProductDetails?.product?.description}`}
-        image ={`${data?.getProductDetails?.product?.images[0].url}`}
+        image={`${data?.getProductDetails?.product?.images[0].url}`}
         url={`https://www.motoghar.com/product/${product?._id}`}
       >
         <TopBar />
@@ -292,7 +292,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                       />
                     </div>
 
-                    <p>{product.description}</p>
+                    <p className="whitespace-pre-wrap overflow-x-hidden">{product.description}</p>
                   </div>
                   <div className="flex flex-col gap-2 py-2">
                     <p className="text-lg font-semibold">Location</p>
@@ -328,7 +328,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                             />
                           </div>
                           <div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-start justify-center gap-2 flex-col">
                               <p className="font-semibold">
                                 {product.createdBy.fullName}
                               </p>
@@ -347,7 +347,7 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                               </p>
                             </div>
 
-                            <p>5 Ads</p>
+                            {/* <p>5 Ads</p> */}
                           </div>
                         </div>
                       </Link>
@@ -384,7 +384,9 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
                         }}
                       />
                     </div>
-                    <p className="text-md py-2">{product.description}</p>
+                    <p className="text-md py-2 whitespace-pre-wrap">
+                      {product.description}
+                    </p>
                   </div>
                   {product.offerType === "re" ? (
                     <div className="bg-customGray-light rounded-xl p-4">
