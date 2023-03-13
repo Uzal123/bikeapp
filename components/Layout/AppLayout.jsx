@@ -16,7 +16,7 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
           <title>{`MotoGhar -  ${title ? title : defaultTitle}`}</title>
           <meta
             name="description"
-            content={`${description ? description : defaultDescription}`}
+            content={`${defaultDescription}`}
           />
           <meta
             name="keywords"
