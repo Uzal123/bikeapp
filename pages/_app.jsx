@@ -10,8 +10,9 @@ import {
 import ME from "../graphql/Query/Me";
 import { useUserStore } from "../store/auth";
 import { client } from "../graphql/client";
-import PopUpNotification from "../components/UI/PopUpNotification";
 import { useNotificationStore } from "../store/notifications";
+import PopUpNotification from "../components/UI/PopUpNotification";
+import { useRouter } from "next/router";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
@@ -21,12 +22,24 @@ function MyApp({ Component, pageProps }) {
     (state) => state
   );
 
+  const router = useRouter();
+
   const loadUser = async () => {
     try {
       const response = await client.query({ query: ME });
       if (response.data?.me?.["success"]) {
         const user = response.data.me["user"];
-        setUser(user.accessToken, user._id, user.phone, user.fullName);
+        console.log(user);
+        setUser(
+          user.accessToken,
+          user._id,
+          user.phone,
+          user.fullName,
+          user.verifiedPhone
+        );
+        if (user.verifiedPhone === false) {
+          router.push("/verifyotp");
+        }
       }
     } catch (error) {
       console.log(error);

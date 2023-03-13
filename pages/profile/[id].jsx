@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import AppLayout from "../../components/Layout/AppLayout";
 import Setting from "../../assets/Profile/setting.svg";
 import Cross from "../../assets/createpost/cross.svg";
+import Tick from "../../assets/Profile/tick.svg";
 import Edit from "../../assets/Profile/edit.svg";
 import ButtonTab from "../../components/UI/Tab";
 import ProductItem from "../../components/Product/ProductItem";
@@ -10,17 +11,18 @@ import Router, { withRouter, useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import UPLOAD_PROFILE_PIC from "../../graphql/Mutation/UploadProfilePic";
 import USER_PRODUCTS from "../../graphql/Query/UserProducts";
-import MY_PROFILE from "../../graphql/Query/MyProfile";
 import USER_PROFILE from "../../graphql/Query/UserProfile";
 import { client } from "../../graphql/client";
 import Loading from "../../assets/createpost/loading.svg";
 import { useNotificationStore } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
+import UPDATEBIO from "../../graphql/Mutation/UpdateBio";
 import { useSwipeable } from "react-swipeable";
 import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 
 const Profile = ({ ...props }) => {
+  let bioinputref;
   let inputref;
   const user = useUserStore((state) => state.user);
   const removeUser = useUserStore((state) => state.removeUser);
@@ -37,6 +39,10 @@ const Profile = ({ ...props }) => {
   const [tab, setTab] = useState("se");
 
   const [products, setProducts] = useState([]);
+
+  const [userbio, setUserBio] = useState("");
+
+  const [bioEditor, setBioEditor] = useState(false);
 
   const [fetchInput, setFetchInput] = useState({
     offerType: [tab],
@@ -97,6 +103,7 @@ const Profile = ({ ...props }) => {
   useEffect(() => {
     if (data) {
       setProfileData(data.getUserProfile.profile);
+      setUserBio(data.getUserProfile.profile.bio);
     }
   }, [data]);
 
@@ -141,20 +148,40 @@ const Profile = ({ ...props }) => {
     }
   };
 
+  const handleUpdateBio = async () => {
+    try {
+      setNotification(uuid(), "Updating", "Loading", 3000);
+      const response = await client.mutate({
+        mutation: UPDATEBIO,
+        variables: { bio: userbio },
+      });
+      setUserBio(response.data.updateBio.profile.bio);
+      setBioEditor(false);
+      setNotification(uuid(), "Bio updated successfully", "Success", 3000);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (bioEditor) {
+      bioinputref.focus();
+    }
+  }, [bioEditor]);
+
+
   return (
     <AppLayout title={`Profile`}>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
-        <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-10 bg-customGray-navbar rounded-xl  relative">
+        <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-6 bg-customGray-navbar rounded-xl  relative">
           {!loading && profileData ? (
             <Fragment>
               {id === user.id && (
                 <Setting
-                  className="h-10 absolute right-2 top-2 cursor-pointer"
+                  className="h-8 absolute right-2 top-2 cursor-pointer"
                   onClick={(e) => editProfile(e)}
                 />
               )}
               {settingTab && (
-                <div className="absolute right-2 top-2 p-2 flex flex-col gap-2 bg-white rounded-lg z-20">
+                <div className="absolute right-2 top-2 p-2 flex flex-col gap-1 bg-white rounded-lg z-20 text-sm">
                   <div className="flex justify-end cursor-pointer">
                     <Cross className="h-6" onClick={(e) => editProfile(e)} />
                   </div>
@@ -172,6 +199,16 @@ const Profile = ({ ...props }) => {
                       Update profile picture
                     </p>
                   </div>
+
+                  <p
+                    className=" hover:bg-primary hover:text-white p-2 rounded-md  cursor-pointer"
+                    onClick={(e) => {
+                      setBioEditor(true);
+                      setSettingTab(false);
+                    }}
+                  >
+                    Update Bio
+                  </p>
 
                   <p
                     className="hover:bg-red-500 hover:text-white p-2 rounded-md cursor-pointer"
@@ -197,8 +234,6 @@ const Profile = ({ ...props }) => {
                     fullName={profileData.user.fullName}
                     className="bg-white text-primary h-full w-full"
                   >
-                 
-
                     {id === user.id && (
                       <Fragment>
                         <input
@@ -216,15 +251,42 @@ const Profile = ({ ...props }) => {
                         </div>
                       </Fragment>
                     )}
-                  </ProfilePicContainer >
+                  </ProfilePicContainer>
                 </div>
                 <h1 className="text-center font-semibold text-2xl pt-4">
                   {profileData.user.fullName}
                 </h1>
               </div>
-              <div className="text-center">
-                <p>This is my bio 8347853465 hello i am ths</p>
-              </div>
+              {bioEditor === true && (
+                <div className="text-center flex items-center justify-center flex-col">
+                  <textarea
+                    className="text-sm p-2 bg-inherit text-center rounded-lg border-2 border-gray-300 h-max"
+                    type="text"
+                    value={userbio}
+                    onChange={(e) => setUserBio(e.target.value)}
+                    ref={(refParam) => (bioinputref = refParam)}
+                  />
+                  {id === user.id && (
+                    <div className="flex gap-2 pt-2">
+                      <Tick
+                        className="w-4 h-4 cursor-pointer"
+                        onClick={() => handleUpdateBio()}
+                      />
+                      <Cross
+                        className="w-4 h-4 cursor-pointer"
+                        onClick={() => setBioEditor(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+              {bioEditor === false && (
+                <div className="flex text-center justify-center items-center text-sm">
+                  <p onClick={() => (id === user.id ? setBioEditor(true) : "")}>
+                    {userbio}
+                  </p>
+                </div>
+              )}
               <div className="text-center">
                 <p className="font-semibold">Total Ads : {products.length}</p>
               </div>

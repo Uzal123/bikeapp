@@ -24,7 +24,7 @@ const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
           />
           <link
             rel="icon"
-            href="www.motoghar.com/RentCar.png"
+            href="/RentCar.png"
             type="image/png"
           />
           <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />

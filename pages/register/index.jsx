@@ -31,7 +31,7 @@ const Register = () => {
       const user = data.register["user"];
       setUser(user.accessToken, user._id, user.phone, user.fullName);
       setNotification(uuid(), "Registered and Logged in", "Success", 3000);
-      router.push("/");
+      router.push("/verfiyotp");
     }
 
     if (data?.register?.success == false) {

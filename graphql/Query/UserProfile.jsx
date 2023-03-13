@@ -14,6 +14,7 @@ const USER_PROFILE = gql`
           _id
         }
         _id
+        bio
       }
       success
     }

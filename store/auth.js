@@ -5,8 +5,9 @@ const useStore = create((set) => ({
     name: "",
     phone: "",
     id: "",
+    verifiedPhone: false,
   },
-  setUser: (token, id, phone, fullName) => {
+  setUser: (token, id, phone, fullName,verifiedPhone) => {
     if (token) {
       localStorage.setItem("rent-app-token", token);
     }
@@ -15,6 +16,7 @@ const useStore = create((set) => ({
         name: fullName,
         phone: phone,
         id: id,
+        verifiedPhone: verifiedPhone,
       },
     }));
   },
@@ -25,6 +27,7 @@ const useStore = create((set) => ({
         name: "",
         phone: "",
         id: "",
+        verifiedPhone: false,
       },
     }));
   },

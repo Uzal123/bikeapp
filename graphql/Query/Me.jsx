@@ -11,6 +11,7 @@ const ME = gql`
         createdAt
         fullName
         phone
+        verifiedPhone
         password
         updatedAt
         username
