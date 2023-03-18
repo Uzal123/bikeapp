@@ -3,7 +3,11 @@
   "appId": "com.motoghar.app",
   "appName": "MotoGhar",
   "webDir": "out",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "http://192.168.0.107:3000",
+    "cleartext": true
+  }
 }
 
 
