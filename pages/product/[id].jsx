@@ -31,7 +31,7 @@ import AppLayout from "../../components/Layout/AppLayout";
 import Head from "next/head";
 import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 
-const ProductInfo = ({ data, error, loading, ...props }) => {
+const ProductInfo = ({ ...props }) => {
   const router = useRouter();
 
   const setNotification = useNotificationStore(
@@ -67,6 +67,13 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
   const [msgData, setMgsData] = useState();
 
   const [offerType, setOfferType] = useState([]);
+
+
+  const {data,error,loading} = useQuery(GET_PRODUCT_DETAILS, {
+    variables: {
+        productId: router.query.id,
+    },
+    });
 
   const nextImage = (e) => {
     setCurrentImageIndex(
@@ -513,30 +520,30 @@ const SpecificationItem = ({ title, value }) => {
   );
 };
 
-export async function getServerSideProps(context) {
-  try {
-    console.log({ id: context.params.id });
-    const id = context?.query?.id;
-    const { data, loading } = await client.query({
-      query: GET_PRODUCT_DETAILS,
-      variables: {
-        productId: id,
-      },
-    });
-    return {
-      props: {
-        data,
-        loading,
-        error: null,
-      }, // will be passed to the page component as props
-    };
-  } catch (error) {
-    return {
-      props: {
-        data: null,
-        loading: false,
-        error: error,
-      }, // will be passed to the page component as props
-    };
-  }
-}
+// export async function getServerSideProps(context) {
+//   try {
+//     console.log({ id: context.params.id });
+//     const id = context?.query?.id;
+//     const { data, loading } = await client.query({
+//       query: GET_PRODUCT_DETAILS,
+//       variables: {
+//         productId: id,
+//       },
+//     });
+//     return {
+//       props: {
+//         data,
+//         loading,
+//         error: null,
+//       }, // will be passed to the page component as props
+//     };
+//   } catch (error) {
+//     return {
+//       props: {
+//         data: null,
+//         loading: false,
+//         error: error,
+//       }, // will be passed to the page component as props
+//     };
+//   }
+// }

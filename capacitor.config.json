@@ -1,0 +1,9 @@
+
+{
+  "appId": "com.motoghar.app",
+  "appName": "MotoGhar",
+  "webDir": "out",
+  "bundledWebRuntime": false
+}
+
+

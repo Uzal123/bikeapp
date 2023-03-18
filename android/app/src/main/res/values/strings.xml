@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MotoGhar</string>
+    <string name="title_activity_main">MotoGhar</string>
+    <string name="package_name">com.motoghar.app</string>
+    <string name="custom_url_scheme">com.motoghar.app</string>
+</resources>
