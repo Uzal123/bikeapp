@@ -60,24 +60,24 @@ const Index = () => {
 
   const verifyOTP = async () => {
     try {
-      const response = await client.mutate({
-        mutation: VERIFYOTP,
-        variables: {
-          otp: code.join(""),
-          phone: user.phone,
-        },
-      });
-      console.log(response);
-      if (response.data?.verifyOtp?.success) {
-        setNotification(uuid(), "OTP verified successfully", "Success", 5000);
-        const user = response.data?.verifyOtp?.user;
-        console.log({ o: response.data?.verifyOtp?.user });
-        setUser(user.accessToken, user._id, user.phone, user.fullName, true);
-        router.push("/");
-      } else {
-        setNotification(uuid(), "Incorrect Otp", "Error", 5000);
-        setCode(["", "", "", ""]);
-      }
+    //   const response = await client.mutate({
+    //     mutation: VERIFYOTP,
+    //     variables: {
+    //       otp: code.join(""),
+    //       phone: user.phone,
+    //     },
+    //   });
+    //   console.log(response);
+    //   if (response.data?.verifyOtp?.success) {
+    //     setNotification(uuid(), "OTP verified successfully", "Success", 5000);
+    //     const user = response.data?.verifyOtp?.user;
+    //     console.log({ o: response.data?.verifyOtp?.user });
+    //     setUser(user.accessToken, user._id, user.phone, user.fullName, true);
+    //     router.push("/");
+    //   } else {
+    //     setNotification(uuid(), "Incorrect Otp", "Error", 5000);
+    //     setCode(["", "", "", ""]);
+    //   }
     } catch (error) {
       console.log(error);
     }
@@ -119,7 +119,7 @@ const Index = () => {
   return (
     <Fragment>
       <Head>
-        <title>Moto Ghar - Verify phone</title>
+        <title>Moto Ghar - Forgot password</title>
       </Head>
       <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
         <Link href="/" className="font-bold text-2xl text-primary">
@@ -127,21 +127,27 @@ const Index = () => {
         </Link>
       </div>
       <div className="w-screen h-screen flex items-center justify-center">
-        <div className="w-80 shadow-lg border-2 rounded-lg flex flex-col gap-3">
+        <div className="w-80 md:w-96 shadow-lg border-2 rounded-lg flex flex-col gap-3">
           <h1 className="text-2xl font-semibold px-6 pt-6 pb-0 text-center">
-            Verify phone number
+            Forgot your password?
           </h1>
 
           {isVerifying === false && (
             <Fragment>
               <p className="px-4 text-center text-sm">
-                We will send the verification code to
+                We will send a 4-digit verification code to your phone number
               </p>
-              <h2 className="text-center text-2xl font-semibold">
-                {user.phone}
-              </h2>
+
+              <div className="flex justify-center">
+                <input
+                  type="number"
+                  placeholder="Enter the phone number"
+                  onWheel={(e) => e.target.blur()}
+                  className="bg-gray-200 p-2 rounded-lg"
+                />
+              </div>
               <p className="px-4 text-center text-sm">
-                Please confirm the phone number and click send otp button
+                to verify your identity and reset your password
               </p>
               <button
                 className="bg-primary text-white font-semibold rounded-lg p-2 mx-4 mb-4"

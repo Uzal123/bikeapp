@@ -12,6 +12,7 @@ import Head from "next/head";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ phone: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const setNotification = useNotificationStore(
@@ -91,14 +92,17 @@ const Login = () => {
             </Input>
 
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="******"
               value={loginData.password}
               name="password"
               onChange={handleLogin}
+              password={true}
+              setShowPassword={setShowPassword}
             >
               Password
             </Input>
+            <p className="text-sm text-end hover:text-primary cursor-pointer" onClick={()=>router.push("/forgotpassword")}>Forgot password ?</p>
 
             <button className="bg-primary text-white w-full p-2 rounded-full my-6">
               {loading ? "Submitting..." : "Login"}

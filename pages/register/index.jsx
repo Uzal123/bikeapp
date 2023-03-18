@@ -17,6 +17,7 @@ const Register = () => {
     fullName: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
   const setNotification = useNotificationStore(
@@ -105,10 +106,12 @@ const Register = () => {
             </Input>
             <Input
               value={registerData.password}
-              type="password"
+              type={showPassword ? "text" : "password"}
+              setShowPassword={setShowPassword}
               placeholder="******"
               onChange={handleRegister}
               name="password"
+              password={true}
             >
               Password
             </Input>
