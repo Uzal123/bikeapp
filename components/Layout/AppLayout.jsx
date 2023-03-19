@@ -5,7 +5,7 @@ import Navbar from "../Navigation/Navbar";
 const AppLayout = ({ title, description, keywords, url, image, ...props }) => {
   const defaultTitle = "Buy and Rent Bikes and Cars";
   const defaultDescription =
-    "Find the perfect bike or car for your needs at MotoGhar, the premier online marketplace for buying and renting vehicles.";
+    "Find the perfect bike or car for your needs at MotoGhar, the premier online marketplace for buying, selling and renting vehicles.";
     const defaultKeywords = "Nepal, MotoGhar, Moto Ghar, sell bike, sell car, buy bike, buy car, rent bike, rent car, bike rental, car rental, bike sharing, car sharing, peer-to-peer bike rental, peer-to-peer car rental, online bike rental, online car rental, car rental marketplace, bike rental marketplace, vehicle rental, vehicle selling, car hire, bike hire, car leasing, bike leasing, car subscription, rent a bike, rent a car, bikepooling, carpooling, online bike dealership, online car dealership, car booking, bike booking, vehicle rental management, fleet management, car rental aggregator, bike rental aggregator, car rental booking platform, bike rental booking platform, vehicle listing, car valuation, bike valuation, car comparison"
   const defaultUrl = "https://www.motoghar.com";
   const defaultImage = "https://www.motoghar.com/RentCar.png";

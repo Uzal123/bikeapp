@@ -47,7 +47,7 @@ const Index = () => {
         mutation: SENDOTP,
       });
       console.log(response);
-      if (response.data?.sendMeOtp?.success) {
+      if (response.data?.sendUserVerificationOtp?.success) {
         setSending(false);
         setNotification(uuid(), "OTP sent successfully", "Success", 5000);
         setIsVerifying(true);
@@ -68,10 +68,10 @@ const Index = () => {
         },
       });
       console.log(response);
-      if (response.data?.verifyOtp?.success) {
+      if (response.data?.verifyUserPhone?.success) {
         setNotification(uuid(), "OTP verified successfully", "Success", 5000);
-        const user = response.data?.verifyOtp?.user;
-        console.log({ o: response.data?.verifyOtp?.user });
+        const user = response.data?.verifyUserPhone?.user;
+        console.log({ o: response.data?.verifyUserPhone?.user });
         setUser(user.accessToken, user._id, user.phone, user.fullName, true);
         router.push("/");
       } else {

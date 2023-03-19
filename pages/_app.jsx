@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/globals.scss";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-  createHttpLink,
-} from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import ME from "../graphql/Query/Me";
 import { useUserStore } from "../store/auth";
 import { client } from "../graphql/client";
