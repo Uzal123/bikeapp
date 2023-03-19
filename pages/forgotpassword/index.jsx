@@ -71,6 +71,7 @@ const Index = () => {
   };
 
   const verifyOTP = async () => {
+    setSending(true);
     try {
       const response = await client.mutate({
         mutation: VERFYRESETOTP,
@@ -83,43 +84,44 @@ const Index = () => {
       if (response.data?.verifyResetOTP?.success) {
         setNotification(uuid(), "OTP verified successfully", "Success", 5000);
         setResetingPassword(true);
+        setSending(false);
       } else {
         setNotification(uuid(), "Incorrect Otp", "Error", 5000);
         setCode(["", "", "", ""]);
+        setSending(false);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-
   const resetPassword = async (e) => {
     e.preventDefault();
-    if(newPassword !== firstPassword){
-        setNotification(uuid(), "Passwords do not match", "Error", 5000);
-        return null;
+    if (newPassword !== firstPassword) {
+      setNotification(uuid(), "Passwords do not match", "Error", 5000);
+      return null;
     }
-
+    setSending(true);
     try {
-        const response = await client.mutate({
-            mutation: RESETPASSWORD,
-            variables: {
-                phone: phone,
-                newPassword: newPassword,
-                otp: code.join(""),
-            },
-        });
+      const response = await client.mutate({
+        mutation: RESETPASSWORD,
+        variables: {
+          phone: phone,
+          newPassword: newPassword,
+          otp: code.join(""),
+        },
+      });
 
-        if (response.data?.resetPassword?.success) {
-            setNotification(uuid(), "Password reset successfully", "Success", 5000);
-            router.push("/login");
-        } else {
-            setNotification(uuid(), "Password reset failed", "Error", 5000);
-        }
-    } catch (error) {
-        
-    }
-  }
+      if (response.data?.resetPassword?.success) {
+        setNotification(uuid(), "Password reset successfully", "Success", 5000);
+        setSending(false);
+        router.push("/login");
+      } else {
+        setNotification(uuid(), "Password reset failed", "Error", 5000);
+        setSending(false);
+      }
+    } catch (error) {}
+  };
 
   const handleBackspace = (e, index) => {
     // Delete the current digit
@@ -246,7 +248,7 @@ const Index = () => {
                   className="w-32 h-10 bg-primary text-white rounded-lg"
                   onClick={() => verifyOTP(user.phone)}
                 >
-                  Submit
+                  {sending ? "Submitting.." : "Submit"}
                 </button>
               </div>
             </Fragment>
@@ -256,7 +258,9 @@ const Index = () => {
             <Fragment>
               <form
                 className="flex flex-col items-center"
-                onSubmit={(e) => {resetPassword(e);}}
+                onSubmit={(e) => {
+                  resetPassword(e);
+                }}
               >
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -286,7 +290,7 @@ const Index = () => {
                     className="bg-primary text-white font-semibold rounded-lg p-2 mx-4 mb-4"
                     type="submit"
                   >
-                    Reset Password
+                    {sending ? "Resetting..." : "Reset Password"}
                   </button>
                 </div>
               </form>
