@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useState, useEffect } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";
@@ -16,9 +16,10 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import Head from "next/head";
+import Auth from "../../outlet/Auth";
 
 const CreatePost = () => {
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   const router = useRouter();
 
@@ -50,6 +51,7 @@ const CreatePost = () => {
   };
 
   return (
+    <Auth >
     <AppLayout title="Post new Ad">
       <div className="p-4 h-full flex justify-center bg-customGray-navbar">
         <div className="flex justify-start md:px-10 pt-6 overflow-x-hidden  items-center flex-col bg-customGray-navbar gap-6 md:w-3/5 lg:w-1/2 w-full overflow-scroll rounded-2xl h-full relative">
@@ -220,6 +222,7 @@ const CreatePost = () => {
         </div>
       </div>
     </AppLayout>
+    </Auth>
   );
 };
 

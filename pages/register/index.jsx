@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
 import { withRouter, useRouter } from "next/router";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import Head from "next/head";
 
@@ -17,9 +17,10 @@ const Register = () => {
     fullName: "",
     password: "",
   });
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-  const setNotification = useNotificationStore(
+  const [showPassword, setShowPassword] = useState(false);
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 
@@ -71,8 +72,12 @@ const Register = () => {
       <Head>
         <title>Moto Ghar - Register</title>
       </Head>
+      <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
+        <Link href="/" className="font-bold text-2xl text-primary">
+          <Logo className="h-20 md:h-24" />
+        </Link>
+      </div>
       <div className="left hidden md:block w-3/5 h-screen">
-        <Logo className="absolute h-24 mx-4" />
         <div className="flex items-center justify-center h-full">
           <img src="/signup.png" alt="Image" height={700} width={700} />
         </div>
@@ -88,7 +93,7 @@ const Register = () => {
             <Input
               value={registerData.name}
               type="text"
-              placeholder="Test"
+              placeholder="Enter your full name"
               onChange={handleRegister}
               name="fullName"
             >
@@ -105,10 +110,12 @@ const Register = () => {
             </Input>
             <Input
               value={registerData.password}
-              type="password"
+              type={showPassword ? "text" : "password"}
+              setShowPassword={setShowPassword}
               placeholder="******"
               onChange={handleRegister}
               name="password"
+              password={true}
             >
               Password
             </Input>

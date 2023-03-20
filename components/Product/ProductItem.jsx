@@ -3,8 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Ellipsis from "../../assets/Product/ellipsis.svg";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
 const ProductItem = ({
@@ -12,11 +12,11 @@ const ProductItem = ({
   data: { price, title, images, _id, createdAt, createdBy },
   ...props
 }) => {
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
   const router = useRouter();
 
   const date = new Date(createdAt);

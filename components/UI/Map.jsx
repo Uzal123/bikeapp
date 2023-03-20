@@ -9,7 +9,7 @@ import {
 import Geocode from "react-geocode";
 import LocationAutoComplete from "./LocationAutoComplete";
 import Gps from "../../assets/createpost/gps.svg";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
 const LIBRARIES = ["places", "marker", "geometry"];
@@ -24,7 +24,7 @@ const MapContainer = ({
   setErrors,
   location,
 }) => {
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 

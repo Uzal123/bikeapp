@@ -2,21 +2,22 @@ import React, { useState, useRef, useEffect } from "react";
 import { Fragment } from "react";
 import Link from "next/link";
 import Logo from "../../assets/TopBar/logo.svg";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import SENDOTP from "../../graphql/Mutation/SendMeOTP";
 import VERIFYOTP from "../../graphql/Mutation/VerifyOTP";
 import { client } from "../../graphql/client";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Index = () => {
   const router = useRouter();
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
   const [code, setCode] = useState(["", "", "", ""]);
   const [sending, setSending] = useState(false);
   const [countdown, setCountdown] = useState(60);
@@ -46,7 +47,7 @@ const Index = () => {
         mutation: SENDOTP,
       });
       console.log(response);
-      if (response.data?.sendMeOtp?.success) {
+      if (response.data?.sendUserVerificationOtp?.success) {
         setSending(false);
         setNotification(uuid(), "OTP sent successfully", "Success", 5000);
         setIsVerifying(true);
@@ -67,10 +68,10 @@ const Index = () => {
         },
       });
       console.log(response);
-      if (response.data?.verifyOtp?.success) {
+      if (response.data?.verifyUserPhone?.success) {
         setNotification(uuid(), "OTP verified successfully", "Success", 5000);
-        const user = response.data?.verifyOtp?.user;
-        console.log({ o: response.data?.verifyOtp?.user });
+        const user = response.data?.verifyUserPhone?.user;
+        console.log({ o: response.data?.verifyUserPhone?.user });
         setUser(user.accessToken, user._id, user.phone, user.fullName, true);
         router.push("/");
       } else {
@@ -117,6 +118,9 @@ const Index = () => {
 
   return (
     <Fragment>
+      <Head>
+        <title>Moto Ghar - Verify phone</title>
+      </Head>
       <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
         <Link href="/" className="font-bold text-2xl text-primary">
           <Logo className="h-20 md:h-24" />

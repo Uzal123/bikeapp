@@ -4,11 +4,11 @@ import Upload from "../../assets/createpost/upload.svg";
 import Loading from "../../assets/createpost/loading.svg";
 import Cross from "../../assets/createpost/cross.svg";
 import IMAGE_UPLOAD from "../../graphql/Mutation/ImageUpload";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
 const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 

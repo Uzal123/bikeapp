@@ -20,14 +20,12 @@ import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
 import UPDATEBIO from "../../graphql/Mutation/UpdateBio";
 import { useSwipeable } from "react-swipeable";
 import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
+import Auth from "../../outlet/Auth";
 
 const Profile = ({ ...props }) => {
   let bioinputref;
   let inputref;
-  const user = useAuth((state) => state.user);
-  const removeUser = useAuth((state) => state.removeUser);
-  const router = useRouter();
-  const { id } = router.query;
+  const {user, removeUser} = useAuth((state) => state);
 
   const setNotification = useNotification(
     (state) => state.setNotification
@@ -44,21 +42,50 @@ const Profile = ({ ...props }) => {
 
   const [bioEditor, setBioEditor] = useState(false);
 
+  const [userId, setUserId] = useState(null)
+
   const [fetchInput, setFetchInput] = useState({
     offerType: [tab],
     pageNo: 1,
     count: 10000,
   });
 
-  const { loading, error, data } = useQuery(USER_PROFILE, {
-    variables: { userId: id },
-  });
+  const [isLoading, setIsLoading] = useState(true)
+  const [profileData, setProfileData] = useState(null)
 
-  const getUserProducts = async () => {
+
+
+  useEffect(() => {
+    if(user?.id){
+        setUserId(user.id)
+        queryProfile(user.id)
+
+    }
+  
+  }, [user])
+
+  const queryProfile = async (userId) => {
+    try {
+      const { data, loading } = await client.query({
+        query: USER_PROFILE,
+        variables: { userId: userId },
+      });
+
+
+      if (!loading) {
+        setProfileData(data?.getUserProfile.profile);
+        setIsLoading(false);
+        setUserBio(data?.getUserProfile.bio);
+      }
+    } catch (error) {}
+  }
+  
+
+  const getUserProducts = async (userId) => {
     try {
       const { data, loading } = await client.query({
         query: USER_PRODUCTS,
-        variables: { fetchInput, userId: id },
+        variables: { fetchInput, userId: userId },
       });
 
       if (!loading) {
@@ -83,10 +110,10 @@ const Profile = ({ ...props }) => {
   });
 
   useEffect(() => {
-    if (id) {
-      getUserProducts();
+    if (userId) {
+      getUserProducts(userId);
     }
-  }, [fetchInput, id]);
+  }, [fetchInput, userId]);
 
   useEffect(() => {
     setProductsLoading(true);
@@ -99,21 +126,7 @@ const Profile = ({ ...props }) => {
     setProducts([]);
   }, [tab]);
 
-  const [profileData, setProfileData] = useState(null);
-  useEffect(() => {
-    if (data) {
-      setProfileData(data.getUserProfile.profile);
-      setUserBio(data.getUserProfile.profile.bio);
-    }
-  }, [data]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!user.phone | error) {
-        router.push("/login");
-      }
-    }
-  }, [user, error]);
 
   const editProfile = () => {
     setSettingTab(!settingTab);
@@ -169,17 +182,16 @@ const Profile = ({ ...props }) => {
 
 
   return (
+    <Auth >
     <AppLayout title={`Profile`}>
       <div className="w-full h-full flex-col lg:flex-row flex gap-4 p-2 lg:p-4">
         <div className="lg:h-full flex flex-col gap-4 w-full lg:w-1/5 p-6 bg-customGray-navbar rounded-xl  relative">
-          {!loading && profileData ? (
+          {!isLoading && profileData ? (
             <Fragment>
-              {id === user.id && (
                 <Setting
                   className="h-8 absolute right-2 top-2 cursor-pointer"
                   onClick={(e) => editProfile(e)}
                 />
-              )}
               {settingTab && (
                 <div className="absolute right-2 top-2 p-2 flex flex-col gap-1 bg-white rounded-lg z-20 text-sm">
                   <div className="flex justify-end cursor-pointer">
@@ -234,7 +246,6 @@ const Profile = ({ ...props }) => {
                     fullName={profileData.user.fullName}
                     className="bg-white text-primary h-full w-full"
                   >
-                    {id === user.id && (
                       <Fragment>
                         <input
                           type="file"
@@ -250,7 +261,6 @@ const Profile = ({ ...props }) => {
                           <Edit className="h-6" />
                         </div>
                       </Fragment>
-                    )}
                   </ProfilePicContainer>
                 </div>
                 <h1 className="text-center font-semibold text-2xl pt-4">
@@ -282,7 +292,7 @@ const Profile = ({ ...props }) => {
               )}
               {bioEditor === false && (
                 <div className="flex text-center justify-center items-center text-sm">
-                  <p onClick={() => (id === user.id ? setBioEditor(true) : "")}>
+                  <p onClick={() => setBioEditor(true) }>
                     {userbio}
                   </p>
                 </div>
@@ -345,6 +355,7 @@ const Profile = ({ ...props }) => {
         </div>
       </div>
     </AppLayout>
+    </Auth>
   );
 };
 

@@ -3,8 +3,8 @@ import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { withRouter, useRouter } from "next/router";
 import Link from "next/link";
 import { uuid } from "uuidv4";
@@ -12,9 +12,10 @@ import Head from "next/head";
 
 const Login = () => {
   const [loginData, setloginData] = useState({ phone: "", password: "" });
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-  const setNotification = useNotificationStore(
+  const [showPassword, setShowPassword] = useState(false);
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 
@@ -68,8 +69,13 @@ const Login = () => {
       <Head>
         <title>Moto Ghar - Login</title>
       </Head>
+      <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
+        <Link href="/" className="font-bold text-2xl text-primary">
+          <Logo className="h-20 md:h-24" />
+        </Link>
+      </div>
+
       <div className="hidden md:block left w-3/5 h-screen">
-        <Logo className="absolute h-24 mx-4" />
         <div className="flex justify-center items-center h-full ">
           <img src="/signup.png" alt="Login" height={700} width={700} />
         </div>
@@ -91,14 +97,22 @@ const Login = () => {
             </Input>
 
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="******"
               value={loginData.password}
               name="password"
               onChange={handleLogin}
+              password={true}
+              setShowPassword={setShowPassword}
             >
               Password
             </Input>
+            <p
+              className="text-sm text-end hover:text-primary cursor-pointer"
+              onClick={() => router.push("/forgotpassword")}
+            >
+              Forgot password ?
+            </p>
 
             <button className="bg-primary text-white w-full p-2 rounded-full my-6">
               {loading ? "Submitting..." : "Login"}

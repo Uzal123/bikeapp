@@ -1,17 +1,10 @@
 import { gql, useMutation } from "@apollo/client";
 
 const SENDOTP = gql`
-  mutation SendMeOtp {
-    sendMeOtp {
+  mutation SendUserVerificationOtp {
+    sendUserVerificationOtp {
       message
       success
-      user {
-        verifiedPhone
-        phone
-        fullName
-        accessToken
-        _id
-      }
     }
   }
 `;

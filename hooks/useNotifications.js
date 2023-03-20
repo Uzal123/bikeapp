@@ -26,6 +26,6 @@ export const useStore = create((set) => ({
 
 }));
 
-export const useNotificationStore = useStore;
+export const useNotification = useStore;
 
 export default useStore;

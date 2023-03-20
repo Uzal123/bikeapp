@@ -19,11 +19,11 @@ import Transmission from "../../assets/fakeData/Transmission";
 import Condition from "../../assets/fakeData/Condition";
 import MapContainer from "../../components/UI/Map";
 import { client } from "../../graphql/client";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
 import Loading from "../../assets/createpost/loading.svg";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
 import ShareSvg from "../../assets/Product/share.svg";
 
@@ -34,14 +34,14 @@ import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
 const ProductInfo = ({ ...props }) => {
   const router = useRouter();
 
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
-  const removeNotification = useNotificationStore(
+  const removeNotification = useNotification(
     (state) => state.removeNotification
   );
 
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   const [product, setProduct] = useState(null);
 
@@ -142,8 +142,12 @@ const ProductInfo = ({ ...props }) => {
   }, [offerType]);
 
   const sendMessage = async (productId, peerId, message) => {
+    if(message === "") {
+        setNotification(uuid(), "Please enter a message", "Error", 3000);
+        return;
+    } 
     try {
-      setNotification(uuid(), "Sending", "Success", 10000);
+      setNotification(uuid(), "Sending", "Loading", 5000);
       setMessageModal(false);
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,

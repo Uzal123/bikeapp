@@ -10,7 +10,7 @@ import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
 import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
 import Colors from "../../assets/fakeData/colors";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import { useAppStore } from "../../store/appState";
 
@@ -27,7 +27,7 @@ const CreatingRentInput = ({
   errors,
   setErrors,
 }) => {
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 

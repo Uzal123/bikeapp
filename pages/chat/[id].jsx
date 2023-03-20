@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 
 import AppLayout from "../../components/Layout/AppLayout";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
 import Loading from "../../assets/createpost/loading.svg";
 import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
+import Auth from "../../outlet/Auth";
 
 const ChatWithID = () => {
   const [message, setMessage] = useState("");
@@ -24,7 +25,7 @@ const ChatWithID = () => {
   const [messageLoading, setMessageLoading] = useState(true);
   const { query } = useRouter();
 
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   const router = useRouter();
 
@@ -61,6 +62,7 @@ const ChatWithID = () => {
   }, [messages]);
 
   const sendMessage = async (productId, peerId, message) => {
+    if (message === "") return;
     try {
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,
@@ -87,14 +89,7 @@ const ChatWithID = () => {
     }
   }, [query]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!user.phone | error) {
-        router.push("/login", { basePath: "/chat" });
-      }
-    }
-  }, [user]);
-
+ 
   const onChat = (peerId, productId) => {
     router.push({
       pathname: `/chat/q`,
@@ -103,6 +98,7 @@ const ChatWithID = () => {
   };
 
   return (
+    <Auth >
     <ChatLayout
       showMessagePage={true}
       chat={
@@ -237,6 +233,7 @@ const ChatWithID = () => {
         </button>
       </form>
     </ChatLayout>
+    </Auth>
   );
 };
 
