@@ -276,7 +276,6 @@ const Profile = ({ ...props }) => {
                     onChange={(e) => setUserBio(e.target.value)}
                     ref={(refParam) => (bioinputref = refParam)}
                   />
-                  {id === user.id && (
                     <div className="flex gap-2 pt-2">
                       <Tick
                         className="w-4 h-4 cursor-pointer"
@@ -287,7 +286,6 @@ const Profile = ({ ...props }) => {
                         onClick={() => setBioEditor(false)}
                       />
                     </div>
-                  )}
                 </div>
               )}
               {bioEditor === false && (
