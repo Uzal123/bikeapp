@@ -72,8 +72,12 @@ const Register = () => {
       <Head>
         <title>Moto Ghar - Register</title>
       </Head>
+      <div className="p-2 fixed shadow-md bg-customGray-light flex text-center items-center justify-between h-16 w-screen">
+        <Link href="/" className="font-bold text-2xl text-primary">
+          <Logo className="h-20 md:h-24" />
+        </Link>
+      </div>
       <div className="left hidden md:block w-3/5 h-screen">
-        <Logo className="absolute h-24 mx-4" />
         <div className="flex items-center justify-center h-full">
           <img src="/signup.png" alt="Image" height={700} width={700} />
         </div>
@@ -89,7 +93,7 @@ const Register = () => {
             <Input
               value={registerData.name}
               type="text"
-              placeholder="Test"
+              placeholder="Enter your full name"
               onChange={handleRegister}
               name="fullName"
             >
