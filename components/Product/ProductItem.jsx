@@ -3,8 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Ellipsis from "../../assets/Product/ellipsis.svg";
-import { useAuth } from "../../store/auth";
-import { useNotification } from "../../store/notifications";
+import { useAuth } from "../../hooks/useAuth";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 
 const ProductItem = ({

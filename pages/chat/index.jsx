@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 import Router, { withRouter, useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FETCH_CHAT from "../../graphql/Query/FetchChat";

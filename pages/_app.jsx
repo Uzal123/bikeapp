@@ -4,9 +4,9 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import ME from "../graphql/Query/Me";
-import { useAuth } from "../store/auth";
+import { useAuth } from "../hooks/useAuth";
 import { client } from "../graphql/client";
-import { useNotification } from "../store/notifications";
+import { useNotification } from "../hooks/useNotification";
 import PopUpNotification from "../components/UI/PopUpNotification";
 import { useRouter } from "next/router";
 import Head from "next/head";

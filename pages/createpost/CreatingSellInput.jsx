@@ -17,7 +17,7 @@ import PriceType from "../../assets/fakeData/PriceType";
 import DropInput from "../../components/UI/DropInput";
 import FormInput from "../../components/UI/FormInput";
 import Colors from "../../assets/fakeData/colors";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 
 const CreatingSellInput = ({

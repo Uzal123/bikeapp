@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 
 const Navlink = ({ href, exact, children, myProfile, ...props }) => {
   const { pathname } = useRouter();

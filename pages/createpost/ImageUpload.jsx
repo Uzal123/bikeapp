@@ -4,7 +4,7 @@ import Upload from "../../assets/createpost/upload.svg";
 import Loading from "../../assets/createpost/loading.svg";
 import Cross from "../../assets/createpost/cross.svg";
 import IMAGE_UPLOAD from "../../graphql/Mutation/ImageUpload";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 
 const ImageUpload = ({ setImageLinks, imageLinks, errors, setErrors }) => {

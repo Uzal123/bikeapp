@@ -19,11 +19,11 @@ import Transmission from "../../assets/fakeData/Transmission";
 import Condition from "../../assets/fakeData/Condition";
 import MapContainer from "../../components/UI/Map";
 import { client } from "../../graphql/client";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 import { useJsApiLoader } from "@react-google-maps/api";
 import CreateChat from "../../components/UI/CreateChat";
 import Loading from "../../assets/createpost/loading.svg";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import FETCHPRODUCTS from "../../graphql/Query/Getallproducts";
 import ShareSvg from "../../assets/Product/share.svg";
 
