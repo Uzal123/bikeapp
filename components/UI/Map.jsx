@@ -9,7 +9,7 @@ import {
 import Geocode from "react-geocode";
 import LocationAutoComplete from "./LocationAutoComplete";
 import Gps from "../../assets/createpost/gps.svg";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 
 const LIBRARIES = ["places", "marker", "geometry"];

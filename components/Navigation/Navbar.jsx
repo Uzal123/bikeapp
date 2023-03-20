@@ -6,7 +6,7 @@ import Bell from "../../assets/NavigationBar/bell.svg";
 import Chat from "../../assets/NavigationBar/chat.svg";
 import User from "../../assets/NavigationBar/user.svg";
 import Add from "../../assets/NavigationBar/add.svg";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 
 const Navbar = ({ ...props }) => {
   const user = useAuth((state) => state.user);

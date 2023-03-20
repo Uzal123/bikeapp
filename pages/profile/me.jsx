@@ -6,7 +6,7 @@ import Tick from "../../assets/Profile/tick.svg";
 import Edit from "../../assets/Profile/edit.svg";
 import ButtonTab from "../../components/UI/Tab";
 import ProductItem from "../../components/Product/ProductItem";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 import Router, { withRouter, useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import UPLOAD_PROFILE_PIC from "../../graphql/Mutation/UploadProfilePic";
@@ -14,7 +14,7 @@ import USER_PRODUCTS from "../../graphql/Query/UserProducts";
 import USER_PROFILE from "../../graphql/Query/UserProfile";
 import { client } from "../../graphql/client";
 import Loading from "../../assets/createpost/loading.svg";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
 import UPDATEBIO from "../../graphql/Mutation/UpdateBio";
@@ -276,7 +276,6 @@ const Profile = ({ ...props }) => {
                     onChange={(e) => setUserBio(e.target.value)}
                     ref={(refParam) => (bioinputref = refParam)}
                   />
-                  {id === user.id && (
                     <div className="flex gap-2 pt-2">
                       <Tick
                         className="w-4 h-4 cursor-pointer"
@@ -287,7 +286,6 @@ const Profile = ({ ...props }) => {
                         onClick={() => setBioEditor(false)}
                       />
                     </div>
-                  )}
                 </div>
               )}
               {bioEditor === false && (

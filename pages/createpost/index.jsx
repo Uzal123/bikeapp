@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 import Router, { withRouter, useRouter } from "next/router";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";

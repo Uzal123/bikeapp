@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 
 import AppLayout from "../../components/Layout/AppLayout";
 import { useRouter } from "next/router";

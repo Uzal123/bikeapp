@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { useAuth } from "../../store/auth";
+import { useAuth } from "../../hooks/useAuth";
 import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
 import { withRouter, useRouter } from "next/router";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
 import Head from "next/head";
 

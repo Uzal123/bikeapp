@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Location from "../../assets/TopBar/location.svg";
 import Logo from "../../assets/TopBar/logo.svg";
-import { useAppStore } from "../../store/appState";
+import { useAppState } from "../../hooks/useAppState";
 
 const TopBar = () => {
-  const { city } = useAppStore((state) => state);
+  const { city } = useAppState((state) => state);
   return (
     <div className="topbar ">
       <Link href="/" className="font-bold text-2xl text-primary">

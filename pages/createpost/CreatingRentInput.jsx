@@ -10,9 +10,9 @@ import CREATING_RENT from "../../graphql/Mutation/CreatingRent";
 import Link from "next/link";
 import PriceType from "../../assets/fakeData/PriceType";
 import Colors from "../../assets/fakeData/colors";
-import { useNotification } from "../../store/notifications";
+import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
-import { useAppStore } from "../../store/appState";
+import { useAppStore } from "../../hooks/useAppState";
 
 const CreatingRentInput = ({
   formStage,
