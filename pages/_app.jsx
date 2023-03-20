@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/globals.scss";
 import {
-  ApolloClient,
-  InMemoryCache,
   ApolloProvider,
-  gql,
-  createHttpLink,
 } from "@apollo/client";
 import ME from "../graphql/Query/Me";
 import { useUserStore } from "../store/auth";
@@ -16,7 +12,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
-  const setUser = useUserStore((state) => state.setUser);
+  const {setUser, setAuthincatedUser} = useUserStore((state) => state);
   const removeUser = useUserStore((state) => state.removeUser);
   const { notifications, setNotification } = useNotificationStore(
     (state) => state
@@ -40,6 +36,8 @@ function MyApp({ Component, pageProps }) {
         if (user.verifiedPhone === false) {
           router.push("/verifyotp");
         }
+      }else{
+        setAuthincatedUser();
       }
     } catch (error) {
       console.log(error);

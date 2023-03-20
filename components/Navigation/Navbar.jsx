@@ -29,7 +29,7 @@ const Navbar = ({ ...props }) => {
         </NavLink>
         <NavLink
           myProfile
-          href={user.id ? `/profile/${user.id}` : "/login"}
+          href={ "/profile/me"}
           className="order-4"
         >
           <User className="h-6 lg:h-8" />

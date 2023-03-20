@@ -14,6 +14,7 @@ import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
 import Loading from "../../assets/createpost/loading.svg";
 import ProfilePicContainer from "../../components/UI/ProfilePicContainer";
+import Auth from "../../outlet/Auth";
 
 const ChatWithID = () => {
   const [message, setMessage] = useState("");
@@ -87,14 +88,7 @@ const ChatWithID = () => {
     }
   }, [query]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!user.phone | error) {
-        router.push("/login", { basePath: "/chat" });
-      }
-    }
-  }, [user]);
-
+ 
   const onChat = (peerId, productId) => {
     router.push({
       pathname: `/chat/q`,
@@ -103,6 +97,7 @@ const ChatWithID = () => {
   };
 
   return (
+    <Auth >
     <ChatLayout
       showMessagePage={true}
       chat={
@@ -237,6 +232,7 @@ const ChatWithID = () => {
         </button>
       </form>
     </ChatLayout>
+    </Auth>
   );
 };
 

@@ -7,7 +7,7 @@ import ChatItem from "../../components/UI/ChatItem";
 import ChatLayout from "../../components/Layout/ChatLayout";
 import Loading from "../../assets/createpost/loading.svg";
 import Head from "next/head";
-
+import Auth from "../../outlet/Auth";
 const Chat = () => {
   const user = useUserStore((state) => state.user);
 
@@ -17,13 +17,13 @@ const Chat = () => {
     fetchPolicy: "no-cache",
   });
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!user.phone | error) {
-        router.push("/login", { basePath: "/chat" });
-      }
-    }
-  }, [user, error]);
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     if (!user.phone | error) {
+  //       router.push("/login", { basePath: "/chat" });
+  //     }
+  //   }
+  // }, [user, error]);
 
   const onChat = (peerId, productId) => {
     router.push({
@@ -34,6 +34,7 @@ const Chat = () => {
   };
 
   return (
+    <Auth>
     <div className="flex">
       <ChatLayout
         showMessagePage={false}
@@ -77,6 +78,7 @@ const Chat = () => {
         }
       />
     </div>
+    </Auth>
   );
 };
 

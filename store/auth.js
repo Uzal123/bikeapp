@@ -1,6 +1,8 @@
 import create, { createStore } from "zustand";
 
 const useStore = create((set) => ({
+  isAuthenticated: false,
+  isLoading: true,
   user: {
     name: "",
     phone: "",
@@ -12,6 +14,8 @@ const useStore = create((set) => ({
       localStorage.setItem("rent-app-token", token);
     }
     set((state) => ({
+      isAuthenticated: true,
+      isLoading : false,
       user: {
         name: fullName,
         phone: phone,
@@ -23,6 +27,8 @@ const useStore = create((set) => ({
   removeUser: () => {
     localStorage.removeItem("rent-app-token");
     set((state) => ({
+      isAuthenticated: false,
+      isLoading : false,
       user: {
         name: "",
         phone: "",
@@ -31,6 +37,18 @@ const useStore = create((set) => ({
       },
     }));
   },
+  setAuthincatedUser: () => {
+    set((state) => ({
+      isAuthenticated: false,
+      isLoading : false,
+      user: {
+        name: "",
+        phone: "",
+        id: "",
+        verifiedPhone: false,
+      },
+    }));
+  }
 }));
 
 export const useUserStore = useStore;
