@@ -6,7 +6,7 @@ import Tick from "../../assets/Profile/tick.svg";
 import Edit from "../../assets/Profile/edit.svg";
 import ButtonTab from "../../components/UI/Tab";
 import ProductItem from "../../components/Product/ProductItem";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import UPLOAD_PROFILE_PIC from "../../graphql/Mutation/UploadProfilePic";
@@ -14,7 +14,7 @@ import USER_PRODUCTS from "../../graphql/Query/UserProducts";
 import USER_PROFILE from "../../graphql/Query/UserProfile";
 import { client } from "../../graphql/client";
 import Loading from "../../assets/createpost/loading.svg";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import DELETEPRODUCT from "../../graphql/Mutation/DeleteProduct";
 import UPDATEBIO from "../../graphql/Mutation/UpdateBio";
@@ -25,9 +25,9 @@ import Auth from "../../outlet/Auth";
 const Profile = ({ ...props }) => {
   let bioinputref;
   let inputref;
-  const {user, removeUser} = useUserStore((state) => state);
+  const {user, removeUser} = useAuth((state) => state);
 
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
   const [settingTab, setSettingTab] = useState(null);

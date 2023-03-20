@@ -51,4 +51,5 @@ const useStore = create((set) => ({
   }
 }));
 
-export const useUserStore = useStore;
+export const useAuth = useStore;
+export default useStore;

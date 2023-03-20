@@ -17,7 +17,7 @@ import PriceType from "../../assets/fakeData/PriceType";
 import DropInput from "../../components/UI/DropInput";
 import FormInput from "../../components/UI/FormInput";
 import Colors from "../../assets/fakeData/colors";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 
 const CreatingSellInput = ({
@@ -33,7 +33,7 @@ const CreatingSellInput = ({
   setErrors,
   errors,
 }) => {
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 

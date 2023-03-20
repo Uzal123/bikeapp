@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Fragment } from "react";
 import Link from "next/link";
 import Logo from "../../assets/TopBar/logo.svg";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import SENDOTP from "../../graphql/Mutation/SendMeOTP";
 import VERIFYOTP from "../../graphql/Mutation/VerifyOTP";
@@ -13,11 +13,11 @@ import Head from "next/head";
 
 const Index = () => {
   const router = useRouter();
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
   const [code, setCode] = useState(["", "", "", ""]);
   const [sending, setSending] = useState(false);
   const [countdown, setCountdown] = useState(60);

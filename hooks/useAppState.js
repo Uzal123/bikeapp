@@ -25,6 +25,6 @@ fetch("https://ipapi.co/json/")
     }))
     .catch((error) => console.log("error fetching city", error));
 
-export const useAppStore = useStore;
+export const useAppState = useStore;
 
 export default useStore;

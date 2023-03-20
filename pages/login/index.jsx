@@ -3,8 +3,8 @@ import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import LOGIN_USER from "../../graphql/Mutation/Loginuser";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { withRouter, useRouter } from "next/router";
 import Link from "next/link";
 import { uuid } from "uuidv4";
@@ -13,9 +13,9 @@ import Head from "next/head";
 const Login = () => {
   const [loginData, setloginData] = useState({ phone: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-  const setNotification = useNotificationStore(
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 
 import AppLayout from "../../components/Layout/AppLayout";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ const ChatWithID = () => {
   const [messageLoading, setMessageLoading] = useState(true);
   const { query } = useRouter();
 
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   const router = useRouter();
 

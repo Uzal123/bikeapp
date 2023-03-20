@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { useState, useEffect } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import Router, { withRouter, useRouter } from "next/router";
 import Cross from "../../assets/createpost/cross.svg";
 import Circle from "../../assets/createpost/circle.svg";
@@ -19,7 +19,7 @@ import Head from "next/head";
 import Auth from "../../outlet/Auth";
 
 const CreatePost = () => {
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   const router = useRouter();
 

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Fragment } from "react";
 import Link from "next/link";
 import Logo from "../../assets/TopBar/logo.svg";
-import { useUserStore } from "../../store/auth";
-import { useNotificationStore } from "../../store/notifications";
+import { useAuth } from "../../store/auth";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import FORGETPASSWORD from "../../graphql/Mutation/ForgetPassword";
 import VERFYRESETOTP from "../../graphql/Mutation/VerifyResetOtp";
@@ -15,11 +15,11 @@ import Input from "../../components/UI/Input";
 
 const Index = () => {
   const router = useRouter();
-  const setNotification = useNotificationStore(
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState(["", "", "", ""]);
   const [sending, setSending] = useState(false);

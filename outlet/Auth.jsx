@@ -2,10 +2,10 @@ import { FC, Fragment, useEffect, useState } from 'react'
 import { useQuery } from "@apollo/client";
 import Router, { withRouter, useRouter } from "next/router";
 import ME from '../graphql/Query/Me'
-import { useUserStore } from '../store/auth'
+import { useAuth } from '../store/auth'
 
 const Auth = ({...props}) => {
-    const {setUser, isLoading, isAuthenticated} = useUserStore((state) => state);
+    const {setUser, isLoading, isAuthenticated} = useAuth((state) => state);
 
     // const router = useRouter();
 

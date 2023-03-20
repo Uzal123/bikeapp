@@ -4,17 +4,17 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import ME from "../graphql/Query/Me";
-import { useUserStore } from "../store/auth";
+import { useAuth } from "../store/auth";
 import { client } from "../graphql/client";
-import { useNotificationStore } from "../store/notifications";
+import { useNotification } from "../store/notifications";
 import PopUpNotification from "../components/UI/PopUpNotification";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
 function MyApp({ Component, pageProps }) {
-  const {setUser, setAuthincatedUser} = useUserStore((state) => state);
-  const removeUser = useUserStore((state) => state.removeUser);
-  const { notifications, setNotification } = useNotificationStore(
+  const {setUser, setAuthincatedUser} = useAuth((state) => state);
+  const removeUser = useAuth((state) => state.removeUser);
+  const { notifications, setNotification } = useNotification(
     (state) => state
   );
 

@@ -6,10 +6,10 @@ import Bell from "../../assets/NavigationBar/bell.svg";
 import Chat from "../../assets/NavigationBar/chat.svg";
 import User from "../../assets/NavigationBar/user.svg";
 import Add from "../../assets/NavigationBar/add.svg";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 
 const Navbar = ({ ...props }) => {
-  const user = useUserStore((state) => state.user);
+  const user = useAuth((state) => state.user);
 
   return (
     <div className="navbar ">

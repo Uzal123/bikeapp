@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
-import { useUserStore } from "../../store/auth";
+import { useAuth } from "../../store/auth";
 import Logo from "../../assets/TopBar/logo.svg";
 import Input from "../../components/UI/Input";
 import { useMutation } from "@apollo/client";
 import REGISTER_USER from "../../graphql/Mutation/Registeruser";
 import { withRouter, useRouter } from "next/router";
-import { useNotificationStore } from "../../store/notifications";
+import { useNotification } from "../../store/notifications";
 import { uuid } from "uuidv4";
 import Head from "next/head";
 
@@ -18,9 +18,9 @@ const Register = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
-  const setNotification = useNotificationStore(
+  const user = useAuth((state) => state.user);
+  const setUser = useAuth((state) => state.setUser);
+  const setNotification = useNotification(
     (state) => state.setNotification
   );
 
