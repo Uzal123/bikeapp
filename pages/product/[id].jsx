@@ -135,8 +135,12 @@ const ProductInfo = ({ data, error, loading, ...props }) => {
   }, [offerType]);
 
   const sendMessage = async (productId, peerId, message) => {
+    if(message === "") {
+        setNotification(uuid(), "Please enter a message", "Error", 3000);
+        return;
+    } 
     try {
-      setNotification(uuid(), "Sending", "Success", 10000);
+      setNotification(uuid(), "Sending", "Loading", 5000);
       setMessageModal(false);
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,

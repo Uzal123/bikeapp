@@ -62,6 +62,7 @@ const ChatWithID = () => {
   }, [messages]);
 
   const sendMessage = async (productId, peerId, message) => {
+    if (message === "") return;
     try {
       const msgResponse = await client.mutate({
         mutation: SEND_MESSAGE,
