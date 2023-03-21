@@ -16,6 +16,9 @@ const nextConfig = {
     env: {
         GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
     },
+    compiler: {
+        removeConsole: process.env.NODE_ENV === "production"
+      },
 }
 
 module.exports = nextConfig
