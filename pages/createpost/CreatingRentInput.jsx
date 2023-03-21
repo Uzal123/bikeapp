@@ -12,7 +12,7 @@ import PriceType from "../../assets/fakeData/PriceType";
 import Colors from "../../assets/fakeData/colors";
 import { useNotification } from "../../hooks/useNotification";
 import { uuid } from "uuidv4";
-import { useAppStore } from "../../hooks/useAppState";
+import { useAppState } from "../../hooks/useAppState";
 
 const CreatingRentInput = ({
   formStage,
@@ -27,11 +27,9 @@ const CreatingRentInput = ({
   errors,
   setErrors,
 }) => {
-  const setNotification = useNotification(
-    (state) => state.setNotification
-  );
+  const setNotification = useNotification((state) => state.setNotification);
 
-  const { city,coordinates } = useAppStore((state) => state);
+  const { city, coordinates } = useAppState((state) => state);
 
   const [rentInput, setRentInput] = useState({
     offerType: "re",
@@ -43,12 +41,9 @@ const CreatingRentInput = ({
     priceType: "fi",
   });
 
-
   const [address, setAddress] = useState(city);
 
-
   const [center, setCenter] = useState(coordinates);
-
 
   const onChange = (e) => {
     const val = e.target.value;
@@ -142,7 +137,6 @@ const CreatingRentInput = ({
   const [submitRentProduct, { data, loading, error }] =
     useMutation(CREATING_RENT);
   useEffect(() => {
-
     if (data?.rentProduct?.success) {
       setNotification(uuid(), "Ad submitted successfully", "Success", 5000);
       setformStage(5);
