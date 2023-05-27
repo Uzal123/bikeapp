@@ -19,6 +19,7 @@ const useStore = create((set) => ({
         verifiedPhone: verifiedPhone,
       },
     }));
+    
   },
   removeUser: () => {
     localStorage.removeItem("rent-app-token");
