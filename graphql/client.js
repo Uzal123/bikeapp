@@ -29,7 +29,7 @@ const authLink = setContext((_, {
 
 
 const httpLink = createUploadLink({
-    uri: "https://rideit.live/graphql",
+    uri: "https://api.motoghar.com/graphql",
 })
 
 export const client = new ApolloClient({
